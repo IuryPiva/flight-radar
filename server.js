@@ -13,6 +13,9 @@ app.get('/', function(req, res){
 app.get('/black-plane.png', function(req, res){
   res.sendFile('/Users/luizfelipebolsonigomes/iury/git-repos/faculdade/flight-radar/client/assets/black-plane.png')
 })
+app.get('/bootstrap.css', function(req, res){
+  res.sendFile('/Users/luizfelipebolsonigomes/iury/git-repos/faculdade/flight-radar/node_modules/bootstrap/dist/css/bootstrap.min.css')
+})
 
 app.listen(3000)
 console.log('Listening on port 3000');

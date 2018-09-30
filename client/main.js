@@ -1,3 +1,4 @@
+require('bootstrap')
 const canvas = document.getElementById("myCanvas")
 const ctx = canvas.getContext("2d")
 
@@ -138,14 +139,18 @@ img.onload = function () {
     });
   }
 
+  function drawTable() {
+    
+  }
+
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     ctx.beginPath()
     drawGrid()
     drawAirships()
     animateAirships()
+    drawTable()
   }
-
 
   setInterval(draw, 1000 / FPS)
 }
