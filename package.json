@@ -1,0 +1,29 @@
+{
+  "name": "flight-radar",
+  "version": "1.0.0",
+  "description": "1.- Construir um plano cartesiano<br /> 2.- Mostrar o avião na tela<br /> 3.- Multiplos aviões na tela<br /> 4.- tabela de aviões na tela<br /> 5.- funções de transformação<br />   5.1.- transladar<br />   5.2.- rotacionar<br />   5.3.- escalonar<br /> 6.- funções de rastreamento<br />   6.1.- distancia do aeroporto<br />   6.2.- distancia dos pares<br />   6.3.- rotas de colisão<br /> 7.- feedback para o usuário<br /> 8.- animacao dos aviões<br /> 9.- i.a. para resolver rotas de colisão responsavelmente (77 if/else 14 switch case)<br />",
+  "main": "server.js",
+  "scripts": {
+    "build": "browserify client/main.js -o public/app.js",
+    "start": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.3"
+  },
+  "devDependencies": {
+    "browserify": "^16.2.3",
+    "browserify-middleware": "^8.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IuryPiva/flight-radar.git"
+  },
+  "bugs": {
+    "url": "https://github.com/IuryPiva/flight-radar/issues"
+  },
+  "homepage": "https://github.com/IuryPiva/flight-radar#readme"
+}
