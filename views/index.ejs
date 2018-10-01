@@ -10,6 +10,14 @@
     canvas {
       background: #eee;
     }
+
+    .fr-small-input {
+      width: 31% !important;
+    }
+
+    .fr-big-input {
+      width: 100% !important;
+    }
   </style>
 </head>
 
@@ -17,30 +25,158 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-3">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Posição</th>
-              <th>Direção</th>
-              <th>Velocidade</th>
-            </tr>
-            <tbody>
-              
-            </tbody>
-          </thead>
-        </table>
+        <div class="col">
+          <div class="shadow bg-light rounded">
+            <ul class="nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link active"
+                   href="#transformation"
+                   role="tab"
+                   data-toggle="tab">Transformações</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link"
+                   href="#tracker"
+                   role="tab"
+                   data-toggle="tab">Rastreamento</a>
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div role="tabpanel"
+                   class="tab-pane active"
+                   id="transformation">
+                <div class="p-3 mb-5">
+                  <form class="form-inline mb-3 row">
+                    <div class="col-12 mb-3">
+                      <input type="text"
+                             class="form-control fr-small-input mr-1"
+                             id="transladar-x"
+                             placeholder="X">
+                      <input type="text"
+                             class="form-control fr-small-input mr-1"
+                             id="transladar-y"
+                             placeholder="Y">
+                    </div>
+                    <div class="col-12">
+                      <button type="submit"
+                              class="btn btn-primary">Transladar</button>
+                    </div>
+                  </form>
+                  <hr>
+                  <form class="form-inline mb-3 row">
+                    <div class="col-12 mb-3">
+                      <input type="text"
+                             class="form-control fr-small-input mr-1"
+                             id="escalonar-x"
+                             placeholder="X">
+                      <input type="text"
+                             class="form-control fr-small-input mr-1"
+                             id="escalonar-y"
+                             placeholder="Y">
+                    </div>
+                    <div class="col-12">
+                      <button type="submit"
+                              class="btn btn-primary">Escalonar</button>
+                    </div>
+                  </form>
+                  <hr>
+                  <form class="form-inline mb-3 row">
+                    <div class="col-12 mb-3">
+                      <input type="text"
+                             class="form-control fr-small-input mr-1"
+                             id="transladar-x"
+                             placeholder="Ângulo">
+                      <input type="text"
+                             class="form-control fr-small-input mr-1"
+                             id="transladar-x"
+                             placeholder="Centro - X">
+                      <input type="text"
+                             class="form-control fr-small-input mr-1"
+                             id="transladar-y"
+                             placeholder="Centro - Y">
+                    </div>
+                    <div class="col-12">
+                      <button type="submit"
+                              class="btn btn-primary">Rotacionar</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div role="tabpanel"
+                   class="tab-pane"
+                   id="tracker">
+                <div class="p-3 mb-5">
+                  <form class="form-inline mb-3 row">
+                    <div class="col-12 mb-3">
+                      <input type="text"
+                             class="form-control fr-big-input"
+                             id="min-time"
+                             placeholder="Distância mínima">
+                    </div>
+                    <div class="col-12">
+                      <button type="submit"
+                              class="btn btn-danger">Aviões próximos ao aeroporto</button>
+                    </div>
+                  </form>
+                  <hr>
+                  <form class="form-inline mb-3 row">
+                    <div class="col-12 mb-3">
+                      <input type="text"
+                             class="form-control fr-big-input"
+                             id="min-time"
+                             placeholder="Distância mínima">
+                    </div>
+                    <div class="col-12">
+                      <button type="submit"
+                              class="btn btn-danger">Aviões próximos</button>
+                    </div>
+                  </form>
+                  <hr>
+                  <form class="form-inline mb-3 row">
+                    <div class="col-12 mb-3">
+                      <input type="text"
+                             class="form-control fr-big-input"
+                             id="min-time"
+                             placeholder="Tempo mínimo em segundos">
+                    </div>
+                    <div class="col-12">
+                      <button type="submit"
+                              class="btn btn-danger">Em rota de colisão</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="col-6">
         <canvas id="myCanvas"
-                width="1000"
-                height="1000"></canvas>
+                width="930"
+                height="930"></canvas>
       </div>
-      <div class="col">
+      <div class="col-3">
+        <div class="col">
+          <div class="table-responsive shadow p-3 mb-5 rounded bg-light">
+            <table class="table table-hover table-sm">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Posição</th>
+                  <th>Direção</th>
+                  <th>Velocidade</th>
+                </tr>
+              </thead>
+              <tbody id="table-body">
 
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+  <script src="https://rawgithub.com/soulwire/sketch.js/master/js/sketch.min.js"></script>
   <script src="app.js"></script>
 </body>
 
