@@ -1,6 +1,7 @@
 const browserify = require('browserify-middleware')
 const express = require('express')
 const app = express()
+const path = require('path')
 
 app.use(express.static(__dirname + '/public'))
 
@@ -11,10 +12,10 @@ app.get('/', function(req, res){
 })
 
 app.get('/black-plane.png', function(req, res){
-  res.sendFile('/Users/luizfelipebolsonigomes/iury/git-repos/faculdade/flight-radar/client/assets/black-plane.png')
+  res.sendFile(path.resolve('./client/assets/black-plane.png'))
 })
 app.get('/bootstrap.css', function(req, res){
-  res.sendFile('/Users/luizfelipebolsonigomes/iury/git-repos/faculdade/flight-radar/node_modules/bootstrap/dist/css/bootstrap.min.css')
+  res.sendFile(path.resolve('./node_modules/bootstrap/dist/css/bootstrap.min.css'))
 })
 
 app.listen(3000)

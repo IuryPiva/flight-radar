@@ -4,8 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <title>Gamedev Canvas Workshop</title>
-  <link rel="stylesheet"
-        href="bootstrap.css">
+  <link rel="stylesheet" href="bootstrap.css">
   <style>
     canvas {
       background: #eee;
@@ -29,119 +28,73 @@
           <div class="shadow bg-light rounded">
             <ul class="nav nav-tabs">
               <li class="nav-item">
-                <a class="nav-link active"
-                   href="#transformation"
-                   role="tab"
-                   data-toggle="tab">Transformações</a>
+                <a class="nav-link active" href="#transformation" role="tab" data-toggle="tab">Transformações</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link"
-                   href="#tracker"
-                   role="tab"
-                   data-toggle="tab">Rastreamento</a>
+                <a class="nav-link" href="#tracker" role="tab" data-toggle="tab">Rastreamento</a>
               </li>
             </ul>
             <div class="tab-content">
-              <div role="tabpanel"
-                   class="tab-pane active"
-                   id="transformation">
+              <div role="tabpanel" class="tab-pane active" id="transformation">
                 <div class="p-3 mb-5">
                   <form class="form-inline mb-3 row">
                     <div class="col-12 mb-3">
-                      <input type="text"
-                             class="form-control fr-small-input mr-1"
-                             id="transladar-x"
-                             placeholder="X">
-                      <input type="text"
-                             class="form-control fr-small-input mr-1"
-                             id="transladar-y"
-                             placeholder="Y">
+                      <input type="text" class="form-control fr-small-input mr-1" id="transladar-x" placeholder="X">
+                      <input type="text" class="form-control fr-small-input mr-1" id="transladar-y" placeholder="Y">
                     </div>
                     <div class="col-12">
-                      <button type="submit"
-                              class="btn btn-primary">Transladar</button>
+                      <button type="submit" class="btn btn-primary">Transladar</button>
                     </div>
                   </form>
                   <hr>
                   <form class="form-inline mb-3 row">
                     <div class="col-12 mb-3">
-                      <input type="text"
-                             class="form-control fr-small-input mr-1"
-                             id="escalonar-x"
-                             placeholder="X">
-                      <input type="text"
-                             class="form-control fr-small-input mr-1"
-                             id="escalonar-y"
-                             placeholder="Y">
+                      <input type="text" class="form-control fr-small-input mr-1" id="escalonar-x" placeholder="X">
+                      <input type="text" class="form-control fr-small-input mr-1" id="escalonar-y" placeholder="Y">
                     </div>
                     <div class="col-12">
-                      <button type="submit"
-                              class="btn btn-primary">Escalonar</button>
+                      <button type="submit" class="btn btn-primary">Escalonar</button>
                     </div>
                   </form>
                   <hr>
                   <form class="form-inline mb-3 row">
                     <div class="col-12 mb-3">
-                      <input type="text"
-                             class="form-control fr-small-input mr-1"
-                             id="transladar-x"
-                             placeholder="Ângulo">
-                      <input type="text"
-                             class="form-control fr-small-input mr-1"
-                             id="transladar-x"
-                             placeholder="Centro - X">
-                      <input type="text"
-                             class="form-control fr-small-input mr-1"
-                             id="transladar-y"
-                             placeholder="Centro - Y">
+                      <input type="text" class="form-control fr-small-input mr-1" id="transladar-x" placeholder="Ângulo">
+                      <input type="text" class="form-control fr-small-input mr-1" id="transladar-x" placeholder="Centro - X">
+                      <input type="text" class="form-control fr-small-input mr-1" id="transladar-y" placeholder="Centro - Y">
                     </div>
                     <div class="col-12">
-                      <button type="submit"
-                              class="btn btn-primary">Rotacionar</button>
+                      <button type="submit" class="btn btn-primary">Rotacionar</button>
                     </div>
                   </form>
                 </div>
               </div>
-              <div role="tabpanel"
-                   class="tab-pane"
-                   id="tracker">
+              <div role="tabpanel" class="tab-pane" id="tracker">
                 <div class="p-3 mb-5">
                   <form class="form-inline mb-3 row">
                     <div class="col-12 mb-3">
-                      <input type="text"
-                             class="form-control fr-big-input"
-                             id="min-time"
-                             placeholder="Distância mínima">
+                      <input type="text" class="form-control fr-big-input" id="min-time" placeholder="Distância mínima">
                     </div>
                     <div class="col-12">
-                      <button type="submit"
-                              class="btn btn-danger">Aviões próximos ao aeroporto</button>
+                      <button type="submit" class="btn btn-danger">Aviões próximos ao aeroporto</button>
                     </div>
                   </form>
                   <hr>
                   <form class="form-inline mb-3 row">
                     <div class="col-12 mb-3">
-                      <input type="text"
-                             class="form-control fr-big-input"
-                             id="min-time"
-                             placeholder="Distância mínima">
+                      <input type="text" class="form-control fr-big-input" id="min-time" placeholder="Distância mínima">
                     </div>
                     <div class="col-12">
-                      <button type="submit"
-                              class="btn btn-danger">Aviões próximos</button>
+                      <button type="submit" class="btn btn-danger">Aviões próximos</button>
                     </div>
                   </form>
                   <hr>
                   <form class="form-inline mb-3 row">
                     <div class="col-12 mb-3">
-                      <input type="text"
-                             class="form-control fr-big-input"
-                             id="min-time"
-                             placeholder="Tempo mínimo em segundos">
+                      <input type="text" class="form-control fr-big-input" id="min-time" placeholder="Tempo mínimo em segundos">
                     </div>
                     <div class="col-12">
-                      <button type="submit"
-                              class="btn btn-danger">Em rota de colisão</button>
+                      <button type="submit" class="btn btn-danger">Em rota de colisão</button>
                     </div>
                   </form>
                 </div>
@@ -150,21 +103,20 @@
           </div>
         </div>
       </div>
-      <div class="col-6">
-        <canvas id="myCanvas"
-                width="930"
-                height="930"></canvas>
+      <div class="col-5">
+        <canvas id="myCanvas" width="600" height="600"></canvas>
       </div>
-      <div class="col-3">
-        <div class="col">
-          <div class="table-responsive shadow p-3 mb-5 rounded bg-light">
-            <table class="table table-hover table-sm">
+      <div class="col-4">
+        <div class="col" id="right-col">
+          <div class="shadow p-3 mb-5 rounded bg-light">
+            <table class="table table-sm table-hover" style="font-size: 12px">
               <thead>
                 <tr>
                   <th>#</th>
                   <th>Posição</th>
                   <th>Direção</th>
                   <th>Velocidade</th>
+                  <th>Altitude</th>
                 </tr>
               </thead>
               <tbody id="table-body">
@@ -172,6 +124,7 @@
               </tbody>
             </table>
           </div>
+
         </div>
       </div>
     </div>
