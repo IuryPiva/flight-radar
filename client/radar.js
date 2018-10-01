@@ -21,10 +21,10 @@ var radar = document.getElementById('radar'),
   saturation = 50,
   lightness = 40,
   lineWidth = 2,
-  gradient = ctx.createLinearGradient(radius, 0, 0, 0);
-
-
-radar.style.marginLeft = radar.style.marginTop = (-diameter / 2) - padding + 'px';
+  
+  
+  radar.style.marginLeft = radar.style.marginTop = (-diameter / 2) - padding + 'px';
+gradient = ctx.createLinearGradient(radius, 0, 0, 0);
 gradient.addColorStop(0, 'hsla( ' + hueStart + ', ' + saturation + '%, ' + lightness + '%, 1 )');
 gradient.addColorStop(1, 'hsla( ' + hueEnd + ', ' + saturation + '%, ' + lightness + '%, 0.1 )');
 

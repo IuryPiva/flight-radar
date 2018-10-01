@@ -23,11 +23,16 @@ img.onload = function () {
     radius: grid.cell.width * 10 / 2,
     lineWidth: 1,
     amount: 5,
-    hueEnd: 170,
-    hueDiff: Math.abs(170 - 120),
-    saturation: 50,
-    lightness: 40,
   }
+  
+  const gradient = ctx.createLinearGradient(rings.radius, 0, 0, 0),
+    hueEnd= 170,
+    hueStart= 120,
+    hueDiff= Math.abs(170 - 120),
+    saturation= 50,
+    lightness= 40
+    gradient.addColorStop(0, 'hsla( ' + hueStart + ', ' + saturation + '%, ' + lightness + '%, 1 )')
+  gradient.addColorStop(1, 'hsla( ' + hueEnd + ', ' + saturation + '%, ' + lightness + '%, 0.1 )')
   const airships = require('./airships')
 
   const renderRings = function () {
@@ -41,7 +46,7 @@ img.onload = function () {
   }
 
   const dToR = function (degrees) {
-    return degrees * (Math.PI / 180);
+    return degrees * (Math.PI / 180)
   }
   let sweepAngle = 270,
   sweepSpeed = 120 // GRAUS POR SEGUNDO
@@ -54,11 +59,11 @@ img.onload = function () {
     ctx.moveTo(0, 0)
     ctx.arc(0, 0, rings.radius, dToR(-1), dToR(1), false)
     ctx.closePath()
-    ctx.fillStyle = 'green'
+    ctx.fillStyle = gradient
     ctx.fill()
     ctx.restore()
   }
-  
+
   function coordinatesToPx(x, y) {
     return {
       x: grid.center.x + (x * grid.cell.width),
@@ -165,7 +170,7 @@ img.onload = function () {
   }
 
   function animateSweep() {
-    sweepAngle += sweepSpeed / FPS;
+    sweepAngle += sweepSpeed / FPS
   }
 
   function draw() {
@@ -179,6 +184,6 @@ img.onload = function () {
     animateSweep()
   }
   drawTable()
-  
+
   setInterval(draw, 1000 / FPS)
 }
