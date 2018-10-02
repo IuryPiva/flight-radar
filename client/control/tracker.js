@@ -14,10 +14,12 @@ function distance(a, b) {
 function getMinDistanceAirport() {
   return document.getElementById('min-distance-airport').value
 }
+window.getMinDistanceAirport = getMinDistanceAirport
+
 function getMinDistanceAirships() {
   return document.getElementById('min-distance-airships').value
 }
-
+window.getMinDistanceAirships = getMinDistanceAirships
 
 function getDistanceFromAirport(airship) {
   return distance(airship, airport)

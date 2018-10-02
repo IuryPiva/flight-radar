@@ -1,11 +1,10 @@
 const $ = require('jquery')
 const rightCol = $('#right-col')
-const { getMinDistanceAirport, getMinDistanceAirships } = require('./tracker')
 
 function showAirshipCloseToAirportInfo(airship) {
   rightCol.append(
     `<div id="${airship.id}info" class="alert alert-info" role="alert">
-      <strong>Aproximação ao aeroporto!</strong> O avião ${airship.id} está a menos de ${getMinDistanceAirport()}km do aeroporto.
+      <strong>Aproximação ao aeroporto!</strong> O avião ${airship.id} está a menos de ${window.getMinDistanceAirport()}km do aeroporto.
     </div>`
   )
 }
@@ -17,7 +16,7 @@ function hideAirshipCloseToAirportInfo(airship) {
 function showAirshipCloseToAirshipWarning(combinedAirships) {
   rightCol.append(
     `<div id="${combinedAirships.first.id}${combinedAirships.second.id}warning" class="alert alert-warning" role="alert">
-      <strong>Aproximação de aviões!</strong> O avião ${combinedAirships.first.id} e o ${combinedAirships.second.id} estão a menos de ${getMinDistanceAirships}km um do outro.
+      <strong>Aproximação de aviões!</strong> O avião ${combinedAirships.first.id} e o ${combinedAirships.second.id} estão a menos de ${window.getMinDistanceAirships()}km um do outro.
     </div>`
   )
 }

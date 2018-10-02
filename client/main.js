@@ -6,6 +6,7 @@ const rings = require('./radar/rings')
 const sweep = require('./radar/sweep')
 const table = require('./control/table')
 const tracker = require('./control/tracker')
+require('./control/transformation')
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height)

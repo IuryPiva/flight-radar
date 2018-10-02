@@ -1,16 +1,46 @@
-const { ctx } = require('../canvas')
+const { ctx, FPS } = require('../canvas')
 const airships = require('./airships')
 const { coordinatesToPx } = require('../utils')
 const sprites = require('./sprites')
-const { getHoveringOver } = require('../control/table')
+const { getHoveringOver, selected } = require('../control/table')
 const { animateAirships } = require('./animation')
+let blinks = 0
 
 function getSprite(airship) {
+  function red() {
+    return true
+  }
+  function shouldBlink() {
+    if(blinks < FPS / 3) {
+      blinks++
+      return true
+    }
+    if(blinks >= FPS / 3 && blinks <= FPS / 3 * 2) {
+      blinks++
+      return false
+    }
+    if(blinks >= FPS / 3 * 2) {
+      blinks = 0
+      return false
+    }
+  }
   const hoveringOver = getHoveringOver()
   if(airship.speed*60*60 > 200) {
-    return hoveringOver.includes(airship.id) ? sprites.airshipRed : sprites.airship
+    if(hoveringOver.includes(airship.id)) {
+      if(shouldBlink()) return sprites.airshipRed
+      return sprites.airship
+    }
+    if(selected.includes(airship.id)) return sprites.airshipRed
+    return sprites.airship
   }
-  return hoveringOver.includes(airship.id) ? sprites.helicopterRed : sprites.helicopter
+  else {
+    if(hoveringOver.includes(airship.id)) {
+      if(shouldBlink()) return sprites.helicopterRed
+      return sprites.helicopter
+    }
+    if(selected.includes(airship.id)) return sprites.helicopterRed
+    return sprites.helicopter
+  }
 }
 
 function drawAirships() {

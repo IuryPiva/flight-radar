@@ -4,21 +4,19 @@
 <head>
   <meta charset="utf-8" />
   <title>Gamedev Canvas Workshop</title>
-  <link rel="stylesheet" href="bootstrap.css">
+  <link rel="stylesheet"
+        href="bootstrap.css">
   <style>
     canvas {
       background: #eee;
-    }
-
-    .fr-big-input {
-      width: 100% !important;
     }
 
     .display-inherit {
       display: inherit;
     }
   </style>
-  <link rel="stylesheet" href="https://cdn.rawgit.com/tonystar/bootstrap-float-label/v4.0.1/dist/bootstrap-float-label.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.rawgit.com/tonystar/bootstrap-float-label/v4.0.1/dist/bootstrap-float-label.min.css">
 </head>
 
 <body>
@@ -29,105 +27,162 @@
           <div class="shadow bg-light rounded">
             <ul class="nav nav-tabs">
               <li class="nav-item">
-                <a class="nav-link active" href="#transformation" role="tab" data-toggle="tab">Transformações</a>
+                <a class="nav-link active"
+                   href="#transformation"
+                   role="tab"
+                   data-toggle="tab">Transformações</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#tracker" role="tab" data-toggle="tab">Rastreamento</a>
+                <a class="nav-link"
+                   href="#tracker"
+                   role="tab"
+                   data-toggle="tab">Rastreamento</a>
               </li>
             </ul>
             <div class="tab-content">
-              <div role="tabpanel" class="tab-pane active" id="transformation">
+              <div role="tabpanel"
+                   class="tab-pane active"
+                   id="transformation">
                 <div class="p-3 mb-5">
                   <form class="form-inline mb-3 row">
                     <div class="col-12 mb-3 display-inherit">
                       <span class="has-float-label">
-                        <input type="text" class="form-control mr-1" id="transladar-x">
+                        <input type="text"
+                               class="form-control mr-1"
+                               id="transladar-x">
                         <label for="transladar-x">X</label>
                       </span>
                       <span class="has-float-label">
-                        <input type="text" class="form-control mr-1" id="transladar-y">
+                        <input type="text"
+                               class="form-control mr-1"
+                               id="transladar-y">
                         <label for="transladar-y">Y</label>
                       </span>
                     </div>
                     <div class="col-12">
-                      <button type="submit" class="btn btn-primary">Transladar</button>
+                      <button class="btn btn-primary" onclick="transladar()">Transladar</button>
                     </div>
                   </form>
                   <hr>
                   <form class="form-inline mb-3 row">
                     <div class="col-12 mb-3 display-inherit">
                       <span class="has-float-label">
-                          <input type="text" class="form-control mr-1" id="escalonar-x">
-                          <label for="escalonar-x">X</label>
+                        <div class="input-group">
+                          <input type="text"
+                                 class="form-control"
+                                 id="escalonar-x">
+                          <div class="input-group-append">
+                            <span class="input-group-text">%</span>
+                          </div>
+                        </div>
+                        <label for="escalonar-x">X</label>
                       </span>
                       <span class="has-float-label">
-                          <input type="text" class="form-control mr-1" id="escalonar-y">
-                          <label for="escalonar-y">Y</label>
+                        <div class="input-group">
+                          <input type="text"
+                                 class="form-control"
+                                 id="escalonar-y">
+                          <div class="input-group-append">
+                            <span class="input-group-text">%</span>
+                          </div>
+                        </div>
+                        <label for="escalonar-y">Y</label>
                       </span>
                     </div>
                     <div class="col-12">
-                      <button type="submit" class="btn btn-primary">Escalonar</button>
+                      <button class="btn btn-primary" onclick="escalonar()">Escalonar</button>
                     </div>
                   </form>
                   <hr>
                   <form class="form-inline mb-3 row">
                     <div class="col-12 mb-3 display-inherit">
                       <span class="has-float-label">
-                          <input type="text" class="form-control mr-1" id="transladar-x">
-                          <label for="transladar-x">Ângulo</label>
+                        <input type="text"
+                               class="form-control mr-1"
+                               id="rotacionar-angulo">
+                        <label for="rotacionar-angulo">Ângulo</label>
                       </span>
                     </div>
                     <div class="col-12 mb-3 display-inherit">
                       <span class="has-float-label">
-                          <input type="text" class="form-control mr-1" id="transladar-x">
-                          <label for="transladar-x">Centro - X</label>
+                        <input type="text"
+                               class="form-control mr-1"
+                               id="rotacionar-x">
+                        <label for="rotacionar-x">Centro - X</label>
                       </span>
                       <span class="has-float-label">
-                          <input type="text" class="form-control mr-1" id="transladar-y">
-                          <label for="transladar-y">Centro - Y</label>
+                        <input type="text"
+                               class="form-control mr-1"
+                               id="rotacionar-y">
+                        <label for="rotacionar-y">Centro - Y</label>
                       </span>
                     </div>
                     <div class="col-12">
-                      <button type="submit" class="btn btn-primary">Rotacionar</button>
+                      <button class="btn btn-primary" onclick="rotacionar()">Rotacionar</button>
                     </div>
                   </form>
                 </div>
               </div>
-              <div role="tabpanel" class="tab-pane" id="tracker">
+              <div role="tabpanel"
+                   class="tab-pane"
+                   id="tracker">
                 <div class="p-3 mb-5">
                   <form class="form-inline mb-3 row">
                     <div class="col-12 mb-3">
                       <span class="has-float-label">
-                        <input type="text" class="form-control fr-big-input" value="1" id="min-distance-airport">
+                        <div class="input-group">
+                          <input type="text"
+                                 class="form-control"
+                                 value="1"
+                                 id="min-distance-airport">
+                          <div class="input-group-append">
+                            <span class="input-group-text">km</span>
+                          </div>
+                        </div>
                         <label for="min-distance-airport">Distância mínima</label>
                       </span>
                     </div>
                     <div class="col-12">
-                      <button type="submit" class="btn btn-danger">Aviões próximos ao aeroporto</button>
+                      <button class="btn btn-danger">Aviões próximos ao aeroporto</button>
                     </div>
                   </form>
                   <hr>
                   <form class="form-inline mb-3 row">
                     <div class="col-12 mb-3">
                       <span class="has-float-label">
-                        <input type="text" class="form-control fr-big-input" value="2" id="min-distance-airships">
+                        <div class="input-group">
+                          <input type="text"
+                                 class="form-control"
+                                 value="2"
+                                 id="min-distance-airships">
+                          <div class="input-group-append">
+                            <span class="input-group-text">km</span>
+                          </div>
+                        </div>
                         <label for="min-distance-airships">Distância mínima</label>
                       </span>
                     </div>
                     <div class="col-12">
-                      <button type="submit" class="btn btn-danger">Aviões próximos</button>
+                      <button class="btn btn-danger">Aviões próximos</button>
                     </div>
                   </form>
                   <hr>
                   <form class="form-inline mb-3 row">
                     <div class="col-12 mb-3">
                       <span class="has-float-label">
-                        <input type="text" class="form-control fr-big-input" id="min-time">
-                        <label for="min-time">Tempo mínimo em segundos</label>
+                        <div class="input-group">
+                          <input type="text"
+                                 class="form-control"
+                                 id="min-time">
+                          <div class="input-group-append">
+                            <span class="input-group-text">segundos</span>
+                          </div>
+                        </div>
+                        <label for="min-time">Tempo mínimo</label>
                       </span>
                     </div>
                     <div class="col-12">
-                      <button type="submit" class="btn btn-danger">Em rota de colisão</button>
+                      <button class="btn btn-danger">Em rota de colisão</button>
                     </div>
                   </form>
                 </div>
@@ -137,12 +192,16 @@
         </div>
       </div>
       <div class="col-5">
-        <canvas id="myCanvas" width="600" height="600"></canvas>
+        <canvas id="myCanvas"
+                width="600"
+                height="600"></canvas>
       </div>
       <div class="col-4">
-        <div class="col" id="right-col">
+        <div class="col"
+             id="right-col">
           <div class="shadow p-3 mb-5 rounded bg-light">
-            <table class="table table-sm table-hover" style="font-size: 12px">
+            <table class="table table-sm table-hover"
+                   style="font-size: 12px">
               <thead>
                 <tr>
                   <th>#</th>

@@ -1,7 +1,10 @@
 const airships = require('../airship/airships')
 const $ = require('jquery')
+window.jQuery = $
+require('jquery-ui')
 let drawn = false
-var hoveringOver = []
+let hoveringOver = []
+let selected = []
 
 window.hovering = function(event) {
   setHoveringOver(event.id)
@@ -21,13 +24,22 @@ window.leaveHovering= function (event) {
   deleteHoveringOver(event.id)
 }
 
+window.rowClick = (event) => {
+  jQuery(`#${event.id}`).toggleClass('table-dark')
+  if(selected.includes(event.id)) {
+    selected.splice( selected.indexOf(event.id), 1)
+  } else {
+    selected.push(event.id)
+  }
+}
+
 function firstDraw() {
   drawn = true
   const tableBody = document.getElementById('table-body')
   tableBody.innerHTML = ''
   airships.forEach(airship => {
     const html = `
-        <tr id="${airship.id}" onmouseover="window.hovering(this)" onmouseout="window.leaveHovering(this)">
+        <tr id="${airship.id}" onmouseover="window.hovering(this)" onclick="window.rowClick(this)"  onmouseout="window.leaveHovering(this)">
           <th scope="row">${airship.id}</th>
           <td id="${airship.id}position">${Number(airship.x.toFixed(1))}, ${Number(airship.y.toFixed(1))}</td>
           <td id="${airship.id}direction">${Number(airship.direction.toFixed(1))}°</td>
@@ -57,5 +69,6 @@ function drawTable() {
 
 module.exports = {
   drawTable,
-  getHoveringOver
+  getHoveringOver,
+  selected
 }
