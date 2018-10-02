@@ -49,7 +49,7 @@ function drawAirships() {
 
 function drawAirship(airship) {
   const pixel = coordinatesToPx(airship.x, airship.y)
-  const rad = (airship.direction * Math.PI / 180) * (-1)
+  const rad = (airship.direction * Math.PI / 180)
   ctx.save()
   ctx.font="12px Georgia"
   ctx.fillText(airship.id, pixel.x + airship.width / 2, pixel.y + airship.height / 2)

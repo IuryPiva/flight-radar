@@ -64,7 +64,7 @@ function updateTable() {
 
 function drawTable() {
   drawn ? updateTable() : firstDraw()
-  setTimeout(drawTable, 1000)
+  setTimeout(drawTable, 50)
 }
 
 module.exports = {

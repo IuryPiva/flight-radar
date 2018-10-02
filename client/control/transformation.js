@@ -2,36 +2,48 @@ const { selected } = require('./table')
 const { getAirshipById } = require('../airship/airship')
 
 function translate(airship, point) {
-  debugger
   airship.x = airship.x + point.x
   airship.y = airship.y + point.y
 }
 
 function scale(airship, point){
-  point.x = (airship.x * (point.x/100))
-  point.y = (airship.y * (point.y/100))
-  translate(airship, point)
+  airship.x = airship.x * point.x
+  airship.y = airship.y * point.y
 }
 
 function rotate(airship, point) {
-  const polar = cartToPolar(point)
-  polar.angle += point.angle
-  cart = polarToCart(polar)
-  debugger
-  airship.x = cart.x
-  airship.y = cart.y
+  airship.x -= point.x
+  airship.y -= point.y
+  const original = Object.assign({}, airship)
+  airship.x = airship.x * Math.cos(degreesToRadians(point.angle)) - (airship.y * Math.sin(degreesToRadians(point.angle)))
+  airship.y = original.x * Math.sin(degreesToRadians(point.angle)) + (airship.y * Math.cos(degreesToRadians(point.angle)))
+  airship.x += point.x
+  airship.y += point.y
+}
+
+function round(num) {
+  return Math.round(num * 100) / 100;
+}
+
+function radiansToDegrees(radians) {
+  return radians * 180 / Math.PI;
+}
+
+function degreesToRadians(degree) {
+  return degree * Math.PI / 180;
 }
 
 function cartToPolar(cart) {
   return {
     radius: Math.sqrt(Math.pow(cart.x, 2) + Math.pow(cart.y, 2)),
-    angle: number.radiansToDegrees(Math.atan2(cart.y, cart.x))
+    angle: radiansToDegrees(Math.atan2(cart.y, cart.x))
   }
 }
+
 function polarToCart(polar) {
-  const rad = number.degreesToRadians(polar.angle)
-  const cosRad = number.round(Math.cos(rad))
-  const sinRad = number.round(Math.sin(rad))
+  const rad = degreesToRadians(polar.angle)
+  const cosRad = round(Math.cos(rad))
+  const sinRad = round(Math.sin(rad))
   return {
     y: polar.radius * sinRad,
     x: polar.radius * cosRad
@@ -65,6 +77,6 @@ function polarToCart(polar) {
     }
     selected.forEach(airshipId => {
       const airship = getAirshipById(airshipId)
-      scale(airship, point)
+      rotate(airship, point)
     })
   }

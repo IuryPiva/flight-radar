@@ -29,12 +29,12 @@ function animateAirships() {
     } else
     // HITTING BOTTOM WALL
     if(pixels.y + airship.height/2 > canvas.height) {
-      const newDirection = Math.floor(Math.random() * 180)
+      const newDirection = Math.floor(Math.random() * (360 - 180+1) + 180)
       airship.direction = newDirection
     } else 
     // HITTING TOP WALL
     if(pixels.y < airship.height/2) {
-      const newDirection = Math.floor(Math.random() * (360 - 180+1) + 180)
+      const newDirection = Math.floor(Math.random() * 180)
       airship.direction = newDirection
     }
 
