@@ -4,10 +4,10 @@ function combinatory(airships) {
   const result = []
   for(let i = 0; i < airships.length - 1; i++) {
     for(let j = i + 1; j < airships.length; j++) {
-      result.push([
-        airships[i],
-        airships[j]
-      ])
+      result.push({
+        first: airships[i],
+        second: airships[j],
+      })
     }
   }
   return result

@@ -15,3 +15,6 @@
 7.- feedback para o usuário<br />
 8.- animacao dos aviões<br />
 9.- i.a. para resolver rotas de colisão responsavelmente (77 if/else 14 switch case)<br />
+10.- transformações com varios aviões ao mesmo tempo<br />
+10.- Rota de colisão com aeroporto<br />
+11.- velocidade minima do aeroporto<br />
