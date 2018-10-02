@@ -10,14 +10,15 @@
       background: #eee;
     }
 
-    .fr-small-input {
-      width: 31% !important;
-    }
-
     .fr-big-input {
       width: 100% !important;
     }
+
+    .display-inherit {
+      display: inherit;
+    }
   </style>
+  <link rel="stylesheet" href="https://cdn.rawgit.com/tonystar/bootstrap-float-label/v4.0.1/dist/bootstrap-float-label.min.css">
 </head>
 
 <body>
@@ -38,9 +39,15 @@
               <div role="tabpanel" class="tab-pane active" id="transformation">
                 <div class="p-3 mb-5">
                   <form class="form-inline mb-3 row">
-                    <div class="col-12 mb-3">
-                      <input type="text" class="form-control fr-small-input mr-1" id="transladar-x" placeholder="X">
-                      <input type="text" class="form-control fr-small-input mr-1" id="transladar-y" placeholder="Y">
+                    <div class="col-12 mb-3 display-inherit">
+                      <span class="has-float-label">
+                        <input type="text" class="form-control mr-1" id="transladar-x">
+                        <label for="transladar-x">X</label>
+                      </span>
+                      <span class="has-float-label">
+                        <input type="text" class="form-control mr-1" id="transladar-y">
+                        <label for="transladar-y">Y</label>
+                      </span>
                     </div>
                     <div class="col-12">
                       <button type="submit" class="btn btn-primary">Transladar</button>
@@ -48,9 +55,15 @@
                   </form>
                   <hr>
                   <form class="form-inline mb-3 row">
-                    <div class="col-12 mb-3">
-                      <input type="text" class="form-control fr-small-input mr-1" id="escalonar-x" placeholder="X">
-                      <input type="text" class="form-control fr-small-input mr-1" id="escalonar-y" placeholder="Y">
+                    <div class="col-12 mb-3 display-inherit">
+                      <span class="has-float-label">
+                          <input type="text" class="form-control mr-1" id="escalonar-x">
+                          <label for="escalonar-x">X</label>
+                      </span>
+                      <span class="has-float-label">
+                          <input type="text" class="form-control mr-1" id="escalonar-y">
+                          <label for="escalonar-y">Y</label>
+                      </span>
                     </div>
                     <div class="col-12">
                       <button type="submit" class="btn btn-primary">Escalonar</button>
@@ -58,10 +71,21 @@
                   </form>
                   <hr>
                   <form class="form-inline mb-3 row">
-                    <div class="col-12 mb-3">
-                      <input type="text" class="form-control fr-small-input mr-1" id="transladar-x" placeholder="Ângulo">
-                      <input type="text" class="form-control fr-small-input mr-1" id="transladar-x" placeholder="Centro - X">
-                      <input type="text" class="form-control fr-small-input mr-1" id="transladar-y" placeholder="Centro - Y">
+                    <div class="col-12 mb-3 display-inherit">
+                      <span class="has-float-label">
+                          <input type="text" class="form-control mr-1" id="transladar-x">
+                          <label for="transladar-x">Ângulo</label>
+                      </span>
+                    </div>
+                    <div class="col-12 mb-3 display-inherit">
+                      <span class="has-float-label">
+                          <input type="text" class="form-control mr-1" id="transladar-x">
+                          <label for="transladar-x">Centro - X</label>
+                      </span>
+                      <span class="has-float-label">
+                          <input type="text" class="form-control mr-1" id="transladar-y">
+                          <label for="transladar-y">Centro - Y</label>
+                      </span>
                     </div>
                     <div class="col-12">
                       <button type="submit" class="btn btn-primary">Rotacionar</button>
@@ -73,7 +97,10 @@
                 <div class="p-3 mb-5">
                   <form class="form-inline mb-3 row">
                     <div class="col-12 mb-3">
-                      <input type="text" class="form-control fr-big-input" id="min-time" placeholder="Distância mínima">
+                      <span class="has-float-label">
+                        <input type="text" class="form-control fr-big-input" value="1" id="min-distance-airport">
+                        <label for="min-distance-airport">Distância mínima</label>
+                      </span>
                     </div>
                     <div class="col-12">
                       <button type="submit" class="btn btn-danger">Aviões próximos ao aeroporto</button>
@@ -82,7 +109,10 @@
                   <hr>
                   <form class="form-inline mb-3 row">
                     <div class="col-12 mb-3">
-                      <input type="text" class="form-control fr-big-input" id="min-time" placeholder="Distância mínima">
+                      <span class="has-float-label">
+                        <input type="text" class="form-control fr-big-input" value="2" id="min-distance-airships">
+                        <label for="min-distance-airships">Distância mínima</label>
+                      </span>
                     </div>
                     <div class="col-12">
                       <button type="submit" class="btn btn-danger">Aviões próximos</button>
@@ -91,7 +121,10 @@
                   <hr>
                   <form class="form-inline mb-3 row">
                     <div class="col-12 mb-3">
-                      <input type="text" class="form-control fr-big-input" id="min-time" placeholder="Tempo mínimo em segundos">
+                      <span class="has-float-label">
+                        <input type="text" class="form-control fr-big-input" id="min-time">
+                        <label for="min-time">Tempo mínimo em segundos</label>
+                      </span>
                     </div>
                     <div class="col-12">
                       <button type="submit" class="btn btn-danger">Em rota de colisão</button>

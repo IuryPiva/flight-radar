@@ -1,11 +1,11 @@
 const $ = require('jquery')
 const rightCol = $('#right-col')
-const grid = require('../radar/grid')
+const { getMinDistanceAirport, getMinDistanceAirships } = require('./tracker')
 
 function showAirshipCloseToAirportInfo(airship) {
   rightCol.append(
     `<div id="${airship.id}info" class="alert alert-info" role="alert">
-      <strong>Aproximação ao aeroporto!</strong> O avião ${airship.id} está a menos de ${2 * grid.cell.width}m do aeroporto.
+      <strong>Aproximação ao aeroporto!</strong> O avião ${airship.id} está a menos de ${getMinDistanceAirport()}km do aeroporto.
     </div>`
   )
 }
@@ -17,7 +17,7 @@ function hideAirshipCloseToAirportInfo(airship) {
 function showAirshipCloseToAirshipWarning(combinedAirships) {
   rightCol.append(
     `<div id="${combinedAirships.first.id}${combinedAirships.second.id}warning" class="alert alert-warning" role="alert">
-      <strong>Aproximação de aviões!</strong> O avião ${combinedAirships.first.id} e o ${combinedAirships.second.id} estão a menos de ${grid.cell.width}m um do outro.
+      <strong>Aproximação de aviões!</strong> O avião ${combinedAirships.first.id} e o ${combinedAirships.second.id} estão a menos de ${getMinDistanceAirships}km um do outro.
     </div>`
   )
 }

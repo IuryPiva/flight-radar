@@ -11,8 +11,17 @@ app.get('/', function(req, res){
   res.render('index.ejs')
 })
 
-app.get('/black-plane.png', function(req, res){
-  res.sendFile(path.resolve('./client/assets/black-plane.png'))
+app.get('/airship.png', function(req, res){
+  res.sendFile(path.resolve('./client/assets/airship.png'))
+})
+app.get('/helicopter.png', function(req, res){
+  res.sendFile(path.resolve('./client/assets/helicopter.png'))
+})
+app.get('/airship-red.png', function(req, res){
+  res.sendFile(path.resolve('./client/assets/airship-red.png'))
+})
+app.get('/helicopter-red.png', function(req, res){
+  res.sendFile(path.resolve('./client/assets/helicopter-red.png'))
 })
 app.get('/bootstrap.css', function(req, res){
   res.sendFile(path.resolve('./node_modules/bootstrap/dist/css/bootstrap.min.css'))

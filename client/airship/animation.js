@@ -1,12 +1,11 @@
 const airships = require('./airships')
-const grid = require('../radar/grid')
 const { canvas, FPS } = require('../canvas')
 const { coordinatesToPx } = require('../utils')
 
 function getNextPosition(airship) {
   return { 
-    x : airship.x + airship.speed/grid.cell.width/FPS * (Math.cos(airship.direction * Math.PI / 180)),
-    y : airship.y + airship.speed/grid.cell.height/FPS * -(Math.sin(airship.direction * Math.PI / 180))
+    x : airship.x + airship.speed/FPS * (Math.cos(airship.direction * Math.PI / 180)),
+    y : airship.y + airship.speed/FPS * -(Math.sin(airship.direction * Math.PI / 180))
   }
 }
 

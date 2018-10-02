@@ -1,8 +1,4 @@
 const { randomFlightId } = require('../random')
-const { cell } = require('../radar/grid')
-const sprite = document.createElement('IMG')
-sprite.src = "black-plane.png"
-
 module.exports = [
   {
     id: randomFlightId(),
@@ -12,8 +8,7 @@ module.exports = [
     y: Math.random() * (3 - (-3) + 1) + (-3),
     z: Math.random() * (420 - (350) + 1) + (350),
     direction: Math.floor(Math.random() * 360),
-    speed: Math.random() * cell.width / 4,
-    sprite,
+    speed: Math.random() * 0.277778,
     info: false,
   },
   {
@@ -24,8 +19,7 @@ module.exports = [
     y: Math.random() * (3 - (-3) + 1) + (-3),
     z: Math.random() * (420 - (350) + 1) + (350),
     direction: Math.floor(Math.random() * 360),
-    speed: Math.random() * cell.width / 4,
-    sprite,
+    speed: Math.random() * 0.277778,
     info: false,
   },
   {
@@ -36,8 +30,7 @@ module.exports = [
     y: Math.random() * (3 - (-3) + 1) + (-3),
     z: Math.random() * (420 - (350) + 1) + (350),
     direction: Math.floor(Math.random() * 360),
-    speed: Math.random() * cell.width / 4,
-    sprite,
+    speed: Math.random() * 0.277778,
     info: false,
   },
   {
@@ -48,8 +41,7 @@ module.exports = [
     y: Math.random() * (3 - (-3) + 1) + (-3),
     z: Math.random() * (420 - (350) + 1) + (350),
     direction: Math.floor(Math.random() * 360),
-    speed: Math.random() * cell.width / 4,
-    sprite,
+    speed: Math.random() * 0.277778,
     info: false,
   },
 ]

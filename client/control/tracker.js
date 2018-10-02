@@ -11,15 +11,23 @@ function distance(a, b) {
   return Math.sqrt(Math.pow((b.x - a.x), 2) + Math.pow((b.y - a.y), 2))
 }
 
+function getMinDistanceAirport() {
+  return document.getElementById('min-distance-airport').value
+}
+function getMinDistanceAirships() {
+  return document.getElementById('min-distance-airships').value
+}
+
+
 function getDistanceFromAirport(airship) {
   return distance(airship, airport)
 }
 
 function isCloseToAirport(airship) {
-  if (getDistanceFromAirport(airship) < 2 && !airship.info) {
+  if (getDistanceFromAirport(airship) < getMinDistanceAirport() && !airship.info) {
     airship.info = true
     showAirshipCloseToAirportInfo(airship)
-  } else if (getDistanceFromAirport(airship) > 2 && airship.info) {
+  } else if (getDistanceFromAirport(airship) > getMinDistanceAirport() && airship.info) {
     airship.info = false
     hideAirshipCloseToAirportInfo(airship)
   }
@@ -29,13 +37,13 @@ const warnShow = []
 function isCloseToEachOther(airshipCombination) {
   airshipCombination.forEach(combinedAirships => {
     if (
-      distance(combinedAirships.first, combinedAirships.second) < 1 &&
+      distance(combinedAirships.first, combinedAirships.second) < getMinDistanceAirships() &&
       !warnShow.includes(`${combinedAirships.first.id}${combinedAirships.second.id}`)
     ) {
       warnShow.push(`${combinedAirships.first.id}${combinedAirships.second.id}`)
       showAirshipCloseToAirshipWarning(combinedAirships)
     } else if (
-      distance(combinedAirships.first, combinedAirships.second) > 1 &&
+      distance(combinedAirships.first, combinedAirships.second) > getMinDistanceAirships() &&
       warnShow.includes(`${combinedAirships.first.id}${combinedAirships.second.id}`)
     ) {
       warnShow.splice( warnShow.indexOf(`${combinedAirships.first.id}${combinedAirships.second.id}`), 1 )
@@ -52,7 +60,7 @@ function getDistantPoint(airship) {
 }
 
 function intersects(firstAirship,firstAirshipB,secondAirship,secondAirshipB) {
-  var det, gamma, lambda
+  let det, gamma, lambda
   det = (firstAirshipB.x - firstAirship.x) * (secondAirshipB.y - secondAirship.y) - (secondAirshipB.x - secondAirship.x) * (firstAirshipB.y - firstAirship.y)
   if (det === 0) {
     return false
@@ -64,9 +72,9 @@ function intersects(firstAirship,firstAirshipB,secondAirship,secondAirshipB) {
 }
 
 function getIntersection(firstAirship, firstAirshipB, secondAirship, secondAirshipB) {
-  var slope1, slope2, yint1, yint2, intx, inty;
-  if (firstAirship.x == secondAirship.x && firstAirship.y == secondAirship.y) return [firstAirship.x, firstAirship.y];
-  if (firstAirshipB.x == secondAirshipB.x && firstAirshipB.y == secondAirshipB.y) return [firstAirshipB.x, secondAirshipB.y];
+  let slope1, slope2, yint1, yint2, intx, inty;
+  if (firstAirship.x == secondAirship.x && firstAirship.y == secondAirship.y) return {x: firstAirship.x, y: firstAirship.y}
+  if (firstAirshipB.x == secondAirshipB.x && firstAirshipB.y == secondAirshipB.y) return {x: firstAirshipB.x, y: secondAirshipB.y}
 
   slope1 = this.slope(firstAirship.x, firstAirship.y, firstAirshipB.x, firstAirshipB.y);
   slope2 = this.slope(secondAirship.x, secondAirship.y, secondAirshipB.x, secondAirshipB.y);
@@ -74,12 +82,16 @@ function getIntersection(firstAirship, firstAirshipB, secondAirship, secondAirsh
 
   yint1 = this.yInt(firstAirship.x, firstAirship.y, firstAirshipB.x, firstAirshipB.y);
   yint2 = this.yInt(secondAirship.x, secondAirship.y, secondAirshipB.x, secondAirshipB.y);
-  if (yint1 === yint2) return yint1 === false ? false : [0, yint1];
+  if (yint1 === yint2) return yint1 === false ? false : {x: 0, y: yint1}
 
-  if (slope1 === false) return [secondAirship.y, slope2 * secondAirship.y + yint2];
-  if (slope2 === false) return [firstAirship.y, slope1 * firstAirship.y + yint1];
+  if (slope1 === false) return {x: secondAirship.y, y: slope2 * secondAirship.y + yint2}
+  if (slope2 === false) return {x: firstAirship.y, y: slope1 * firstAirship.y + yint1}
   intx = (slope1 * firstAirship.x + yint1 - yint2)/ slope2;
-  return [intx, slope1 * intx + yint1];
+  return {x: intx, y: slope1 * intx + yint1}
+}
+
+function timeToPoint(airship, point) {
+  return distance(airship, point)/airship.speed
 }
 
 const dangerShow = []
@@ -117,10 +129,12 @@ function trackThem() {
   const airshipCombination = combinatory(airships) // OPTIMIZATION FIX THIS
   airships.forEach(airship => isCloseToAirport(airship))
   isCloseToEachOther(airshipCombination)
-  isGoingToCollide(airshipCombination)
-  setTimeout(trackThem, 10)
+  // isGoingToCollide(airshipCombination)
+  setTimeout(trackThem, 1000)
 }
 
 module.exports = {
-  trackThem
+  trackThem,
+  getMinDistanceAirport,
+  getMinDistanceAirships
 }
