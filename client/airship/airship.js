@@ -4,6 +4,7 @@ const { coordinatesToPx } = require('../utils')
 const sprites = require('./sprites')
 const { getHoveringOver, selected } = require('../control/table')
 const { animateAirships } = require('./animation')
+const { getDistantPoint } = require('../control/tracker')
 let blinks = 0
 
 function getSprite(airship) {
@@ -44,12 +45,15 @@ function getSprite(airship) {
 }
 
 function drawAirships() {
-  return airships.forEach(airship => drawAirship(airship))
+  return airships.forEach(airship => {
+    drawAirship(airship)
+    drawAirshipGuideLine(airship)  
+  })
 }
 
 function drawAirship(airship) {
   const pixel = coordinatesToPx(airship.x, airship.y)
-  const rad = (airship.direction * Math.PI / 180)
+  const rad = (Math.abs(airship.direction - 360) * Math.PI / 180)
   ctx.save()
   ctx.font="12px Georgia"
   ctx.fillText(airship.id, pixel.x + airship.width / 2, pixel.y + airship.height / 2)
@@ -61,6 +65,20 @@ function drawAirship(airship) {
   ctx.restore()
 }
 
+function drawAirshipGuideLine(airship) {
+  const pixel = coordinatesToPx(airship.x, airship.y)
+  
+  const distantPoint = getDistantPoint(airship)
+  const distantPointPx = coordinatesToPx(distantPoint.x, distantPoint.y)
+  
+  ctx.beginPath()
+  ctx.strokeStyle = 'red'
+  ctx.lineWidth = 1
+  ctx.moveTo(pixel.x, pixel.y)
+  ctx.lineTo(distantPointPx.x, distantPointPx.y)
+  ctx.stroke()
+}
+
 function getAirshipById(id) {
   return airships.find(airship => airship.id == id)
 }
@@ -68,5 +86,6 @@ function getAirshipById(id) {
 module.exports = {
   animateAirships,
   drawAirships,
-  getAirshipById
+  getAirshipById,
+  drawAirshipGuideLine
 }

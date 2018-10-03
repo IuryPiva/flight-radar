@@ -12,18 +12,18 @@ const grid = {
 }
 
 function drawGrid() {
-  ctx.strokeStyle = 'black'
-  ctx.lineWidth = 1
-
+  ctx.beginPath()
   for (let i = 0; i <= canvas.width; i += grid.cell.width) {
     ctx.moveTo(i, 0)
     ctx.lineTo(i, canvas.height)
   }
-
+  
   for (let i = 0; i <= canvas.height; i += grid.cell.height) {
     ctx.moveTo(0, i)
     ctx.lineTo(canvas.width, i)
   }
+  ctx.strokeStyle = 'black'
+  ctx.lineWidth = 1
   ctx.stroke()
 }
 

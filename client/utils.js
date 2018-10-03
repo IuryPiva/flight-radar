@@ -2,8 +2,8 @@ const grid = require('./radar/grid')
 
 function combinatory(airships) {
   const result = []
-  for(let i = 0; i < airships.length - 1; i++) {
-    for(let j = i + 1; j < airships.length; j++) {
+  for (let i = 0; i < airships.length - 1; i++) {
+    for (let j = i + 1; j < airships.length; j++) {
       result.push({
         first: airships[i],
         second: airships[j],
@@ -11,6 +11,13 @@ function combinatory(airships) {
     }
   }
   return result
+}
+function round(num) {
+  return Math.round(num * 100) / 100;
+}
+
+function radiansToDegrees(radians) {
+  return radians * 180 / Math.PI;
 }
 
 module.exports = {
@@ -20,5 +27,23 @@ module.exports = {
       y: grid.center.y + (y * grid.cell.height) * (-1)
     }
   },
-  combinatory
+  combinatory,
+  round,
+  radiansToDegrees,
+  cartToPolar: (cart) => {
+    return {
+      radius: Math.sqrt(Math.pow(cart.x, 2) + Math.pow(cart.y, 2)),
+      angle: radiansToDegrees(Math.atan2(cart.y, cart.x))
+    }
+  },
+
+  polarToCart: (polar) => {
+    const rad = degreesToRadians(polar.angle)
+    const cosRad = round(Math.cos(rad))
+    const sinRad = round(Math.sin(rad))
+    return {
+      y: polar.radius * sinRad,
+      x: polar.radius * cosRad
+    }
+  }
 }
