@@ -4,8 +4,8 @@ const { coordinatesToPx } = require('../utils')
 
 function getNextPosition(airship) {
   return { 
-    x : airship.x + airship.speed/FPS * (Math.cos(airship.direction * Math.PI / 180)),
-    y : airship.y + airship.speed/FPS * -(Math.sin(airship.direction * Math.PI / 180))
+    x : airship.x + airship.speed/FPS * (Math.cos(Math.abs(airship.direction - 360) * Math.PI / 180)),
+    y : airship.y + airship.speed/FPS * -(Math.sin(Math.abs(airship.direction - 360) * Math.PI / 180))
   }
 }
 
@@ -29,12 +29,12 @@ function animateAirships() {
     } else
     // HITTING BOTTOM WALL
     if(pixels.y + airship.height/2 > canvas.height) {
-      const newDirection = Math.floor(Math.random() * (360 - 180+1) + 180)
+      const newDirection = Math.floor(Math.random() * 180)
       airship.direction = newDirection
     } else 
     // HITTING TOP WALL
     if(pixels.y < airship.height/2) {
-      const newDirection = Math.floor(Math.random() * 180)
+      const newDirection = Math.floor(Math.random() * (360 - 180+1) + 180)
       airship.direction = newDirection
     }
 
