@@ -7,6 +7,7 @@ function combinatory(airships) {
       result.push({
         first: airships[i],
         second: airships[j],
+        id: airships[i].id+airships[j]
       })
     }
   }

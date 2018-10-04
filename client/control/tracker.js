@@ -9,7 +9,7 @@ const {
 } = require('./feedback')
 const lineIntersect = require('line-intersect');
 const { cartToPolar, polarToCart } = require('../utils')
-
+const _ = require('lodash')
 
 function distance(a, b) {
   return Math.sqrt(Math.pow((b.x - a.x), 2) + Math.pow((b.y - a.y), 2))
@@ -63,15 +63,25 @@ function isCloseToEachOther(airshipCombination) {
   })
 }
 
-function getDistantPoint(airship) {
+function getDistantPoint(airship, times = 1) {
   return { 
-    x : airship.x + (airship.speed? airship.speed*getMinTime() : 0.2778/FPS) * (Math.cos(Math.abs(airship.direction - 360) * Math.PI / 180)),
-    y : airship.y + (airship.speed? airship.speed*getMinTime() : 0.2778/FPS) * -(Math.sin(Math.abs(airship.direction - 360) * Math.PI / 180))
+    x : airship.x + (airship.speed? airship.speed*getMinTime()*times : times*0.2778/FPS) * (Math.cos(Math.abs(airship.direction - 360) * Math.PI / 180)),
+    y : airship.y + (airship.speed? airship.speed*getMinTime()*times : times*0.2778/FPS) * -(Math.sin(Math.abs(airship.direction - 360) * Math.PI / 180))
   }
 }
 
 function timeToPoint(airship, point) {
   return distance(airship, point) / airship.speed
+}
+
+// TODO IMPROVE THIS PERFORMANCE
+function getInDanger() {
+  const inDanger= []
+  dangerShow.forEach(twoPlanesId => {
+    inDanger.push(_.join(_.slice(twoPlanesId, 0, 6), ''))
+    inDanger.push(_.join(_.slice(twoPlanesId, 6, 12), ''))
+  })
+  return _.uniq(inDanger)
 }
 
 function collisionInminent(combinedAirships) {
@@ -91,35 +101,51 @@ function collisionInminent(combinedAirships) {
     }
   } else
   {
-    const firstOnSecondDirection =  lineIntersect.colinearPointWithinSegment(
+    const firstAirshipC = getDistantPoint(combinedAirships.first, 2)
+    const secondAirshipC = getDistantPoint(combinedAirships.second, 2)
+    const firstOnSecondDirection = lineIntersect.colinearPointWithinSegment(
       combinedAirships.first.x, combinedAirships.first.y,
-      combinedAirships.second.x, combinedAirships.second.y, secondAirshipB.x, secondAirshipB.y
+      combinedAirships.second.x, combinedAirships.second.y, secondAirshipC.x, secondAirshipC.y
     )
     const secondOnFirstDirection = lineIntersect.colinearPointWithinSegment(
       combinedAirships.second.x, combinedAirships.second.y,
-      combinedAirships.first.x, combinedAirships.first.y, firstAirshipB.x, firstAirshipB.y
+      combinedAirships.first.x, combinedAirships.first.y, firstAirshipC.x, firstAirshipC.y
     )
-    if(firstOnSecondDirection && (combinedAirships.first.direction + combinedAirships.second.direction > 359) && (combinedAirships.first.direction + combinedAirships.second.direction < 361)) {
-      combinedAirships.timeToCollide = distance(combinedAirships.first, combinedAirships.second) / (combinedAirships.first.speed + combinedAirships.second.speed)
-      if (combinedAirships.timeToCollide <= getMinTime()) {
-        return true
-      }
-    }
-    if(secondOnFirstDirection && (combinedAirships.first.direction + combinedAirships.second.direction > 359) && (combinedAirships.first.direction + combinedAirships.second.direction < 361)) {
-      combinedAirships.timeToCollide = distance(combinedAirships.first, combinedAirships.second) / (combinedAirships.first.speed + combinedAirships.second.speed)
-      if (combinedAirships.timeToCollide <= getMinTime()) {
-        return true
-      }
-    }
     if(firstOnSecondDirection && combinedAirships.first.speed == 0) {
       combinedAirships.timeToCollide = distance(combinedAirships.first, combinedAirships.second) / combinedAirships.second.speed
       if (combinedAirships.timeToCollide <= getMinTime()) {
         return true
       }
-    }
+    } else
     if(secondOnFirstDirection && combinedAirships.second.speed == 0) {
       combinedAirships.timeToCollide = distance(combinedAirships.first, combinedAirships.second) / combinedAirships.first.speed
       if (combinedAirships.timeToCollide <= getMinTime()) {
+        return true
+      }
+    } else
+    if(firstOnSecondDirection && secondOnFirstDirection) {
+      combinedAirships.timeToCollide = distance(combinedAirships.first, combinedAirships.second) / (combinedAirships.first.speed + combinedAirships.second.speed)
+      if (combinedAirships.timeToCollide <= getMinTime()) {
+        return true
+      }
+    } else
+    if(firstOnSecondDirection) {
+      const A = combinedAirships.second
+      const B = secondAirshipC
+      const C = combinedAirships.first
+
+      combinedAirships.timeToCollide = distance(combinedAirships.first, combinedAirships.second) / (-combinedAirships.first.speed + combinedAirships.second.speed)
+      if (combinedAirships.timeToCollide <= getMinTime() && (distance(A, C) + distance(B, C) == distance(A, B))) {
+        return true
+      }
+    } else
+    if(secondOnFirstDirection) {
+      const A = combinedAirships.first
+      const B = firstAirshipC
+      const C = combinedAirships.second
+
+      combinedAirships.timeToCollide = distance(combinedAirships.first, combinedAirships.second) / (combinedAirships.first.speed - combinedAirships.second.speed)
+      if (combinedAirships.timeToCollide <= getMinTime() && (distance(A, C) + distance(B, C) == distance(A, B))) {
         return true
       }
     }
@@ -145,12 +171,13 @@ function isGoingToCollide(airshipCombination) {
         ) {
         dangerShow.splice(dangerShow.indexOf(`${combinedAirships.first.id}${combinedAirships.second.id}`), 1)
         hideAirshipsGoingToCollide(combinedAirships)
-      } else
-      if(
-        dangerShow.includes(`${combinedAirships.first.id}${combinedAirships.second.id}`)
-      ) {
-        document.getElementById(`${combinedAirships.first.id}${combinedAirships.second.id}b`).innerHTML = combinedAirships.timeToCollide.toFixed(2)
-      }
+      } 
+      // else
+      // if(
+      //   dangerShow.includes(`${combinedAirships.first.id}${combinedAirships.second.id}`)
+      // ) {
+      //   document.getElementById(`${combinedAirships.first.id}${combinedAirships.second.id}b`).innerHTML = combinedAirships.timeToCollide.toFixed(2)
+      // }
     }
   })
 }
@@ -168,5 +195,6 @@ module.exports = {
   getMinDistanceAirport,
   getMinDistanceAirships,
   getMinTime,
-  getDistantPoint
+  getDistantPoint,
+  getInDanger
 }

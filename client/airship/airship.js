@@ -4,39 +4,39 @@ const { coordinatesToPx } = require('../utils')
 const sprites = require('./sprites')
 const { getHoveringOver, selected } = require('../control/table')
 const { animateAirships } = require('./animation')
-const { getDistantPoint } = require('../control/tracker')
-let blinks = 0
+const { getDistantPoint, getInDanger } = require('../control/tracker')
 
 function getSprite(airship) {
   function red() {
     return true
   }
-  function shouldBlink() {
-    if(blinks < FPS / 3) {
-      blinks++
+  function shouldBlink(airship) {
+    if(airship.blinks < FPS / 3) {
+      airship.blinks++
       return true
     }
-    if(blinks >= FPS / 3 && blinks <= FPS / 3 * 2) {
-      blinks++
+    if(airship.blinks >= FPS / 3 && airship.blinks <= FPS / 3 * 2) {
+      airship.blinks++
       return false
     }
-    if(blinks >= FPS / 3 * 2) {
-      blinks = 0
+    if(airship.blinks >= FPS / 3 * 2) {
+      airship.blinks = 0
       return false
     }
   }
   const hoveringOver = getHoveringOver()
+  const inDanger = getInDanger()
   if(airship.speed*60*60 > 200) {
-    if(hoveringOver.includes(airship.id)) {
-      if(shouldBlink()) return sprites.airshipRed
+    if(inDanger.includes(airship.id) || hoveringOver.includes(airship.id)) {
+      if(shouldBlink(airship)) return sprites.airshipRed
       return sprites.airship
     }
     if(selected.includes(airship.id)) return sprites.airshipRed
     return sprites.airship
   }
   else {
-    if(hoveringOver.includes(airship.id)) {
-      if(shouldBlink()) return sprites.helicopterRed
+    if(inDanger.includes(airship.id) || hoveringOver.includes(airship.id)) {
+      if(shouldBlink(airship)) return sprites.helicopterRed
       return sprites.helicopter
     }
     if(selected.includes(airship.id)) return sprites.helicopterRed

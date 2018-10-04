@@ -25,10 +25,11 @@ function hideAirshipCloseToAirshipWarning(combinedAirships) {
   $(`#${combinedAirships.first.id}${combinedAirships.second.id}warning`).remove()
 }
 
+{/* <strong>Colisão de aviões!</strong> O avião ${combinedAirships.first.id} e o ${combinedAirships.second.id} irão colidir em aproximadamente <b id="${combinedAirships.first.id}${combinedAirships.second.id}b">${combinedAirships.timeToCollide.toFixed(2)}</b> segundos. */}
 function showAirshipsGoingToCollide(combinedAirships) {
   rightCol.append(
     `<div id="${combinedAirships.first.id}${combinedAirships.second.id}danger" class="alert alert-danger" role="alert">
-      <strong>Colisão de aviões!</strong> O avião ${combinedAirships.first.id} e o ${combinedAirships.second.id} irão colidir em aproximadamente <b id="${combinedAirships.first.id}${combinedAirships.second.id}b">${combinedAirships.timeToCollide.toFixed(2)}</b> segundos.
+      <strong>Colisão de aviões!</strong> O avião ${combinedAirships.first.id} e o ${combinedAirships.second.id} estão em perigo de colisão, seus trajetos diferem em menos de ${window.getMinTime()} segundos.
     </div>`
   )
 }

@@ -1,20 +1,27 @@
-# flight-radar
+### flight-radar
 
-1.- Construir um plano cartesiano - ok<br />
-2.- Mostrar o avião na tela - ok<br />
-3.- Multiplos aviões na tela - ok<br />
-4.- tabela de aviões na tela - ok<br />
-5.- funções de transformação - ok<br />
-  5.1.- transladar - ok<br />
-  5.2.- rotacionar - ok<br />
-  5.3.- escalonar - ok<br />
-6.- funções de rastreamento - ok<br />
-  6.1.- distancia do aeroporto - ok<br />
-  6.2.- distancia dos pares - ok<br />
-  6.3.- rotas de colisão - problemas com previsão em rotas paralelas<br />
-7.- feedback para o usuário - ok<br />
-8.- animacao dos aviões - ok<br />
-9.- i.a. para resolver rotas de colisão responsavelmente (77 if/else 14 switch case)<br />
-10.- transformações com varios aviões ao mesmo tempo - ok<br />
-10.- Rota de colisão com aeroporto<br />
-11.- velocidade minima dos aviões - ok<br />
+- [x] Construir um plano cartesiano
+- [x] Mostrar o avião na tela
+- [x] Multiplos aviões na tela
+- [x] Tabela de aviões na tela
+- [x] Transladar
+- [x] Rotacionar
+- [x] Escalonar
+- [x] Distancia do aeroporto
+- [x] Distancia dos pares
+- [x] Rotas de colisão
+- [x] Feedback para o usuário
+- [x] Animacao dos aviões
+- [x] Transformações com varios aviões ao mesmo tempo
+- [ ] Aceleração máxima 
+- [ ] Angulo de curva máximo 
+- [ ] Aceleração angular das asas em relação ao eixo x
+- [ ] Rota de colisão com aeroporto
+- [ ] Velocidade minima dos aviões - parcial, vira um helicoptero hehe
+- [ ] Painel para ativar e desativar funcionalidades 
+- [ ] Input para adicionar aviões manualmente
+- [ ] Input para modificar aviões manualmente
+- [ ] Escala no canvas
+- [ ] Explicação das funcionalidades
+- [ ] Tomada de decisão em caso de colisão iminente
+- [ ] Demonstrar altitude - Sombra?
