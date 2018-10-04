@@ -25,3 +25,4 @@
 - [ ] Explicação das funcionalidades
 - [ ] Tomada de decisão em caso de colisão iminente
 - [ ] Demonstrar altitude - Sombra?
+- [ ] Funções de transformação direcionam o avião para o ponto resultante dentro das limitações do avião
