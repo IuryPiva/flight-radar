@@ -1,9 +1,14 @@
 const { selected } = require('./table')
 const { getAirshipById } = require('../airship/airship')
+const grid  = require('../radar/grid')
 
-function translate(airship, point) {
-  airship.x = airship.x + point.x
-  airship.y = airship.y + point.y
+
+function translate(airship, point) {  
+  const original = Object.assign({}, airship)
+  original.x = original.x + point.x
+  original.y = original.y + point.y
+  
+  checkNewPosition(original, airship)
 }
 
 function scale(airship, point){
@@ -12,6 +17,27 @@ function scale(airship, point){
 }
 
 function rotate(airship, point) {
+  airship.x -= point.x
+  airship.y -= point.y
+  const original = Object.assign({}, airship)
+  airship.x = airship.x * Math.cos(degreesToRadians(point.angle)) - (airship.y * Math.sin(degreesToRadians(point.angle)))
+  airship.y = original.x * Math.sin(degreesToRadians(point.angle)) + (airship.y * Math.cos(degreesToRadians(point.angle)))
+  airship.x += point.x
+  airship.y += point.y
+}
+
+function checkNewPosition(original, airship){
+  if(original.x > grid.size.x || original.x < -grid.size.x || original.y > grid.size.y || original.y < -grid.size.y) {
+    return false
+  }
+   else {
+     airship.x = original.x
+     airship.y = original.y
+   }
+
+}
+
+function maxSpeed(airship, point) {
   airship.x -= point.x
   airship.y -= point.y
   const original = Object.assign({}, airship)

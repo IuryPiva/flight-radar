@@ -9,6 +9,10 @@ const grid = {
     x: canvas.width / 2,
     y: canvas.height / 2
   },
+  size: {
+    x: (canvas.width / 10) / 10 -1,
+    y: (canvas.height / 10) / 10 -1
+  }
 }
 
 function drawGrid() {
