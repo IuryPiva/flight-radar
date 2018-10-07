@@ -1,0 +1,46 @@
+<div class="col-3">
+  <div class="col">
+    <div class="shadow bg-light rounded">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link active"
+             href="#transformation"
+             role="tab"
+             data-toggle="tab">Transformações</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"
+             href="#tracker"
+             role="tab"
+             data-toggle="tab">Rastreamento</a>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <% include transformacoes %>
+        <% include rastreamento %>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="shadow bg-light rounded">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link active"
+             href="#inserir-aviao"
+             role="tab"
+             data-toggle="tab">Inserir Avião</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"
+             href="#modificar-aviao"
+             role="tab"
+             data-toggle="tab">Modificar Avião</a>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <% include inserir %>
+        <% include modificar %>
+      </div>
+    </div>
+  </div>
+</div>

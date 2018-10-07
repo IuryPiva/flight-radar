@@ -29,6 +29,9 @@ app.get('/airship-shadow.png', function(req, res){
 app.get('/helicopter-shadow.png', function(req, res){
   res.sendFile(path.resolve('./client/assets/helicopter-shadow.png'))
 })
+app.get('/favicon.png', function(req, res){
+  res.sendFile(path.resolve('./client/assets/favicon.png'))
+})
 app.get('/bootstrap.css', function(req, res){
   res.sendFile(path.resolve('./node_modules/bootstrap/dist/css/bootstrap.min.css'))
 })

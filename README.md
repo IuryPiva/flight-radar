@@ -16,7 +16,7 @@
 - [x] Painel para ativar e desativar funcionalidades 
 - [x] Escala no canvas
 - [x] Demonstrar altitude - Sombra
-- [ ] Input para adicionar aviões manualmente
+- [x] Input para adicionar aviões manualmente
 - [ ] Input para modificar aviões manualmente
 - [ ] Rota de colisão com aeroporto
 - [ ] Aceleração máxima 

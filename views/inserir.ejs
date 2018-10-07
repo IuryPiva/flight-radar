@@ -1,0 +1,122 @@
+<div role="tabpanel"
+     class="tab-pane active"
+     id="inserir-aviao">
+  <div class="p-3">
+    <form onsubmit="return false"
+          class="form-inline row">
+      <div class="col-12 mb-3 display-inherit">
+        <span class="has-float-label mr-2">
+          <div class="input-group">
+            <input type="text"
+                   class="form-control"
+                   id="inserir-x"
+                   value="0">
+          </div>
+          <label for="inserir-x">X</label>
+        </span>
+        <span class="has-float-label">
+          <div class="input-group">
+            <input type="text"
+                   class="form-control"
+                   id="inserir-y"
+                   value="0">
+          </div>
+          <label for="inserir-y">Y</label>
+        </span>
+      </div>
+
+      <div class="col-12 mb-3 display-inherit">
+        <span class="has-float-label mr-2">
+          <div class="input-group">
+            <input type="text"
+                   class="form-control"
+                   id="inserir-velocidade"
+                   value="0">
+            <div class="input-group-append">
+              <span class="input-group-text">km/h</span>
+            </div>
+          </div>
+          <label for="inserir-velocidade">Velocidade</label>
+        </span>
+        <span class="has-float-label">
+          <div class="input-group">
+            <input type="text"
+                   class="form-control mr-1"
+                   id="inserir-direcao"
+                   value="0">
+          </div>
+          <label for="inserir-direcao">Direção</label>
+        </span>
+      </div>
+
+
+      <div class="col-12">
+        <button class="btn btn-primary"
+                type="button"
+                onclick="window.inserirCart()">Inserir</button>
+      </div>
+    </form>
+  </div>
+  <hr>
+  <div class="p-3 mb-5">
+    <form onsubmit="return false"
+          class="form-inline mb-3 row">
+      <div class="col-12 mb-3 display-inherit">
+        <span class="has-float-label mr-2">
+          <div class="input-group">
+            <input type="text"
+                   class="form-control"
+                   id="inserir-raio"
+                   value="0">
+            <div class="input-group-append">
+              <span class="input-group-text">km</span>
+            </div>
+          </div>
+          <label for="inserir-raio">Raio</label>
+        </span>
+        <span class="has-float-label">
+          <div class="input-group">
+            <input type="text"
+                   class="form-control"
+                   id="inserir-angulo"
+                   value="0">
+          </div>
+          <label for="inserir-angulo">Ângulo</label>
+        </span>
+      </div>
+
+
+      <div class="col-12 mb-3 display-inherit">
+        <span class="has-float-label mr-2">
+          <div class="input-group">
+            <input type="text"
+                   class="form-control"
+                   id="inserir-polar-velocidade"
+                   value="0">
+            <div class="input-group-append">
+              <span class="input-group-text">km/h</span>
+            </div>
+          </div>
+          <label for="inserir-polar-velocidade">Velocidade</label>
+        </span>
+        <span class="has-float-label">
+          <div class="input-group">
+            <input type="text"
+                   class="form-control mr-1"
+                   id="inserir-polar-direcao"
+                   value="0">
+          </div>
+          <label for="inserir-polar-direcao">Direção</label>
+        </span>
+      </div>
+
+
+      <div class="col-12">
+        <button class="btn btn-primary"
+                type="button"
+                onclick="window.inserirPolar()">Inserir</button>
+      </div>
+    </form>
+
+  </div>
+</div>

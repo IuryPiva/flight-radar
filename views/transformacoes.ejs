@@ -1,0 +1,98 @@
+
+              <div role="tabpanel"
+              class="tab-pane active"
+              id="transformation">
+           <div class="p-3 mb-5">
+             <form onsubmit="return false"
+                   class="form-inline mb-3 row">
+               <div class="col-12 mb-3 display-inherit">
+                 <span class="has-float-label">
+                   <div class="input-group">
+                     <input type="text"
+                            class="form-control mr-1"
+                            id="transladar-x">
+                   </div>
+                   <label for="transladar-x">X</label>
+                 </span>
+                 <span class="has-float-label">
+                   <div class="input-group">
+                     <input type="text"
+                            class="form-control mr-1"
+                            id="transladar-y">
+                   </div>
+                   <label for="transladar-y">Y</label>
+                 </span>
+               </div>
+               <div class="col-12">
+                 <button class="btn btn-primary auto-disabled"
+                         type="button"
+                         onclick="transladar()"
+                         disabled>Transladar</button>
+               </div>
+             </form>
+             <hr>
+             <form onsubmit="return false"
+                   class="form-inline mb-3 row">
+               <div class="col-12 mb-3 display-inherit">
+                 <span class="has-float-label">
+                   <div class="input-group">
+                     <input type="text"
+                            class="form-control"
+                            id="escalonar-x">
+                   </div>
+                   <label for="escalonar-x">X</label>
+                 </span>
+                 <span class="has-float-label">
+                   <div class="input-group">
+                     <input type="text"
+                            class="form-control"
+                            id="escalonar-y">
+                   </div>
+                   <label for="escalonar-y">Y</label>
+                 </span>
+               </div>
+               <div class="col-12">
+                 <button class="btn btn-primary auto-disabled"
+                         type="button"
+                         onclick="escalonar()"
+                         disabled>Escalonar</button>
+               </div>
+             </form>
+             <hr>
+             <form onsubmit="return false"
+                   class="form-inline mb-3 row">
+               <div class="col-12 mb-3 display-inherit">
+                 <span class="has-float-label">
+                   <input type="text"
+                          class="form-control mr-1"
+                          id="rotacionar-angulo">
+                   <label for="rotacionar-angulo">Ângulo</label>
+                 </span>
+               </div>
+               <div class="col-12 mb-3 display-inherit">
+                 <span class="has-float-label">
+                   <div class="input-group">
+                     <input type="text"
+                            class="form-control mr-1"
+                            id="rotacionar-x">
+                   </div>
+                   <label for="rotacionar-x">Centro - X</label>
+                 </span>
+                 <span class="has-float-label">
+                   <div class="input-group">
+                     <input type="text"
+                            class="form-control mr-1"
+                            id="rotacionar-y">
+                   </div>
+                   <label for="rotacionar-y">Centro - Y</label>
+                 </span>
+               </div>
+               <div class="col-12">
+                 <button class="btn btn-primary auto-disabled"
+                         type="button"
+                         onclick="rotacionar()"
+                         disabled>Rotacionar</button>
+               </div>
+             </form>
+           </div>
+         </div>

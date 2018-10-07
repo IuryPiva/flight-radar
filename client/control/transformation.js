@@ -1,7 +1,7 @@
 const { selected } = require('./table')
 const { getAirshipById } = require('../airship/airship')
 const grid  = require('../radar/grid')
-
+const { degreesToRadians } = require('../utils')
 
 function translate(airship, point) {  
   const resultantPosition = Object.assign({}, airship)
@@ -56,10 +56,6 @@ function maxSpeed(airship, point) {
   airship.y = original.x * Math.sin(degreesToRadians(point.angle)) + (airship.y * Math.cos(degreesToRadians(point.angle)))
   airship.x += point.x
   airship.y += point.y
-}
-
-function degreesToRadians(degree) {
-  return degree * Math.PI / 180;
 }
   window.transladar = () => {
     const point = {

@@ -50,10 +50,10 @@ function drawGrid() {
   ctx.strokeStyle = 'black'
   ctx.lineWidth = 1
   ctx.stroke()
-  drawScaleMark()
 }
 
 module.exports = {
   ...grid,
   drawGrid,
+  drawScaleMark,
 }

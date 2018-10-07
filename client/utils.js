@@ -21,6 +21,9 @@ function radiansToDegrees(radians) {
   return radians * 180 / Math.PI;
 }
 
+function degreesToRadians(degree) {
+  return degree * Math.PI / 180;
+}
 module.exports = {
   coordinatesToPx: (x, y) => {
     return {
@@ -31,6 +34,7 @@ module.exports = {
   combinatory,
   round,
   radiansToDegrees,
+  degreesToRadians,
   cartToPolar: (cart) => {
     return {
       radius: Math.sqrt(Math.pow(cart.x, 2) + Math.pow(cart.y, 2)),

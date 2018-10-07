@@ -1,4 +1,6 @@
 const { randomFlightId } = require('../random')
+const { polarToCart } = require('../utils')
+
 const airships = [
   {
     id: randomFlightId(),
@@ -60,31 +62,86 @@ function addAirship(airship) {
   airships.push(airship)
 }
 
-window.inserir = () => {
+window.inserirCart = () => {
   const x = Number(document.getElementById('inserir-x').value)
   const y = Number(document.getElementById('inserir-y').value)
 
-  const radius = Number(document.getElementById('inserir-raio').value)
-  const angle = Number(document.getElementById('inserir-angulo').value)
-
   const direction = Number(document.getElementById('inserir-direcao').value)
   const speed = Number(document.getElementById('inserir-velocidade').value)
-
-  if (speed && direction && ((radius && angle) || (x && y))){
-    
-  }
 
   addAirship({
     id: randomFlightId(),
     width: 32,
     height: 32,
-    x: ,
-    y: ,
+    x,
+    y,
     z: Math.random() * (420 - (350) + 1) + (350),
-    direction: ,
-    speed: ,
+    direction,
+    speed: speed / 60 / 60,
     blinks: 0
   })
 }
+window.inserirPolar = () => {
+  const radius = Number(document.getElementById('inserir-raio').value)
+  const angle = Number(document.getElementById('inserir-angulo').value)
+
+  const cart = polarToCart({ radius, angle })
+
+  const direction = Number(document.getElementById('inserir-polar-direcao').value)
+  const speed = Number(document.getElementById('inserir-polar-velocidade').value)
+
+  addAirship({
+    id: randomFlightId(),
+    width: 32,
+    height: 32,
+    x: cart.x,
+    y: cart.y,
+    z: Math.random() * (420 - (350) + 1) + (350),
+    direction,
+    speed: speed / 60 / 60,
+    blinks: 0
+  })
+}
+
+function getAirshipById(id) {
+  return airships.find(airship => airship.id == id)
+}
+
+function modificarCart () {
+  const x = Number(document.getElementById('modificar-x').value)
+  const y = Number(document.getElementById('modificar-y').value)
+  const direction = Number(document.getElementById('modificar-direcao').value)
+  const speed = Number(document.getElementById('modificar-velocidade').value)
+
+  const selected = window.getSelected()
+  selected.forEach(airshipId => {
+    const airship = getAirshipById(airshipId)
+    airship.x = x
+    airship.y = y
+    airship.direction = direction
+    airship.speed = speed
+  })
+}
+window.modificarCart = modificarCart
+
+function modificarPolar () {
+  const radius = Number(document.getElementById('modificar-radius').value)
+  const angle = Number(document.getElementById('modificar-angle').value)
+
+  const cart = polarToCart({ radius, angle })
+
+  const direction = Number(document.getElementById('modificar-polar-direcao').value)
+  const speed = Number(document.getElementById('modificar-polar-velocidade').value)
+
+  const selected = window.getSelected()
+  selected.forEach(airshipId => {
+    const airship = getAirshipById(airshipId)
+    airship.x = cart.x
+    airship.y = cart.y
+    airship.direction = direction
+    airship.speed = speed
+  })
+}
+window.modificarPolar = modificarPolar
 
 module.exports = airships

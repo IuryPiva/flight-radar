@@ -1,0 +1,63 @@
+<div role="tabpanel"
+     class="tab-pane"
+     id="tracker">
+  <div class="p-3 mb-5">
+    <form onsubmit="return false"
+          id="form-min-distance-airport"
+          class="form-inline mb-3 row">
+      <div class="col-12 mb-3">
+        <span class="has-float-label">
+          <div class="input-group">
+            <input type="number"
+                   class="form-control"
+                   value="1"
+                   min="1"
+                   id="min-distance-airport">
+            <div class="input-group-append">
+              <span class="input-group-text">km</span>
+            </div>
+          </div>
+          <label for="min-distance-airport">Distância mínima</label>
+        </span>
+      </div>
+    </form>
+    <hr>
+    <form onsubmit="return false"
+          class="form-inline mb-3 row">
+      <div class="col-12 mb-3">
+        <span class="has-float-label">
+          <div class="input-group">
+            <input type="number"
+                   class="form-control"
+                   value="2"
+                   min="2"
+                   id="min-distance-airships">
+            <div class="input-group-append">
+              <span class="input-group-text">km</span>
+            </div>
+          </div>
+          <label for="min-distance-airships">Distância mínima</label>
+        </span>
+      </div>
+    </form>
+    <hr>
+    <form onsubmit="return false"
+          class="form-inline mb-3 row">
+      <div class="col-12 mb-3">
+        <span class="has-float-label">
+          <div class="input-group">
+            <input type="number"
+                   class="form-control"
+                   id="min-time"
+                   min="10"
+                   value="10">
+            <div class="input-group-append">
+              <span class="input-group-text">segundos</span>
+            </div>
+          </div>
+          <label for="min-time">Tempo mínimo</label>
+        </span>
+      </div>
+    </form>
+  </div>
+</div>

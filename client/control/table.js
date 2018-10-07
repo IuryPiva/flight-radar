@@ -18,6 +18,10 @@ function getHoveringOver() {
   return hoveringOver
 }
 
+window.getSelected= () => {
+  return selected
+}
+
 function deleteHoveringOver(id) {
   hoveringOver.splice( hoveringOver.indexOf(id), 1 )
 }
@@ -58,6 +62,7 @@ function firstDraw() {
     tableBody.innerHTML += html
   })
 }
+
 function updateTable() {
   airships.forEach(airship => {
     const position = $(`#${airship.id}position`)
