@@ -8,15 +8,23 @@ const table = require('./control/table')
 const tracker = require('./control/tracker')
 require('./control/transformation')
 
+
 function draw() {
+  let radar = document.getElementById('draw-radar').checked,
+      renderRings = document.getElementById('draw-polar').checked,
+      drawAirships = document.getElementById('draw-airships').checked,
+      animateAirships = document.getElementById('animate-airships').checked,
+      drawGrid = document.getElementById('draw-grid').checked
   ctx.clearRect(0, 0, canvas.width, canvas.height)
   ctx.beginPath()
-  grid.drawGrid()
-  airship.drawAirships()
-  airship.animateAirships()
-  rings.renderRings()
-  sweep.renderSweep()
-  sweep.animateSweep()
+  if(drawGrid) grid.drawGrid()
+  if(drawAirships) airship.drawAirships()
+  if(animateAirships) airship.animateAirships()
+  if(renderRings) rings.renderRings()
+  if(radar) {
+    sweep.renderSweep()
+    sweep.animateSweep()
+  }
 }
 setTimeout(() => {
   table.drawTable()

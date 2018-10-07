@@ -18,10 +18,10 @@
 - [ ] Aceleração angular das asas em relação ao eixo x
 - [ ] Rota de colisão com aeroporto
 - [ ] Velocidade minima dos aviões - parcial, vira um helicoptero hehe
-- [ ] Painel para ativar e desativar funcionalidades 
+- [x] Painel para ativar e desativar funcionalidades 
 - [ ] Input para adicionar aviões manualmente
 - [ ] Input para modificar aviões manualmente
-- [ ] Escala no canvas
+- [x] Escala no canvas
 - [ ] Explicação das funcionalidades
 - [ ] Tomada de decisão em caso de colisão iminente
 - [ ] Demonstrar altitude - Sombra?

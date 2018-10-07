@@ -1,5 +1,4 @@
 const { canvas, ctx } = require('../canvas')
-
 const grid = {
   cell: {
     width: canvas.width / 10,
@@ -13,6 +12,26 @@ const grid = {
     x: (canvas.width / 10) / 10 -1,
     y: (canvas.height / 10) / 10 -1
   }
+}
+
+function drawScaleMark() {
+  const { coordinatesToPx } = require('../utils')
+  ctx.beginPath()
+  ctx.fillStyle = 'rgba(0,0,0,0.2)';
+
+  let markerPositions = coordinatesToPx(0, -4.5)
+  ctx.moveTo(markerPositions.x, markerPositions.y)
+  ctx.lineTo(markerPositions.x + grid.cell.width, markerPositions.y)
+  ctx.fillText('1 km', markerPositions.x + (3.5 * grid.cell.width / 10), markerPositions.y + (2 * grid.cell.height / 10))
+
+  markerPositions = coordinatesToPx(-0.5, -4)
+  ctx.moveTo(markerPositions.x, markerPositions.y)
+  ctx.lineTo(markerPositions.x, markerPositions.y + grid.cell.height)
+  ctx.fillText('1 km', markerPositions.x + (0.5 * grid.cell.width / 10), markerPositions.y + (5.5 * grid.cell.height / 10))
+
+  ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+  ctx.lineWidth = 2
+  ctx.stroke()
 }
 
 function drawGrid() {
@@ -29,9 +48,10 @@ function drawGrid() {
   ctx.strokeStyle = 'black'
   ctx.lineWidth = 1
   ctx.stroke()
+  drawScaleMark()
 }
 
 module.exports = {
   ...grid,
-  drawGrid
+  drawGrid,
 }

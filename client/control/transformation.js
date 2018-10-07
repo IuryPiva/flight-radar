@@ -4,36 +4,47 @@ const grid  = require('../radar/grid')
 
 
 function translate(airship, point) {  
-  const original = Object.assign({}, airship)
-  original.x = original.x + point.x
-  original.y = original.y + point.y
+  const resultantPosition = Object.assign({}, airship)
+  resultantPosition.x = resultantPosition.x + point.x
+  resultantPosition.y = resultantPosition.y + point.y
   
-  checkNewPosition(original, airship)
+  checkNewPosition(resultantPosition, airship)
 }
 
-function scale(airship, point){
-  airship.x = airship.x * point.x
-  airship.y = airship.y * point.y
+function scale(airship, point){  
+  const resultantPosition = Object.assign({}, airship)
+  resultantPosition.x = resultantPosition.x + point.x
+  resultantPosition.y = resultantPosition.y + point.y
+  
+  checkNewPosition(resultantPosition, airship)
 }
 
 function rotate(airship, point) {
-  airship.x -= point.x
-  airship.y -= point.y
-  const original = Object.assign({}, airship)
-  airship.x = airship.x * Math.cos(degreesToRadians(point.angle)) - (airship.y * Math.sin(degreesToRadians(point.angle)))
-  airship.y = original.x * Math.sin(degreesToRadians(point.angle)) + (airship.y * Math.cos(degreesToRadians(point.angle)))
-  airship.x += point.x
-  airship.y += point.y
+  const resultantPosition = Object.assign({}, airship)
+
+  resultantPosition.x -= point.x
+  resultantPosition.y -= point.y
+  const original = Object.assign({}, resultantPosition)
+  resultantPosition.x = resultantPosition.x * Math.cos(degreesToRadians(point.angle)) - (resultantPosition.y * Math.sin(degreesToRadians(point.angle)))
+  resultantPosition.y = original.x * Math.sin(degreesToRadians(point.angle)) + (resultantPosition.y * Math.cos(degreesToRadians(point.angle)))
+  resultantPosition.x += point.x
+  resultantPosition.y += point.y
+
+  checkNewPosition(resultantPosition, airship)
 }
 
-function checkNewPosition(original, airship){
-  if(original.x > grid.size.x || original.x < -grid.size.x || original.y > grid.size.y || original.y < -grid.size.y) {
+function checkNewPosition(resultantPosition, airship){
+  if(resultantPosition.x > grid.size.x || resultantPosition.x < -grid.size.x || resultantPosition.y > grid.size.y || resultantPosition.y < -grid.size.y) {
+    if(window.confirm(`O avião ${airship.id} vai para fora do campo visivel (${resultantPosition.x},${resultantPosition.y}), deseja continuar?`)) {
+      airship.x = resultantPosition.x
+      airship.y = resultantPosition.y
+    }
     return false
   }
-   else {
-     airship.x = original.x
-     airship.y = original.y
-   }
+  else {
+    airship.x = resultantPosition.x
+    airship.y = resultantPosition.y
+  }
 
 }
 

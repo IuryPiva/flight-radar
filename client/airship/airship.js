@@ -55,14 +55,19 @@ function drawAirship(airship) {
   const pixel = coordinatesToPx(airship.x, airship.y)
   const rad = (Math.abs(airship.direction - 360) * Math.PI / 180)
   ctx.save()
+  ctx.beginPath()
   ctx.font="12px Georgia"
+  ctx.fillStyle = 'black';
   ctx.fillText(airship.id, pixel.x + airship.width / 2, pixel.y + airship.height / 2)
-  ctx.fillText(airship.id, pixel.x + airship.width / 2, pixel.y + airship.height / 2)
-  ctx.translate(pixel.x, pixel.y)
+  ctx.translate(pixel.x, pixel.y-airship.height)
   ctx.translate(0, 0)
   ctx.rotate(rad)
   ctx.drawImage(getSprite(airship), -airship.width / 2, -airship.height / 2)
   ctx.restore()
+  ctx.beginPath();
+  ctx.fillStyle = 'rgba(0,0,0,0.2)';
+  ctx.arc(pixel.x,pixel.y,10,0,2*Math.PI);
+  ctx.fill();
 }
 
 function drawAirshipGuideLine(airship) {

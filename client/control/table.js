@@ -17,9 +17,11 @@ function setHoveringOver(id) {
 function getHoveringOver() {
   return hoveringOver
 }
+
 function deleteHoveringOver(id) {
   hoveringOver.splice( hoveringOver.indexOf(id), 1 )
 }
+
 window.leaveHovering= function (event) {
   deleteHoveringOver(event.id)
 }
