@@ -48,9 +48,9 @@ function drawAirships() {
   airships.forEach(airship => {
     drawShadow(airship)
   })
-  // airships.forEach(airship => {
-  //   drawAirshipGuideLine(airship)
-  // })
+  airships.forEach(airship => {
+    drawAirshipGuideLine(airship)
+  })
   airships.forEach(airship => {
     drawAirship(airship)
   })

@@ -10,6 +10,7 @@ const {
 const lineIntersect = require('line-intersect');
 const { cartToPolar, polarToCart } = require('../utils')
 const _ = require('lodash')
+const warnShow = []
 
 function distance(a, b) {
   return Math.sqrt(Math.pow((b.x - a.x), 2) + Math.pow((b.y - a.y), 2))
@@ -43,7 +44,18 @@ function isCloseToAirport(airship) {
     hideAirshipCloseToAirportInfo(airship)
   }
 }
-const warnShow = []
+
+function airportCollision(airship){
+  const airshipPoint = getDistantPoint(airship)
+  const intersection = lineIntersect.colinearPointWithinSegment(
+    0, 0, airship.x, airship.y,
+    airshipPoint.x, airshipPoint.y
+  )
+
+  if(intersection){
+    alert('morreu')
+  }
+}
 
 function isCloseToEachOther(airshipCombination) {
   airshipCombination.forEach(combinedAirships => {
@@ -185,8 +197,10 @@ function isGoingToCollide(airshipCombination) {
 function trackThem() {
   const airshipCombination = combinatory(airships) // OPTIMIZATION FIX THIS
   airships.forEach(airship => isCloseToAirport(airship))
+  airships.forEach(airship => airportCollision(airship))
+  
   isCloseToEachOther(airshipCombination)
-  isGoingToCollide(airshipCombination)
+  isGoingToCollide(airshipCombination)  
   setTimeout(trackThem, 50)
 }
 
