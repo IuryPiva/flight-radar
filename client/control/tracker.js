@@ -184,8 +184,8 @@ function isGoingToCollide(airshipCombination) {
 
 function trackThem() {
   const airshipCombination = combinatory(airships) // OPTIMIZATION FIX THIS
-  // airships.forEach(airship => isCloseToAirport(airship))
-  // isCloseToEachOther(airshipCombination)
+  airships.forEach(airship => isCloseToAirport(airship))
+  isCloseToEachOther(airshipCombination)
   isGoingToCollide(airshipCombination)
   setTimeout(trackThem, 50)
 }

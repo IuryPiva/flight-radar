@@ -67,9 +67,10 @@
                       </span>
                     </div>
                     <div class="col-12">
-                      <button class="btn btn-primary"
+                      <button class="btn btn-primary auto-disabled"
                               type="button"
-                              onclick="transladar()">Transladar</button>
+                              onclick="transladar()"
+                              disabled>Transladar</button>
                     </div>
                   </form>
                   <hr>
@@ -94,9 +95,10 @@
                       </span>
                     </div>
                     <div class="col-12">
-                      <button class="btn btn-primary"
+                      <button class="btn btn-primary auto-disabled"
                               type="button"
-                              onclick="escalonar()">Escalonar</button>
+                              onclick="escalonar()"
+                              disabled>Escalonar</button>
                     </div>
                   </form>
                   <hr>
@@ -129,9 +131,10 @@
                       </span>
                     </div>
                     <div class="col-12">
-                      <button class="btn btn-primary"
+                      <button class="btn btn-primary auto-disabled"
                               type="button"
-                              onclick="rotacionar()">Rotacionar</button>
+                              onclick="rotacionar()"
+                              disabled>Rotacionar</button>
                     </div>
                   </form>
                 </div>
@@ -158,9 +161,6 @@
                         <label for="min-distance-airport">Distância mínima</label>
                       </span>
                     </div>
-                    <div class="col-12">
-                      <button class="btn btn-danger">Aviões próximos ao aeroporto</button>
-                    </div>
                   </form>
                   <hr>
                   <form onsubmit="return false"
@@ -179,9 +179,6 @@
                         </div>
                         <label for="min-distance-airships">Distância mínima</label>
                       </span>
-                    </div>
-                    <div class="col-12">
-                      <button class="btn btn-danger">Aviões próximos</button>
                     </div>
                   </form>
                   <hr>
@@ -202,145 +199,170 @@
                         <label for="min-time">Tempo mínimo</label>
                       </span>
                     </div>
-                    <div class="col-12">
-                      <button class="btn btn-danger">Em rota de colisão</button>
-                    </div>
                   </form>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-
         <div class="col">
           <div class="shadow bg-light rounded">
             <ul class="nav nav-tabs">
               <li class="nav-item">
                 <a class="nav-link active"
-                   href="#desabilitar-funcoes"
+                   href="#inserir-aviao"
                    role="tab"
-                   data-toggle="tab">Desabilitar Funções</a>
+                   data-toggle="tab">Inserir Avião</a>
               </li>
               <li class="nav-item">
-                  <a class="nav-link"
-                     href="#painel-controle"
-                     role="tab"
-                     data-toggle="tab">Painel de Controle</a>
-                </li>
+                <a class="nav-link"
+                   href="#modificar-aviao"
+                   role="tab"
+                   data-toggle="tab">Modificar Avião</a>
+              </li>
             </ul>
             <div class="tab-content">
               <div role="tabpanel"
                    class="tab-pane active"
-                   id="desabilitar-funcoes">
-                <div class="pb-2 mb-5">
-                  <form>
-                    <div class="col-12 mb-3 col">
-                      <div class="col-12 form-check">
-                        <input id="draw-grid" 
-                               type="checkbox"
-                               class="form-check-input"
-                               checked>
-                        <label class="form-check-label" for="draw-grid">Plano cartesiano</label>
-                      </div>
-                      <div class="col-12 form-check">
-                        <input id="draw-polar"
-                               type="checkbox"
-                               class="form-check-input"
-                               checked>
-                               <label class="form-check-label" for="draw-polar">Plano polar</label>
-                      </div>
-                      <div class="col-12 form-check">
-                        <input id="draw-radar"
-                               type="checkbox"
-                               class="form-check-input">
-                               <label class="form-check-label" for="draw-radar">Radar</label>
-                      </div>
-                      <div class="col-12 form-check">
-                        <input id="draw-airships"
-                               type="checkbox"
-                               class="form-check-input"
-                               checked>
-                               <label class="form-check-label" for="draw-airships">Aviões</label>
-                      </div>
-                      <div class="col-12 form-check">
-                        <input id="animate-airships"
-                               type="checkbox"
-                               class="form-check-input"
-                               checked>
-                               <label class="form-check-label" for="animate-airships">Animações dos aviões</label>
-                      </div>
+                   id="inserir-aviao">
+                <div class="p-3 mb-5">
+                  <form onsubmit="return false"
+                        class="form-inline mb-3 row">
+                    <div class="col-12 mb-3 display-inherit">
+                      <span class="has-float-label mr-2">
+                        <div class="input-group">
+                          <input type="text"
+                                 class="form-control"
+                                 id="inserir-x">
+                        </div>
+                        <label for="inserir-x">X</label>
+                      </span>
+                      <span class="has-float-label">
+                        <div class="input-group">
+                          <input type="text"
+                                 class="form-control"
+                                 id="inserir-y">
+                        </div>
+                        <label for="inserir-y">Y</label>
+                      </span>
+                    </div>
+                    <div class="col-12 mb-3 display-inherit">
+                      <span class="has-float-label mr-2">
+                        <div class="input-group">
+                          <input type="text"
+                                 class="form-control"
+                                 id="inserir-raio">
+
+                          <div class="input-group-append">
+                            <span class="input-group-text">km</span>
+                          </div>
+                        </div>
+                        <label for="inserir-raio">Raio</label>
+                      </span>
+                      <span class="has-float-label">
+                        <div class="input-group">
+                          <input type="text"
+                                 class="form-control"
+                                 id="inserir-angulo">
+                        </div>
+                        <label for="inserir-angulo">Ângulo</label>
+                      </span>
+                    </div>
+                    <div class="col-12 mb-3 display-inherit">
+                      <span class="has-float-label mr-2">
+                        <div class="input-group">
+                          <input type="text"
+                                 class="form-control"
+                                 id="inserir-velocidade">
+
+                            <div class="input-group-append">
+                                <span class="input-group-text">km/h</span>
+                              </div>
+                        </div>
+                        <label for="inserir-velocidade">Velocidade</label>
+                      </span>
+                      <span class="has-float-label">
+                        <div class="input-group">
+                          <input type="text"
+                                 class="form-control mr-1"
+                                 id="inserir-direção">
+                        </div>
+                        <label for="inserir-direção">Direção</label>
+                      </span>
+                    </div>
+                    <div class="col-12">
+                      <button class="btn btn-primary"
+                              type="button"
+                              onclick="window.inserir()">Inserir</button>
                     </div>
                   </form>
                 </div>
               </div>
-
-              
-
-              <div role="tabpanel" class="tab-pane"
-              id="painel-controle">
+              <div role="tabpanel"
+                   class="tab-pane"
+                   id="modificar-aviao">
                 <div class="p-3 mb-5">
-                    <form onsubmit="return false"
+                  <form onsubmit="return false"
                         class="form-inline mb-3 row">
                     <div class="col-12 mb-3 display-inherit">
                       <span class="has-float-label">
                         <div class="input-group">
                           <input type="text"
                                  class="form-control mr-1"
-                                 id="posicao-x">
+                                 id="modificar-x">
                         </div>
-                        <label for="posicao-x">X</label>
+                        <label for="modificar-x">X</label>
                       </span>
                       <span class="has-float-label">
                         <div class="input-group">
                           <input type="text"
                                  class="form-control mr-1"
-                                 id="posicao-y">
+                                 id="modificar-y">
                         </div>
-                        <label for="posicao-y">Y</label>
+                        <label for="modificar-y">Y</label>
                       </span>
                     </div>
                     <div class="col-12 mb-3 display-inherit">
-                        <span class="has-float-label">
-                          <div class="input-group">
-                            <input type="text"
-                                   class="form-control mr-1"
-                                   id="raio">
-                          </div>
-                          <label for="raio">Raio</label>
-                        </span>
-                        <span class="has-float-label">
-                          <div class="input-group">
-                            <input type="text"
-                                   class="form-control mr-1"
-                                   id="angulo">
-                          </div>
-                          <label for="angulo">Ângulo</label>
-                        </span>
-                      </div>
-                      
+                      <span class="has-float-label">
+                        <div class="input-group">
+                          <input type="text"
+                                 class="form-control mr-1"
+                                 id="modificar-raio">
+                        </div>
+                        <label for="modificar-raio">Raio</label>
+                      </span>
+                      <span class="has-float-label">
+                        <div class="input-group">
+                          <input type="text"
+                                 class="form-control mr-1"
+                                 id="modificar-angulo">
+                        </div>
+                        <label for="modificar-angulo">Ângulo</label>
+                      </span>
+                    </div>
                     <div class="col-12 mb-3 display-inherit">
-                        <span class="has-float-label">
-                          <div class="input-group">
-                            <input type="text"
-                                   class="form-control mr-1"
-                                   id="velocidade">
-                          </div>
-                          <label for="velocidade">Velocidade</label>
-                        </span>
-                        <span class="has-float-label">
-                          <div class="input-group">
-                            <input type="text"
-                                   class="form-control mr-1"
-                                   id="direção">
-                          </div>
-                          <label for="direção">Direção</label>
-                        </span>
-                      </div>
+                      <span class="has-float-label">
+                        <div class="input-group">
+                          <input type="text"
+                                 class="form-control mr-1"
+                                 id="modificar-velocidade">
+                        </div>
+                        <label for="modificar-velocidade">Velocidade</label>
+                      </span>
+                      <span class="has-float-label">
+                        <div class="input-group">
+                          <input type="text"
+                                 class="form-control mr-1"
+                                 id="modificar-direção">
+                        </div>
+                        <label for="modificar-direção">Direção</label>
+                      </span>
+                    </div>
                     <div class="col-12">
-                      <button class="btn btn-primary"
+                      <button class="btn btn-primary auto-disabled"
                               type="button"
-                              onclick="inserir()">Inserir</button>
+                              onclick="modificar()"
+                              disabled>Modificar</button>
                     </div>
                   </form>
                 </div>
@@ -348,12 +370,75 @@
             </div>
           </div>
         </div>
-
       </div>
       <div class="col-5">
         <canvas id="myCanvas"
                 width="600"
                 height="600"></canvas>
+
+        <div class="col">
+          <div class="shadow bg-light rounded">
+            <ul class="nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link active"
+                   href="#visualizações"
+                   role="tab"
+                   data-toggle="tab">Visualizações</a>
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div role="tabpanel"
+                   class="tab-pane active"
+                   id="visualizações">
+                <div class="pb-2 mb-5">
+                  <form>
+                    <div class="col-12 mb-3 col">
+                      <div class="col-12 form-check">
+                        <input id="draw-grid"
+                               type="checkbox"
+                               class="form-check-input"
+                               checked>
+                        <label class="form-check-label"
+                               for="draw-grid">Plano cartesiano</label>
+                      </div>
+                      <div class="col-12 form-check">
+                        <input id="draw-polar"
+                               type="checkbox"
+                               class="form-check-input"
+                               checked>
+                        <label class="form-check-label"
+                               for="draw-polar">Plano polar</label>
+                      </div>
+                      <div class="col-12 form-check">
+                        <input id="draw-radar"
+                               type="checkbox"
+                               class="form-check-input">
+                        <label class="form-check-label"
+                               for="draw-radar">Radar</label>
+                      </div>
+                      <div class="col-12 form-check">
+                        <input id="draw-airships"
+                               type="checkbox"
+                               class="form-check-input"
+                               checked>
+                        <label class="form-check-label"
+                               for="draw-airships">Aviões</label>
+                      </div>
+                      <div class="col-12 form-check">
+                        <input id="animate-airships"
+                               type="checkbox"
+                               class="form-check-input"
+                               checked>
+                        <label class="form-check-label"
+                               for="animate-airships">Animações dos aviões</label>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="col-4">
         <div class="col"
@@ -366,22 +451,19 @@
                   <th>#</th>
                   <th>Posição</th>
                   <th>Direção</th>
-                  <th>Velocidade</th>
+                  <th>Velocidade (Km/h)</th>
                   <th>Altitude</th>
                 </tr>
               </thead>
               <tbody id="table-body">
-
               </tbody>
             </table>
           </div>
-
         </div>
       </div>
     </div>
-  </div>
-  <script src="https://rawgithub.com/soulwire/sketch.js/master/js/sketch.min.js"></script>
-  <script src="app.js"></script>
+    <script src="https://rawgithub.com/soulwire/sketch.js/master/js/sketch.min.js"></script>
+    <script src="app.js"></script>
 </body>
 
 </html>

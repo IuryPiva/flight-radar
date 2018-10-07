@@ -18,9 +18,9 @@ function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height)
   ctx.beginPath()
   if(drawGrid) grid.drawGrid()
+  if(renderRings) rings.renderRings()
   if(drawAirships) airship.drawAirships()
   if(animateAirships) airship.animateAirships()
-  if(renderRings) rings.renderRings()
   if(radar) {
     sweep.renderSweep()
     sweep.animateSweep()

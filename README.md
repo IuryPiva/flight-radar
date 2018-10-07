@@ -13,16 +13,16 @@
 - [x] Feedback para o usuário
 - [x] Animacao dos aviões
 - [x] Transformações com varios aviões ao mesmo tempo
+- [x] Painel para ativar e desativar funcionalidades 
+- [x] Escala no canvas
+- [x] Demonstrar altitude - Sombra
+- [ ] Input para adicionar aviões manualmente
+- [ ] Input para modificar aviões manualmente
+- [ ] Rota de colisão com aeroporto
 - [ ] Aceleração máxima 
 - [ ] Angulo de curva máximo 
 - [ ] Aceleração angular das asas em relação ao eixo x
-- [ ] Rota de colisão com aeroporto
 - [ ] Velocidade minima dos aviões - parcial, vira um helicoptero hehe
-- [x] Painel para ativar e desativar funcionalidades 
-- [ ] Input para adicionar aviões manualmente
-- [ ] Input para modificar aviões manualmente
-- [x] Escala no canvas
 - [ ] Explicação das funcionalidades
 - [ ] Tomada de decisão em caso de colisão iminente
-- [ ] Demonstrar altitude - Sombra?
 - [ ] Funções de transformação direcionam o avião para o ponto resultante dentro das limitações do avião

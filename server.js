@@ -23,6 +23,12 @@ app.get('/airship-red.png', function(req, res){
 app.get('/helicopter-red.png', function(req, res){
   res.sendFile(path.resolve('./client/assets/helicopter-red.png'))
 })
+app.get('/airship-shadow.png', function(req, res){
+  res.sendFile(path.resolve('./client/assets/airship-shadow.png'))
+})
+app.get('/helicopter-shadow.png', function(req, res){
+  res.sendFile(path.resolve('./client/assets/helicopter-shadow.png'))
+})
 app.get('/bootstrap.css', function(req, res){
   res.sendFile(path.resolve('./node_modules/bootstrap/dist/css/bootstrap.min.css'))
 })

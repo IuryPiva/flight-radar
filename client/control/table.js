@@ -33,6 +33,13 @@ window.rowClick = (event) => {
   } else {
     selected.push(event.id)
   }
+  buttonsControl()
+}
+
+function buttonsControl(){
+  if(selected.length > 0) {
+    $('.auto-disabled').prop('disabled', false)
+  } else   $('.auto-disabled').prop('disabled', true)
 }
 
 function firstDraw() {
