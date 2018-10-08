@@ -12,7 +12,8 @@ function addAirship(newAirship) {
     blinks: 0,
     accelerateTo: null,
     maxAcceleration: 14.7 / 1000,
-    bankAngle: 45
+    navigateTo: null,
+    changeDirectionTo: null
   }
   const tableBody = document.getElementById('table-body')
   tableBody.innerHTML += `
@@ -66,9 +67,8 @@ function modificarCart () {
   const selected = window.getSelected()
   selected.forEach(airshipId => {
     const airship = getAirshipById(airshipId)
-    airship.x = x
-    airship.y = y
-    airship.direction = direction
+    airship.changeDirectionTo = { x, y }
+    // airship.direction = direction
     // airship.speed = speed
     airship.accelerateTo = speed / 60 / 60
   })
@@ -88,9 +88,8 @@ function modificarPolar () {
   const selected = window.getSelected()
   selected.forEach(airshipId => {
     const airship = getAirshipById(airshipId)
-    airship.x = cart.x
-    airship.y = cart.y
-    airship.direction = direction
+    airship.changeDirectionTo = { x: cart.x, y: cart.y }
+    // airship.direction = direction
     airship.accelerateTo = speed / 60 / 60
   })
 }

@@ -64,7 +64,7 @@ function animateAirships() {
 
     airship.x = nextPosition.x
     airship.y = nextPosition.y
-    airship.direction = Math.abs((airship.direction + rateOfTurn/FPS) % 360)
+    getNextDirection(airship)
   })
 }
 
@@ -76,7 +76,7 @@ function animateAirships() {
   //         y = airship.y + radius/1000 * -(Math.sin(Math.abs(airship.direction + 45 - 360) * Math.PI / 180))
   //   rotate(airship, { x, y, angle: rateOfTurn / FPS })
   //   airship.direction = Math.abs((airship.direction + rateOfTurn/FPS) % 360)
-}
+// }
 
 function directionToPoint(airship, point) {
   const pointClone = Object.assign({}, point)
@@ -87,33 +87,33 @@ function directionToPoint(airship, point) {
 
 function getNextDirection(airship) {
   const rateOfTurn = 5.25 // degrees per second
-  if (airship.navigateTo === null) {
+  if (airship.changeDirectionTo === null) {
     return false
-  } else 
+  } else
   // VIRANDO SENTINDO ANTIHORÁRIO
-  if (directionToPoint(airship, airship.navigateTo) - airship.direction > 0) {
+  if (directionToPoint(airship, airship.changeDirectionTo) - airship.direction > 0) {
     const airshipClone = Object.assign({}, airship)
-    airshipClone.direction += 5.25 / FPS
-    if (directionToPoint(airshipClone, airship.navigateTo) - airshipClone.direction <= 0) {
-      airship.direction = directionToPoint(airship, airship.navigateTo)
-      airship.navigateTo = null
+    airshipClone.direction += rateOfTurn / FPS
+    if (directionToPoint(airshipClone, airship.changeDirectionTo) - airshipClone.direction <= 0) {
+      airship.direction = directionToPoint(airship, airship.changeDirectionTo)
+      airship.changeDirectionTo = null
     } else {
       airship.direction = airshipClone.direction
     }
   } else 
   // VIRANDO SENTIDO HORÁRIO
-  if (directionToPoint(airship, airship.navigateTo) - airship.direction < 0) {
+  if (directionToPoint(airship, airship.changeDirectionTo) - airship.direction < 0) {
     const airshipClone = Object.assign({}, airship)
-    airshipClone.direction -= 5.25 / FPS
-    if (directionToPoint(airshipClone, airship.navigateTo) - airshipClone.direction >= 0) {
-      airship.direction = directionToPoint(airship, airship.navigateTo)
-      airship.navigateTo = null
+    airshipClone.direction -= rateOfTurn / FPS
+    if (directionToPoint(airshipClone, airship.changeDirectionTo) - airshipClone.direction >= 0) {
+      airship.direction = directionToPoint(airship, airship.changeDirectionTo)
+      airship.changeDirectionTo = null
     } else {
       airship.direction = airshipClone.direction
     }
   } else
-  if (directionToPoint(airship, airship.navigateTo) - airship.direction == 0) {
-    airship.navigateTo = null
+  if (directionToPoint(airship, airship.changeDirectionTo) - airship.direction == 0) {
+    airship.changeDirectionTo = null
   }
 }
 
