@@ -17,7 +17,7 @@
 - [x] Escala no canvas
 - [x] Demonstrar altitude - Sombra
 - [x] Input para adicionar aviões manualmente
-- [ ] Input para modificar aviões manualmente
+- [x] Input para modificar aviões manualmente
 - [ ] Rota de colisão com aeroporto
 - [ ] Aceleração máxima 
 - [ ] Angulo de curva máximo 

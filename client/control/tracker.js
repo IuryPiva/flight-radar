@@ -53,7 +53,7 @@ function airportCollision(airship){
   )
 
   if(intersection){
-    alert('morreu')
+    //alert('morreu')
   }
 }
 

@@ -88,3 +88,7 @@ function maxSpeed(airship, point) {
       rotate(airship, point)
     })
   }
+
+module.exports = {
+  rotate
+}

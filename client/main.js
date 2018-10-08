@@ -7,6 +7,7 @@ const sweep = require('./radar/sweep')
 const table = require('./control/table')
 const tracker = require('./control/tracker')
 require('./control/transformation')
+require('./airship/control')
 
 function draw() {
   let radar = document.getElementById('draw-radar').checked,
