@@ -19,8 +19,8 @@
 - [x] Input para adicionar aviões manualmente
 - [x] Input para modificar aviões manualmente
 - [ ] Rota de colisão com aeroporto
-- [ ] Aceleração máxima 
-- [ ] Angulo de curva máximo 
+- [x] Aceleração máxima 
+- [x] Angulo de curva máximo 
 - [ ] Aceleração angular das asas em relação ao eixo x
 - [ ] Velocidade minima dos aviões - parcial, vira um helicoptero hehe
 - [ ] Explicação das funcionalidades
