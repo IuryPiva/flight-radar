@@ -6,6 +6,7 @@ const { getHoveringOver, selected } = require('../control/table')
 const { animateAirships } = require('./animation')
 const { getDistantPoint, getInDanger } = require('../control/tracker')
 const grid = require('../radar/grid')
+
 function getSprite(airship) {
   function red() {
     return true
@@ -26,6 +27,7 @@ function getSprite(airship) {
   }
   const hoveringOver = getHoveringOver()
   const inDanger = getInDanger()
+
   if(airship.speed*60*60 > 200) {
     if(inDanger.includes(airship.id) || hoveringOver.includes(airship.id)) {
       if(shouldBlink(airship)) return sprites.airshipRed
