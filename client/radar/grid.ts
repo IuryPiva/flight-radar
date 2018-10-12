@@ -1,3 +1,6 @@
+import { Pixel } from "../canvas";
+import { Cartesian } from "../utils/coordinate";
+
 const { canvas, ctx } = require('../canvas')
 const grid = {
   cell: {
@@ -11,6 +14,18 @@ const grid = {
   size: {
     x: (canvas.width / 10) / 10 -1,
     y: (canvas.height / 10) / 10 -1
+  }
+}
+export class Grid {
+  cell: {
+    width: number,
+    height: number,
+  }
+  center: Pixel
+  cellPerAxis: number
+
+  constructor (canvas: HTMLCanvasElement) {
+    
   }
 }
 

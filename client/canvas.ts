@@ -1,16 +1,20 @@
 export class Pixel {
   private _Pixel: Pixel
-  value: number
+  x: number
+  y: number
 
-  constructor(value: number) {
-    this.value = value
+  constructor(x: number, y: number) {
+    this.x = x
+    this.y = y
   }
 }
 
-const canvas = document.getElementById("myCanvas")
-const ctx = canvas.getContext("2d")
-const FPS = 60
+export class FlightRadarCanvas {
+  canvas: HTMLCanvasElement = (<HTMLCanvasElement> document.getElementById("myCanvas"))
+  ctx: CanvasRenderingContext2D
+  FPS = 60
 
-module.exports = {
-  canvas, ctx, FPS
+  constructor () {
+    this.ctx = this.canvas.getContext('2d')
+  }
 }

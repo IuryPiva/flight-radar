@@ -1,8 +1,29 @@
 import { Cartesian } from "../utils/coordinate";
 import { Degrees } from "./model";
-import { KilometresPerSecond, KilometresPerHour } from "../utils/speed";
+import { KilometresPerSecond, KilometresPerHour, MetresPerSecond } from "../utils/speed";
 import { Pixel } from "../canvas";
-import { Random } from "../random";
+import { randomFlightId } from "../random";
+import { Sprite } from './sprite'
+
+class Limits {
+  speed: {
+    min: KilometresPerHour
+    max: KilometresPerHour
+  }
+  acceleration: MetresPerSecond
+  
+  constructor (speed: KilometresPerHour) {
+    if (speed.value > 250) {
+      this.speed.max = new KilometresPerHour(1111.32)
+      this.speed.min = new KilometresPerHour(251)
+      this.acceleration = new MetresPerSecond(14.7)
+    } else {
+      this.speed.max = new KilometresPerHour(250)
+      this.speed.min = new KilometresPerHour(0)
+      this.acceleration = new MetresPerSecond(11.11)
+    }
+  }
+}
 
 export class Airship {
   id: String
@@ -13,65 +34,78 @@ export class Airship {
   height: Pixel = new Pixel(32)
   blinks = 0
   accelerateTo: KilometresPerSecond
-  maxAcceleration: KilometresPerSecond = new KilometresPerSecond(14.7 / 1000)
+  limits: Limits
   navigateTo: Cartesian
   changeDirectionTo: Degrees
-  random: Random = new Random()
+  isHover = false
+  inDanger = false
+  isSelected = false
+  sprite: Sprite
 
   constructor( position: Cartesian, direction: Degrees, speed: KilometresPerHour ) {
-    this.position = position
+    this.id = randomFlightId()
     this.direction = direction
+    this.position = position
     this.speed = speed.toKilometresPerSecond()
-    this.id = this.random.randomFlightId()
+    this.sprite = new Sprite(speed)
+    this.limits = new Limits(speed)
   }
+
+  private shouldBlink() {
+    if(this.blinks < FPS / 3) {
+      this.blinks++
+      return true
+    }
+    if(this.blinks >= FPS / 3 && this.blinks <= FPS / 3 * 2) {
+      this.blinks++
+      return false
+    }
+    if(this.blinks >= FPS / 3 * 2) {
+      this.blinks = 0
+      return false
+    }
+  }
+
+  private getSprite() {
+    if(this.inDanger || this.isHover) {
+      if(this.shouldBlink()) return this.sprite.red
+      return this.sprite.black
+    }
+    if(this.isSelected) return this.sprite.red
+    return this.sprite.black
+  }
+
+  public castShadow() {
+    const pixel = coordinatesToPx(airship.x, airship.y)
+    const rad = (Math.abs(airship.direction - 360) * Math.PI / 180)
+    ctx.save()
+    ctx.beginPath()
+    ctx.translate(pixel.x, pixel.y)
+    ctx.translate(0, 0)
+    ctx.rotate(rad)
+    if(airship.speed*60*60 > 200) {
+      ctx.drawImage(sprites.airshipShadow, -airship.width / 2, -airship.height / 2)
+    } else {
+      ctx.drawImage(sprites.helicopterShadow, -airship.width / 2, -airship.height / 2)
+    }
+    ctx.restore()
+  }
+}
+class Airplane extends Airship {
+}
+class Helicopter extends Airship {
 }
 
 import { ctx, FPS } from '../canvas'
 import airships from './airships'
 import { coordinatesToPx } from '../utils'
-import sprites from './sprites'
 import { getHoveringOver, selected } from '../control/table'
 import { animateAirships } from './animation'
 import { getDistantPoint, getInDanger } from '../control/tracker'
 import grid from '../radar/grid'
 
 function getSprite(airship) {
-  function red() {
-    return true
-  }
-  function shouldBlink(airship) {
-    if(airship.blinks < FPS / 3) {
-      airship.blinks++
-      return true
-    }
-    if(airship.blinks >= FPS / 3 && airship.blinks <= FPS / 3 * 2) {
-      airship.blinks++
-      return false
-    }
-    if(airship.blinks >= FPS / 3 * 2) {
-      airship.blinks = 0
-      return false
-    }
-  }
-  const hoveringOver = getHoveringOver()
-  const inDanger = getInDanger()
-
-  if(airship.speed*60*60 > 200) {
-    if(inDanger.includes(airship.id) || hoveringOver.includes(airship.id)) {
-      if(shouldBlink(airship)) return sprites.airshipRed
-      return sprites.airship
-    }
-    if(selected.includes(airship.id)) return sprites.airshipRed
-    return sprites.airship
-  }
-  else {
-    if(inDanger.includes(airship.id) || hoveringOver.includes(airship.id)) {
-      if(shouldBlink(airship)) return sprites.helicopterRed
-      return sprites.helicopter
-    }
-    if(selected.includes(airship.id)) return sprites.helicopterRed
-    return sprites.helicopter
-  }
+  
 }
 
 function drawAirships() {
@@ -87,22 +121,6 @@ function drawAirships() {
 }
 
 function drawShadow(airship) {
-  const pixel = coordinatesToPx(airship.x, airship.y)
-  const rad = (Math.abs(airship.direction - 360) * Math.PI / 180)
-  // ctx.arc(pixel.x,pixel.y,10,0,2*Math.PI)
-  // ctx.fill()
-  // ctx.fillStyle = 'rgba(0,0,0,0.2)'
-  ctx.save()
-  ctx.beginPath()
-  ctx.translate(pixel.x, pixel.y)
-  ctx.translate(0, 0)
-  ctx.rotate(rad)
-  if(airship.speed*60*60 > 200) {
-    ctx.drawImage(sprites.airshipShadow, -airship.width / 2, -airship.height / 2)
-  } else {
-    ctx.drawImage(sprites.helicopterShadow, -airship.width / 2, -airship.height / 2)
-  }
-  ctx.restore()
 }
 
 function drawAirship(airship) {

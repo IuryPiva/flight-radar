@@ -26,10 +26,6 @@ function degreesToRadians(degree) {
 }
 module.exports = {
   coordinatesToPx: (x, y) => {
-    return {
-      x: grid.center.x + (x * grid.cell.width),
-      y: grid.center.y + (y * grid.cell.height) * (-1)
-    }
   },
   combinatory,
   round,
