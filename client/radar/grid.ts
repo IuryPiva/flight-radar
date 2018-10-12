@@ -22,10 +22,15 @@ export class Grid {
     height: number,
   }
   center: Pixel
-  cellPerAxis: number
+  limit: {
+    top: number,
+    right: number,
+    down: number,
+    left: number
+  }
 
   constructor (canvas: HTMLCanvasElement) {
-    
+
   }
 }
 
