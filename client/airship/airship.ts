@@ -1,11 +1,39 @@
-const { ctx, FPS } = require('../canvas')
-const airships = require('./airships')
-const { coordinatesToPx } = require('../utils')
-const sprites = require('./sprites')
-const { getHoveringOver, selected } = require('../control/table')
-const { animateAirships } = require('./animation')
-const { getDistantPoint, getInDanger } = require('../control/tracker')
-const grid = require('../radar/grid')
+import { Cartesian } from "../utils/coordinate";
+import { Degrees } from "./model";
+import { KilometresPerSecond, KilometresPerHour } from "../utils/speed";
+import { Pixel } from "../canvas";
+import { Random } from "../random";
+
+export class Airship {
+  id: String
+  position: Cartesian
+  direction: Degrees
+  speed: KilometresPerSecond
+  width: Pixel = new Pixel(32)
+  height: Pixel = new Pixel(32)
+  blinks = 0
+  accelerateTo: KilometresPerSecond
+  maxAcceleration: KilometresPerSecond = new KilometresPerSecond(14.7 / 1000)
+  navigateTo: Cartesian
+  changeDirectionTo: Degrees
+  random: Random = new Random()
+
+  constructor( position: Cartesian, direction: Degrees, speed: KilometresPerHour ) {
+    this.position = position
+    this.direction = direction
+    this.speed = speed.toKilometresPerSecond()
+    this.id = this.random.randomFlightId()
+  }
+}
+
+import { ctx, FPS } from '../canvas'
+import airships from './airships'
+import { coordinatesToPx } from '../utils'
+import sprites from './sprites'
+import { getHoveringOver, selected } from '../control/table'
+import { animateAirships } from './animation'
+import { getDistantPoint, getInDanger } from '../control/tracker'
+import grid from '../radar/grid'
 
 function getSprite(airship) {
   function red() {
