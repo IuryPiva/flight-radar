@@ -26,11 +26,6 @@ function getMinDistanceAirships() {
 }
 window.getMinDistanceAirships = getMinDistanceAirships
 
-function getMinTime() {
-  return Number(document.getElementById('min-time').value)
-}
-window.getMinTime = getMinTime
-
 function getDistanceFromAirport(airship) {
   return distance(airship, airport)
 }

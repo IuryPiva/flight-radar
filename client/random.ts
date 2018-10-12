@@ -12,10 +12,10 @@ function randomNumber () {
   return Math.floor(Math.random() * 9)
 }
 
-export function randomHexColor() {
+export function randomHexColor(): string {
   return `#${hex[rand()]}${hex[rand()]}${hex[rand()]}${hex[rand()]}${hex[rand()]}${hex[rand()]}`
 }
 
-export function randomFlightId () {
+export function randomFlightId (): string {
   return `${randomLetter()}${randomLetter()}${randomLetter()}${randomNumber()}${randomNumber()}${randomNumber()}`
 }

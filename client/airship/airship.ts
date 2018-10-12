@@ -1,9 +1,11 @@
 import { Cartesian } from "../utils/coordinate";
-import { Degrees } from "./model";
 import { KilometresPerSecond, KilometresPerHour, MetresPerSecond } from "../utils/speed";
-import { Pixel } from "../canvas";
 import { randomFlightId } from "../random";
 import { Sprite } from './sprite'
+import { Pixel, FPS } from "../canvas";
+import { Grid } from "../radar/grid";
+import { Degrees } from "../utils/math";
+import { getMinTimeToDanger } from "../controls/collision-avoidance/variables";
 
 class Limits {
   speed: {
@@ -26,7 +28,7 @@ class Limits {
 }
 
 export class Airship {
-  id: String
+  id: string
   position: Cartesian
   direction: Degrees
   speed: KilometresPerSecond
@@ -66,7 +68,7 @@ export class Airship {
     }
   }
 
-  private getSprite() {
+  public getSprite() {
     if(this.inDanger || this.isHover) {
       if(this.shouldBlink()) return this.sprite.red
       return this.sprite.black
@@ -75,107 +77,21 @@ export class Airship {
     return this.sprite.black
   }
 
-  public castShadow() {
-    const pixel = coordinatesToPx(airship.x, airship.y)
-    const rad = (Math.abs(airship.direction - 360) * Math.PI / 180)
-    ctx.save()
-    ctx.beginPath()
-    ctx.translate(pixel.x, pixel.y)
-    ctx.translate(0, 0)
-    ctx.rotate(rad)
-    if(airship.speed*60*60 > 200) {
-      ctx.drawImage(sprites.airshipShadow, -airship.width / 2, -airship.height / 2)
-    } else {
-      ctx.drawImage(sprites.helicopterShadow, -airship.width / 2, -airship.height / 2)
-    }
-    ctx.restore()
+  calcNosePosition( grid: Grid ) {
+    return new Cartesian(
+      this.position.x + (this.width.inScale(grid.cell.width)) * (Math.cos(this.direction.value)),
+      this.position.y + (this.height.inScale(grid.cell.height)) * -(Math.sin(this.direction.value))
+    )
   }
-}
-class Airplane extends Airship {
-}
-class Helicopter extends Airship {
-}
 
-import { ctx, FPS } from '../canvas'
-import airships from './airships'
-import { coordinatesToPx } from '../utils'
-import { getHoveringOver, selected } from '../control/table'
-import { animateAirships } from './animation'
-import { getDistantPoint, getInDanger } from '../control/tracker'
-import grid from '../radar/grid'
+  calcFurthestPointAhead(times: number = 1): Cartesian {
+    const effectiveSpeed = this.speed.value
+      ? this.speed.value * getMinTimeToDanger() * times
+      : times * this.limits.speed.max.toKilometresPerSecond().value / FPS
 
-function getSprite(airship) {
-  
-}
-
-function drawAirships() {
-  airships.forEach(airship => {
-    drawShadow(airship)
-  })
-  airships.forEach(airship => {
-    drawAirshipGuideLine(airship)
-  })
-  airships.forEach(airship => {
-    drawAirship(airship)
-  })
-}
-
-function drawShadow(airship) {
-}
-
-function drawAirship(airship) {
-  const pixel = coordinatesToPx(airship.x, airship.y)
-  const rad = (Math.abs(airship.direction - 360) * Math.PI / 180)
-  ctx.save()
-  ctx.beginPath()
-  ctx.font="12px Georgia"
-  ctx.fillStyle = 'black'
-  ctx.fillText(airship.id, pixel.x + airship.width / 2, pixel.y - airship.height / 2)
-  ctx.translate(pixel.x, pixel.y-airship.z/10)
-  ctx.translate(0, 0)
-  ctx.rotate(rad)
-  ctx.drawImage(getSprite(airship), -airship.width / 2, -airship.height / 2)
-  ctx.restore()
-}
-
-function getPointInDirection(airship, howMuchPx) {
-  return { 
-    x : airship.x + (howMuchPx/grid.cell.width) * (Math.cos(Math.abs(airship.direction - 360) * Math.PI / 180)),
-    y : airship.y + (howMuchPx/grid.cell.height) * -(Math.sin(Math.abs(airship.direction - 360) * Math.PI / 180))
+    return new Cartesian(
+      this.position.x + effectiveSpeed * Math.cos(this.direction.toRadians().value),
+      this.position.y + effectiveSpeed * -Math.sin(this.direction.toRadians().value)
+    )
   }
-}
-
-function drawAirshipGuideLine(airship) {
-  const resultantPosition = Object.assign({}, airship)  
-  const airshipBorder = getPointInDirection(airship, airship.width/2)
-
-  resultantPosition.x = airshipBorder.x
-  resultantPosition.y = airshipBorder.y
-
-  const pixel = coordinatesToPx(airshipBorder.x, airshipBorder.y)
-  
-  const distantPoint = getDistantPoint(resultantPosition)
-  const distantPointPx = coordinatesToPx(distantPoint.x, distantPoint.y)
-
-  if(airship.speed > 0) {
-    ctx.beginPath()
-    ctx.setLineDash([3, 9]);
-    ctx.strokeStyle = 'red'
-    ctx.lineWidth = 1
-    ctx.moveTo(pixel.x, pixel.y)
-    ctx.lineTo(distantPointPx.x, distantPointPx.y)
-    ctx.stroke()
-    ctx.setLineDash([]);
-  }
-}
-
-function getAirshipById(id) {
-  return airships.find(airship => airship.id == id)
-}
-
-module.exports = {
-  animateAirships,
-  drawAirships,
-  getAirshipById,
-  drawAirshipGuideLine
 }

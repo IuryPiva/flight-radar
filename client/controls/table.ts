@@ -1,7 +1,26 @@
+import { Airship } from "../airship/airship";
+
 const airships = require('../airship/airships')
 const $ = require('jquery')
 window.jQuery = $
 require('jquery-ui')
+
+export class Table {
+  drawn = false
+  tableBody = document.getElementById('table-body')
+  constructor () { }
+
+  newAirship (airship: Airship) {
+    this.tableBody.innerHTML += `
+      <tr id="${airship.id}" onmouseover="window.hovering(this)" onclick="window.rowClick(this)"  onmouseout="window.leaveHovering(this)">
+        <th scope="row">${airship.id}</th>
+        <td id="${airship.id}position">${airship.position.display()}</td>
+        <td id="${airship.id}direction">${airship.direction}</td>
+        <td id="${airship.id}speed">${airship.speed}</td>
+      </tr>`
+  }
+}
+
 let drawn = false
 let hoveringOver = []
 let selected = []
@@ -62,6 +81,9 @@ function firstDraw() {
     tableBody.innerHTML += html
   })
 }
+
+const tableBody = document.getElementById('table-body')
+
 
 function updateTable() {
   airships.forEach(airship => {

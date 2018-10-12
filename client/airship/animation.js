@@ -3,6 +3,7 @@ const { canvas, FPS } = require('../canvas')
 const { coordinatesToPx } = require('../utils')
 const { rotate } = require('../control/transformation')
 const { radiansToDegree, cartToPolar } = require('../utils')
+
 function getNextPosition(airship) {
   return {
     x: airship.x + airship.speed / FPS * (Math.cos(Math.abs(airship.direction - 360) * Math.PI / 180)),

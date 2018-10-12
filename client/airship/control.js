@@ -3,27 +3,7 @@ const { polarToCart } = require('../utils')
 const { randomFlightId } = require('../random')
 const airships = require('./airships')
 
-function addAirship(newAirship) {
-  const airship = {...newAirship,
-    id: randomFlightId(),
-    width: 32,
-    height: 32,
-    z: Math.random() * (420 - (350) + 1) + (350),
-    blinks: 0,
-    accelerateTo: null,
-    maxAcceleration: 14.7 / 1000,
-    navigateTo: null,
-    changeDirectionTo: null
-  }
-  const tableBody = document.getElementById('table-body')
-  tableBody.innerHTML += `
-      <tr id="${airship.id}" onmouseover="window.hovering(this)" onclick="window.rowClick(this)"  onmouseout="window.leaveHovering(this)">
-        <th scope="row">${airship.id}</th>
-        <td id="${airship.id}position">${Number(airship.x.toFixed(1))}, ${Number(airship.y.toFixed(1))}</td>
-        <td id="${airship.id}direction">${Number(airship.direction.toFixed(1))}°</td>
-        <td id="${airship.id}speed">${Number((airship.speed * 60 * 60).toFixed(1))}</td>
-        <td id="${airship.id}altitude">${Number(airship.z.toFixed(1))}</td>
-      </tr>`
+function addAirship() {
   airships.push(airship)
 }
 
@@ -34,12 +14,7 @@ window.inserirCart = () => {
   const direction = Number(document.getElementById('inserir-direcao').value)
   const speed = Number(document.getElementById('inserir-velocidade').value)
 
-  addAirship({
-    x,
-    y,
-    direction,
-    speed: speed / 60 / 60
-  })
+  addAirship()
 }
 window.inserirPolar = () => {
   const radius = Number(document.getElementById('inserir-raio').value)

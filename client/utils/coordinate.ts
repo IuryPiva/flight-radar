@@ -1,4 +1,5 @@
-import { Pixel } from "../canvas";
+import { PixelCoordinate, Pixel } from "../canvas";
+import { Grid } from "../radar/grid";
 
 export class Cartesian {
   private _Cartesian: Cartesian
@@ -10,10 +11,14 @@ export class Cartesian {
     this.y = y
   }
 
-  toPixel() {
-    return new Pixel(
-      grid.center.x + (this.x * grid.cell.width),
-      grid.center.y + (this.y * grid.cell.height) * (-1)
+  toPixelCoordinate(grid: Grid) {
+    return new PixelCoordinate(
+      new Pixel(grid.center.x.value + (this.x * grid.cell.width.value)),
+      new Pixel(grid.center.y.value + (this.y * grid.cell.height.value) * (-1))
     )
+  }
+
+  display() {
+    return `(${this.x.toFixed(1)},${this.y.toFixed(1)})`
   }
 }
