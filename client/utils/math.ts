@@ -22,6 +22,18 @@ export class Degrees {
   display() {
     return `${this.value}˚`
   }
+
+  isClockWise() {
+    return this.value > 180 && this.value < 360
+  }
+
+  isCounterClockWise() {
+    return this.value > 0 && this.value <= 180
+  }
+  
+  isStraight() {
+    return this.value == 0 || this.value > 359 || this.value < 1
+  }
 }
 
 export class Radians {

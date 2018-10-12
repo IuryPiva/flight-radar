@@ -3,6 +3,7 @@ import { Cartesian } from "./utils/coordinate";
 import { Rings } from "./radar/rings";
 import { Airship } from "./airship/airship";
 import { Radians } from "./utils/math";
+import { Airships } from "./airship/airships";
 
 export const FPS = 60;
 
@@ -45,6 +46,11 @@ export class FlightRadarCanvas {
     this.ctx = this.canvas.getContext('2d')
   }
 
+  clean() {
+    this.ctx.beginPath()
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+  }
+
   drawGrid (grid: Grid) {
     this.ctx.beginPath()
     this.ctx.strokeStyle = 'black'
@@ -63,7 +69,7 @@ export class FlightRadarCanvas {
     this.ctx.stroke()
   }
 
-  drawScaleMarks (grid: Grid) {
+  drawGridScale (grid: Grid) {
     const scaleText = '1 km'
     const scaleMarksStyle = 'rgba(255,0,0,0.7)'
     this.ctx.beginPath()
@@ -86,13 +92,13 @@ export class FlightRadarCanvas {
     this.ctx.setLineDash([])
   }
 
-  renderRings (grid: Grid, rings: Rings) {
+  drawRings (rings: Rings) {
     this.ctx.beginPath()
     this.ctx.strokeStyle = 'black'
     this.ctx.lineWidth = rings.lineWidth
 
     for (let i = 0; i < rings.amount; i++) {
-      this.ctx.arc(grid.center.x.value, grid.center.y.value, ((rings.radius - (rings.lineWidth / 2)) / rings.amount) * (i + 1), 0, Math.PI * 2, false)
+      this.ctx.arc(rings.center.x.value, rings.center.y.value, ((rings.radius - (rings.lineWidth / 2)) / rings.amount) * (i + 1), 0, Math.PI * 2, false)
     }
 
     this.ctx.stroke()
@@ -110,6 +116,22 @@ export class FlightRadarCanvas {
     this.ctx.restore()
   }
 
+  drawAirshipGuideLine (airship: Airship, grid: Grid) {
+    if(airship.speed.value == 0) return;
+    
+    const pixel = airship.calcNosePosition(grid).toPixelCoordinate(grid)
+    const distantPointPx = airship.calcFurthestPointAhead().toPixelCoordinate(grid)
+    
+    this.ctx.beginPath()
+    this.ctx.setLineDash([3, 9]);
+    this.ctx.strokeStyle = 'red'
+    this.ctx.lineWidth = 1
+    this.ctx.moveTo(pixel.x.value, pixel.y.value)
+    this.ctx.lineTo(distantPointPx.x.value, distantPointPx.y.value)
+    this.ctx.stroke()
+    this.ctx.setLineDash([]);
+  }
+  
   drawAirship (airship: Airship, grid: Grid) {
     const pixel = airship.position.toPixelCoordinate(grid).toNumber()
     const rad: Radians = airship.direction.toRadians()
@@ -124,22 +146,17 @@ export class FlightRadarCanvas {
     this.ctx.drawImage(airship.getSprite(), -airship.width.value / 2, -airship.height.value / 2)
     this.ctx.restore()
   }
- 
-  drawAirshipGuideLine (airship: Airship, grid: Grid) {
-    if(airship.speed.value == 0) return;
 
-    const pixel = airship.calcNosePosition(grid).toPixelCoordinate(grid)
-    const distantPointPx = airship.calcFurthestPointAhead().toPixelCoordinate(grid)
-
-    this.ctx.beginPath()
-    this.ctx.setLineDash([3, 9]);
-    this.ctx.strokeStyle = 'red'
-    this.ctx.lineWidth = 1
-    this.ctx.moveTo(pixel.x.value, pixel.y.value)
-    this.ctx.lineTo(distantPointPx.x.value, distantPointPx.y.value)
-    this.ctx.stroke()
-    this.ctx.setLineDash([]);
+  drawAirships (airships: Airships, grid: Grid) {
+    airships.getAll().forEach(airship => {
+      this.castAirshipShadow(airship, grid)
+    })
+    airships.getAll().forEach(airship => {
+      this.drawAirshipGuideLine(airship, grid)
+    })
+    airships.getAll().forEach(airship => {
+      this.drawAirship(airship, grid)
+    })
   }
-
 }
 

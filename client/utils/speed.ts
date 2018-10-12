@@ -1,9 +1,18 @@
-export class KilometresPerSecond {
+class Speed {
+  value: number
+  abbreviation: string
+
+  display() {
+    return `${this.value.toFixed(1)} ${this.abbreviation}`
+  }
+}
+export class KilometresPerSecond extends Speed {
   private _KilometresPerSecond: KilometresPerSecond
   value: number
   abbreviation = 'km/s'
 
   constructor (value: number) {
+    super()
     this.value = value
   }
 
@@ -12,12 +21,13 @@ export class KilometresPerSecond {
   }
 }
 
-export class KilometresPerHour {
+export class KilometresPerHour extends Speed {
   private _KilometresPerHour: KilometresPerHour
   value: number
   abbreviation = 'km/h'
 
   constructor (value: number) {
+    super()
     this.value = value
   }
 
@@ -26,11 +36,13 @@ export class KilometresPerHour {
   }
 }
 
-export class MetresPerSecond {
+export class MetresPerSecond extends Speed {
   private _MetresPerSecond: MetresPerSecond
   value: number
+  abbreviation = 'm/s'
   
   constructor (value: number) {
+    super()
     this.value = value
   }
   

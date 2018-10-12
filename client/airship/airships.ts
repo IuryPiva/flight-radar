@@ -10,4 +10,7 @@ export class Airships {
   getAirshipById(id: string) {
     return this.airships.find(airship => airship.id == id)
   }
+  getAll() {
+    return this.airships
+  }
 }

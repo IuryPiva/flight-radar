@@ -21,4 +21,9 @@ export class Cartesian {
   display() {
     return `(${this.x.toFixed(1)},${this.y.toFixed(1)})`
   }
+
+  translate(point) {
+    this.x -= point.x
+    this.y -= point.y
+  }
 }
