@@ -38,8 +38,9 @@ export class Airship {
   blinks = 0
   accelerateTo: KilometresPerSecond
   limits: Limits
-  navigateTo: Cartesian
+  moveTo: Cartesian
   turnTo: Cartesian
+  directionTo: Degrees
   isHover = false
   inDanger = false
   isSelected = false
@@ -65,11 +66,11 @@ export class Airship {
     }
     if(this.blinks >= FPS / 3 * 2) {
       this.blinks = 0
-      return false
+      return true
     }
   }
 
-  public getSprite() {
+  getSprite() {
     if(this.inDanger || this.isHover) {
       if(this.shouldBlink()) return this.sprite.red
       return this.sprite.black
@@ -96,7 +97,7 @@ export class Airship {
     )
   }
 
-  moveToNextPosition() {
+  move() {
     const effectiveSpeed = this.speed.value / FPS
 
     this.position.x = this.position.x + effectiveSpeed * Math.cos(this.direction.toRadians().value)
@@ -126,43 +127,42 @@ export class Airship {
   directionToPoint(point: Cartesian): Degrees {
     const pointClone: Cartesian = Object.assign({}, point)
 
-    pointClone.translate(this.position)
+    pointClone.reduce(this.position)
 
     return new Radians(Math.atan2(pointClone.y, pointClone.x)).toDegrees()
   }
 
   turn() {
-    if (this.turnTo === null) {
-      return;
-    } else {
-      let difference: Degrees = new Degrees(this.directionToPoint(this.turnTo).value - this.direction.value)
-      const airshipClone = Object.assign({}, this)
+    if (this.turnTo === null) return;
+    
+    let difference: Degrees = new Degrees(this.directionToPoint(this.turnTo).value - this.direction.value)
+    const airshipClone = Object.assign({}, this)
 
-      if (difference.isCounterClockWise()) {
-        airshipClone.direction.set(airshipClone.direction.value + this.limits.rateOfTurn.value / FPS)
-        difference.set(this.directionToPoint(this.turnTo).value - airshipClone.direction.value)
-        
-        if (difference.isStraight()) {
-          this.direction = this.directionToPoint(this.turnTo)
-          this.turnTo = null
-        } else {
-          this.direction = airshipClone.direction
-        }
-      }
-      else if (difference.isClockWise()) {
-        airshipClone.direction.set(airshipClone.direction.value - this.limits.rateOfTurn.value / FPS)
-        difference.set(this.directionToPoint(this.turnTo).value - airshipClone.direction.value)
-
-        if (difference.isStraight()) {
-          this.direction = this.directionToPoint(this.turnTo)
-          this.turnTo = null
-        } else {
-          this.direction = airshipClone.direction
-        }
-      } else if (difference.isStraight()) {
-        this.direction = this.directionToPoint(this.turnTo)
-        this.turnTo = null
-      }
+    if (difference.isCounterClockWise()) {
+      airshipClone.direction.set(airshipClone.direction.value + this.limits.rateOfTurn.value / FPS)
+      difference.set(this.directionToPoint(this.turnTo).value - airshipClone.direction.value)
+    } 
+    else if (difference.isClockWise()) {
+      airshipClone.direction.set(airshipClone.direction.value - this.limits.rateOfTurn.value / FPS)
+      difference.set(this.directionToPoint(this.turnTo).value - airshipClone.direction.value)
     }
+
+    if (difference.isStraight()) {
+      this.direction = this.directionToPoint(this.turnTo)
+      this.turnTo = null
+    } else {
+      this.direction = airshipClone.direction
+    }
+  }
+
+  goTo(position: Cartesian) {
+    this.moveTo = position
+    this.turnTo = position
+  }
+
+  set(position: Cartesian, direction: Degrees, speed: KilometresPerHour) {
+    this.goTo(position)
+    this.accelerateTo = speed.toKilometresPerSecond()
+    this.directionTo = direction
   }
 }

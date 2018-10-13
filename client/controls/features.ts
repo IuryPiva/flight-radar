@@ -1,3 +1,5 @@
+/*
+
 let radar = document.getElementById('draw-radar').checked,
       renderRings = document.getElementById('draw-polar').checked,
       drawAirships = document.getElementById('draw-airships').checked,
@@ -14,3 +16,4 @@ let radar = document.getElementById('draw-radar').checked,
     sweep.animateSweep()
   }
 
+*/

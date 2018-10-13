@@ -1,4 +1,5 @@
 import { Airship } from "../airship/airship";
+import { Airships } from "../airship/airships";
 
 export class Table {
   drawn = false
@@ -7,13 +8,18 @@ export class Table {
 
   newRow (airship: Airship) {
     this.tableBody.innerHTML += `
-      <tr id="${airship.id}" onmouseover="window.hovering(this)" onclick="window.rowClick(this)"  onmouseout="window.leaveHovering(this)">
+      <tr id="${airship.id}" onmouseover="hovering(this)" onclick="rowClick(this)"  onmouseout="leaveHovering(this)">
         <th scope="row">${airship.id}</th>
         <td id="${airship.id}position">${airship.position.display()}</td>
         <td id="${airship.id}direction">${airship.direction.display()}</td>
         <td id="${airship.id}speed">${airship.speed.display}</td>
       </tr>`
+    
+    document.getElementById(`#${airship.id}`).addEventListener('click', () => {
+      airship.isSelected = !airship.isSelected
+    })
   }
+
   updateRow (airship: Airship) {
     $(`#${airship.id}position`)[0].innerHTML = airship.position.display()
     $(`#${airship.id}direction`)[0].innerHTML = airship.direction.display()
@@ -21,31 +27,31 @@ export class Table {
   }
 }
 
-(window as any).hovering = function(event) {
-  setHoveringOver(event.id)
+export function hovering (airships: Airships, event) {
+  airships.getAirshipById(event.id).isHover = true
 }
 
-function setHoveringOver(id) {
+export function setHoveringOver(id) {
   hoveringOver.push(id)
 }
 
-function getHoveringOver() {
+export function getHoveringOver() {
   return hoveringOver
 }
 
-(window as any).getSelected = () => {
+export function getSelected () {
   return selected
 }
 
-function deleteHoveringOver(id) {
+export function deleteHoveringOver(id) {
   hoveringOver.splice( hoveringOver.indexOf(id), 1 )
 }
 
-(window as any).leaveHovering = function (event) {
+export function leaveHovering  (event) {
   deleteHoveringOver(event.id)
 }
 
-(window as any).rowClick = function (event) {
+export function rowClick  (event) {
   jQuery(`#${event.id}`).toggleClass('table-dark')
   if(selected.includes(event.id)) {
     selected.splice( selected.indexOf(event.id), 1)
@@ -55,7 +61,7 @@ function deleteHoveringOver(id) {
   buttonsControl()
 }
 
-function buttonsControl(){
+export function buttonsControl(){
   if(selected.length > 0) {
     $('.auto-disabled').prop('disabled', false)
   } else   $('.auto-disabled').prop('disabled', true)

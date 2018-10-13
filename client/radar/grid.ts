@@ -9,7 +9,7 @@ export class Grid {
   limit: {
     top: number,
     right: number,
-    down: number,
+    bottom: number,
     left: number
   }
 
@@ -21,7 +21,7 @@ export class Grid {
 
     this.limit.top = cellsPerAxis / 2
     this.limit.right = cellsPerAxis / 2
-    this.limit.down = cellsPerAxis / 2 * (-1)
+    this.limit.bottom = cellsPerAxis / 2 * (-1)
     this.limit.left = cellsPerAxis / 2 * (-1)
   }
 }

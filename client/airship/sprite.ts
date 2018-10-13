@@ -6,8 +6,8 @@ export class Sprite {
   shadow: HTMLImageElement
   constructor ( speed: KilometresPerHour ) {
     this.black = (<HTMLImageElement>document.createElement('IMG'))
-    this.red = (<HTMLImageElement> document.createElement('IMG'))
-    this.shadow = (<HTMLImageElement> document.createElement('IMG'))
+    this.red = (<HTMLImageElement>document.createElement('IMG'))
+    this.shadow = (<HTMLImageElement>document.createElement('IMG'))
       
     if( speed.value > 250 ) {
       this.black.src = 'airplane.png'

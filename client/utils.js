@@ -18,20 +18,4 @@ function round(num) {
 }
 
 module.exports = {
-  cartToPolar: (cart) => {
-    return {
-      radius: Math.sqrt(Math.pow(cart.x, 2) + Math.pow(cart.y, 2)),
-      angle: radiansToDegrees(Math.atan2(cart.y, cart.x))
-    }
-  },
-
-  polarToCart: (polar) => {
-    const rad = degreesToRadians(polar.angle)
-    const cosRad = round(Math.cos(rad))
-    const sinRad = round(Math.sin(rad))
-    return {
-      y: polar.radius * sinRad,
-      x: polar.radius * cosRad
-    }
-  }
 }
