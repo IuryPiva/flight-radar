@@ -18,11 +18,18 @@ export class Cartesian {
       new Pixel(grid.center.y.value + (this.y * grid.cell.height.value) * (-1))
     )
   }
+  
+  toPolar(): Polar {
+    return new Polar(
+      Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2)),
+      new Radians(Math.atan2(this.y, this.x)).toDegrees()
+    )
+  }
 
   display() {
     return `(${this.x.toFixed(1)},${this.y.toFixed(1)})`
   }
-
+  
   reduce(point: Cartesian) {
     this.x -= point.x
     this.y -= point.y
@@ -38,17 +45,14 @@ export class Cartesian {
     this.y *= point.y
   }
 
-  toPolar(): Polar {
-    return new Polar(
-      Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2)),
-      new Radians(Math.atan2(this.y, this.x)).toDegrees()
-    )
-  }
-
   rotate(angle: Degrees) {
     const original = Object.assign({}, this)
     this.x = this.x * Math.cos(angle.toRadians().value) - (this.y * Math.sin(angle.toRadians().value))
     this.y = original.x * Math.sin(angle.toRadians().value) + (this.y * Math.cos(angle.toRadians().value))
+  }
+
+  distance(point: Cartesian) {
+    return Math.sqrt(Math.pow((point.x - this.x), 2) + Math.pow((point.y - this.y), 2))
   }
 }
 

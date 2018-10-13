@@ -165,4 +165,8 @@ export class Airship {
     this.accelerateTo = speed.toKilometresPerSecond()
     this.directionTo = direction
   }
+
+  timeToPoint(point: Cartesian) {
+    return this.position.distance(point) / this.speed.value
+  }
 }
