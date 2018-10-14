@@ -1,10 +1,9 @@
 import { Airship } from "../airship/airship";
-import { Airships } from "../airship/airships";
 
 export class Table {
   drawn = false
   tableBody = document.getElementById('table-body')
-  constructor () { }
+  selected = []
 
   newRow (airship: Airship) {
     this.tableBody.innerHTML += `
@@ -17,7 +16,23 @@ export class Table {
     
     document.getElementById(`#${airship.id}`).addEventListener('click', () => {
       airship.isSelected = !airship.isSelected
+      if(airship.isSelected) {
+        this.selected.push(airship.id)
+      }
+      this.buttonsControl()
     })
+    document.getElementById(`#${airship.id}`).addEventListener('onmouseover', () => {
+      airship.isHover = true
+    })
+    document.getElementById(`#${airship.id}`).addEventListener('onmouseout', () => {
+      airship.isHover = false
+    })
+  }
+
+  buttonsControl() {
+    if (this.selected.length > 0) {
+      $('.auto-disabled').prop('disabled', false)
+    } else $('.auto-disabled').prop('disabled', true)
   }
 
   updateRow (airship: Airship) {
@@ -25,44 +40,4 @@ export class Table {
     $(`#${airship.id}direction`)[0].innerHTML = airship.direction.display()
     $(`#${airship.id}speed`)[0].innerHTML = airship.speed.display()
   }
-}
-
-export function hovering (airships: Airships, event) {
-  airships.getAirshipById(event.id).isHover = true
-}
-
-export function setHoveringOver(id) {
-  hoveringOver.push(id)
-}
-
-export function getHoveringOver() {
-  return hoveringOver
-}
-
-export function getSelected () {
-  return selected
-}
-
-export function deleteHoveringOver(id) {
-  hoveringOver.splice( hoveringOver.indexOf(id), 1 )
-}
-
-export function leaveHovering  (event) {
-  deleteHoveringOver(event.id)
-}
-
-export function rowClick  (event) {
-  jQuery(`#${event.id}`).toggleClass('table-dark')
-  if(selected.includes(event.id)) {
-    selected.splice( selected.indexOf(event.id), 1)
-  } else {
-    selected.push(event.id)
-  }
-  buttonsControl()
-}
-
-export function buttonsControl(){
-  if(selected.length > 0) {
-    $('.auto-disabled').prop('disabled', false)
-  } else   $('.auto-disabled').prop('disabled', true)
 }

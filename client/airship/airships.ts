@@ -72,4 +72,33 @@ export class AirshipPair {
     )
   }
 
+  secondOnFirstDirection() {
+    return this.first.directionToPoint(this.second.position).value == this.first.direction.value
+  }
+
+  firstOnSecondDirection() {
+    return this.second.directionToPoint(this.first.position).value == this.second.direction.value
+  }
+
+  onTheSameDirection() {
+    return this.first.direction.value == this.second.direction.value
+  }
+  onOppositeDirection() {
+    return this.first.direction.value + this.second.direction.value == 360
+  }
+
+  secondOnReachOfFirst() {
+    return this.first.position.distance(this.second.position)
+    + this.first.calcFurthestPointAhead().distance(this.second.position)
+    == this.first.position.distance(this.first.calcFurthestPointAhead())
+  }
+
+  firstOnReachOfSecond() {
+    return this.second.position.distance(this.first.position)
+    + this.second.calcFurthestPointAhead().distance(this.first.position)
+    == this.second.position.distance(this.second.calcFurthestPointAhead())
+  }
+  differentSpeed() {
+    return this.first.speed.value - this.second.speed.value !== 0
+  }
 }

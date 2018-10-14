@@ -3,6 +3,7 @@ import { getMinDistanceAirport, getMinDistanceAirships, getMinTimeToDanger } fro
 import { Airship } from "../airship/airship";
 import { colinearPointWithinSegment, checkIntersection } from "./collision-avoidance/line-intersect";
 import { Airships, AirshipPair } from "../airship/airships";
+
 export class Tracker {
   airport = new Cartesian(0,0)
   inWarning: string[]
@@ -42,86 +43,57 @@ export class Tracker {
     airships.getPairs().forEach((airshipPair: AirshipPair) => {
       if (
         this.collisionInminent(airshipPair) &&
-        !dangerShow.includes(airshipPair.id)
+        !this.inDanger.includes(airshipPair.id)
       ) {
-        dangerShow.push(airshipPair.id)
+        this.inDanger.push(airshipPair.id)
         // TODO - showAirshipsGoingToCollide(airshipPair)
       } else if (
         !this.collisionInminent(airshipPair) &&
-        dangerShow.includes(airshipPair.id)
+        this.inDanger.includes(airshipPair.id)
       ) {
-        dangerShow.splice(dangerShow.indexOf(airshipPair.id), 1)
+        this.inDanger.splice(this.inDanger.indexOf(airshipPair.id), 1)
         // TODO - hideAirshipsGoingToCollide(airshipPair)
       }
     })
   }
 
   collisionInminent(airshipPair: AirshipPair) {
+    airshipPair.timeToCollide = getMinTimeToDanger() + 1;
     const intersection = airshipPair.checkIntersection()
-  
+
     if (intersection.type == "intersecting") {
       const timeToIntersectionFirst = airshipPair.first.timeToPoint(intersection.point)
       const timeToIntersectionSecond = airshipPair.second.timeToPoint(intersection.point)
 
       airshipPair.timeToCollide = timeToIntersectionFirst > timeToIntersectionSecond ? timeToIntersectionFirst : timeToIntersectionSecond
-
-      if (airshipPair.timeToCollide <= getMinTimeToDanger()) {
-        return true
-      }
-    } 
-    else {
-      const secondOnFirstDirection = airshipPair.first.directionToPoint(airshipPair.second.position) == airshipPair.first.direction
-      const firstOnSecondDirection = airshipPair.second.directionToPoint(airshipPair.first.position) == airshipPair.second.direction
-
-      if (
-        airshipPair.first.position.distance(airshipPair.second.position) + 
-        airshipPair.first.calcFurthestPointAhead().distance(airshipPair.second.position)
-        == airshipPair.first.position.distance(airshipPair.first.calcFurthestPointAhead())
-      ) {
-        airshipPair.timeToCollide = airshipPair.distance() / (-airshipPair.first.speed.value + airshipPair.second.speed.value)
-        if (airshipPair.timeToCollide <= getMinTimeToDanger()) return true
-      }
-
-      if (
-        airshipPair.second.position.distance(airshipPair.first.position) + 
-        airshipPair.second.calcFurthestPointAhead().distance(airshipPair.first.position)
-        == airshipPair.second.position.distance(airshipPair.second.calcFurthestPointAhead())
-      ) {
+    }
+    else if (airshipPair.onOppositeDirection() && (airshipPair.secondOnReachOfFirst() || airshipPair.firstOnReachOfSecond())) {
+      airshipPair.timeToCollide = airshipPair.distance() / (airshipPair.first.speed.value + airshipPair.second.speed.value)
+    }
+    else if(airshipPair.onTheSameDirection() && airshipPair.differentSpeed()) {
+      if (airshipPair.secondOnReachOfFirst()) {
         airshipPair.timeToCollide = airshipPair.distance() / (airshipPair.first.speed.value - airshipPair.second.speed.value)
-        if (airshipPair.timeToCollide <= getMinTimeToDanger()) return true
       }
-      
-      if(firstOnSecondDirection && airshipPair.first.speed.value == 0) {
-        airshipPair.timeToCollide = airshipPair.distance() / airshipPair.second.speed.value
-        if (airshipPair.timeToCollide <= getMinTimeToDanger()) {
-          return true
-        }
-      } else
-      if(secondOnFirstDirection && airshipPair.second.speed.value == 0) {
-        airshipPair.timeToCollide = airshipPair.distance() / airshipPair.first.speed.value
-        if (airshipPair.timeToCollide <= getMinTimeToDanger()) {
-          return true
-        }
-      } else
-      if(firstOnSecondDirection && secondOnFirstDirection) {
-        airshipPair.timeToCollide = airshipPair.distance() / (airshipPair.first.speed.value + airshipPair.second.speed.value)
-        if (airshipPair.timeToCollide <= getMinTimeToDanger()) {
-          return true
-        }
+      if (airshipPair.firstOnReachOfSecond()) {
+        airshipPair.timeToCollide = airshipPair.distance() / (airshipPair.second.speed.value - airshipPair.first.speed.value)
       }
     }
-
-    return false
+    else if(airshipPair.firstOnSecondDirection() && airshipPair.first.speed.value == 0) {
+      airshipPair.timeToCollide = airshipPair.distance() / airshipPair.second.speed.value
+    }
+    else if(airshipPair.secondOnFirstDirection() && airshipPair.second.speed.value == 0) {
+      airshipPair.timeToCollide = airshipPair.distance() / airshipPair.first.speed.value
+    }
+    return airshipPair.timeToCollide <= getMinTimeToDanger()
   }
 }
 
-// TODO IMPROVE THIS PERFORMANCE
-function getInDanger() {
-  const inDanger = []
-  dangerShow.forEach(twoPlanesId => {
-    inDanger.push(_.join(_.slice(twoPlanesId, 0, 6), ''))
-    inDanger.push(_.join(_.slice(twoPlanesId, 6, 12), ''))
-  })
-  return _.uniq(inDanger)
-}
-const dangerShow = []
+// function getInDanger() {
+//   const inDanger = []
+//   dangerShow.forEach(twoPlanesId => {
+//     inDanger.push(_.join(_.slice(twoPlanesId, 0, 6), ''))
+//     inDanger.push(_.join(_.slice(twoPlanesId, 6, 12), ''))
+//   })
+//   return _.uniq(inDanger)
+// }
+// const dangerShow = []

@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="shortcut icon" type="image/png" href="favicon.png"/>
+  <title>Flight Radar ✈</title>
+  <link rel="stylesheet"
+        href="bootstrap.css">
+  <style>
+    canvas {
+      background: #eee;
+    }
+
+    .display-inherit {
+      display: inherit;
+    }
+  </style>
+  <link rel="stylesheet"
+        href="https://cdn.rawgit.com/tonystar/bootstrap-float-label/v4.0.1/dist/bootstrap-float-label.min.css">
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-3">
+  <div class="col">
+    <div class="shadow bg-light rounded">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link active"
+             href="#transformation"
+             role="tab"
+             data-toggle="tab">Transformações</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"
+             href="#tracker"
+             role="tab"
+             data-toggle="tab">Rastreamento</a>
+        </li>
+      </ul>
+      <div class="tab-content">
+        
+              <div role="tabpanel"
+              class="tab-pane active"
+              id="transformation">
+           <div class="p-3 mb-5">
+             <form onsubmit="return false"
+                   class="form-inline mb-3 row">
+               <div class="col-12 mb-3 display-inherit">
+                 <span class="has-float-label">
+                   <div class="input-group">
+                     <input type="text"
+                            class="form-control mr-1"
+                            id="transladar-x">
+                   </div>
+                   <label for="transladar-x">X</label>
+                 </span>
+                 <span class="has-float-label">
+                   <div class="input-group">
+                     <input type="text"
+                            class="form-control mr-1"
+                            id="transladar-y">
+                   </div>
+                   <label for="transladar-y">Y</label>
+                 </span>
+               </div>
+               <div class="col-12">
+                 <button class="btn btn-primary auto-disabled"
+                         type="button"
+                         onclick="transladar()"
+                         disabled>Transladar</button>
+               </div>
+             </form>
+             <hr>
+             <form onsubmit="return false"
+                   class="form-inline mb-3 row">
+               <div class="col-12 mb-3 display-inherit">
+                 <span class="has-float-label">
+                   <div class="input-group">
+                     <input type="text"
+                            class="form-control"
+                            id="escalonar-x">
+                   </div>
+                   <label for="escalonar-x">X</label>
+                 </span>
+                 <span class="has-float-label">
+                   <div class="input-group">
+                     <input type="text"
+                            class="form-control"
+                            id="escalonar-y">
+                   </div>
+                   <label for="escalonar-y">Y</label>
+                 </span>
+               </div>
+               <div class="col-12">
+                 <button class="btn btn-primary auto-disabled"
+                         type="button"
+                         onclick="escalonar()"
+                         disabled>Escalonar</button>
+               </div>
+             </form>
+             <hr>
+             <form onsubmit="return false"
+                   class="form-inline mb-3 row">
+               <div class="col-12 mb-3 display-inherit">
+                 <span class="has-float-label">
+                   <input type="text"
+                          class="form-control mr-1"
+                          id="rotacionar-angulo">
+                   <label for="rotacionar-angulo">Ângulo</label>
+                 </span>
+               </div>
+               <div class="col-12 mb-3 display-inherit">
+                 <span class="has-float-label">
+                   <div class="input-group">
+                     <input type="text"
+                            class="form-control mr-1"
+                            id="rotacionar-x">
+                   </div>
+                   <label for="rotacionar-x">Centro - X</label>
+                 </span>
+                 <span class="has-float-label">
+                   <div class="input-group">
+                     <input type="text"
+                            class="form-control mr-1"
+                            id="rotacionar-y">
+                   </div>
+                   <label for="rotacionar-y">Centro - Y</label>
+                 </span>
+               </div>
+               <div class="col-12">
+                 <button class="btn btn-primary auto-disabled"
+                         type="button"
+                         onclick="rotacionar()"
+                         disabled>Rotacionar</button>
+               </div>
+             </form>
+           </div>
+         </div>
+        <div role="tabpanel"
+     class="tab-pane"
+     id="tracker">
+  <div class="p-3 mb-5">
+    <form onsubmit="return false"
+          id="form-min-distance-airport"
+          class="form-inline mb-3 row">
+      <div class="col-12 mb-3">
+        <span class="has-float-label">
+          <div class="input-group">
+            <input type="number"
+                   class="form-control"
+                   value="1"
+                   min="1"
+                   id="min-distance-airport">
+            <div class="input-group-append">
+              <span class="input-group-text">km</span>
+            </div>
+          </div>
+          <label for="min-distance-airport">Distância mínima Aeroporto</label>
+        </span>
+      </div>
+    </form>
+    <hr>
+    <form onsubmit="return false"
+          class="form-inline mb-3 row">
+      <div class="col-12 mb-3">
+        <span class="has-float-label">
+          <div class="input-group">
+            <input type="number"
+                   class="form-control"
+                   value="2"
+                   min="2"
+                   id="min-distance-airships">
+            <div class="input-group-append">
+              <span class="input-group-text">km</span>
+            </div>
+          </div>
+          <label for="min-distance-airships">Distância mínima</label>
+        </span>
+      </div>
+    </form>
+    <hr>
+    <form onsubmit="return false"
+          class="form-inline mb-3 row">
+      <div class="col-12 mb-3">
+        <span class="has-float-label">
+          <div class="input-group">
+            <input type="number"
+                   class="form-control"
+                   id="min-time"
+                   min="10"
+                   value="10">
+            <div class="input-group-append">
+              <span class="input-group-text">segundos</span>
+            </div>
+          </div>
+          <label for="min-time">Tempo mínimo</label>
+        </span>
+      </div>
+    </form>
+  </div>
+</div>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="shadow bg-light rounded">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link active"
+             href="#inserir-aviao"
+             role="tab"
+             data-toggle="tab">Inserir Avião</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"
+             href="#modificar-aviao"
+             role="tab"
+             data-toggle="tab">Modificar Avião</a>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div role="tabpanel"
+     class="tab-pane active"
+     id="inserir-aviao">
+  <div class="p-3">
+    <form onsubmit="return false"
+          class="form-inline row">
+      <div class="col-12 mb-3 display-inherit">
+        <span class="has-float-label mr-2">
+          <div class="input-group">
+            <input type="text"
+                   class="form-control"
+                   id="inserir-x"
+                   value="0">
+          </div>
+          <label for="inserir-x">X</label>
+        </span>
+        <span class="has-float-label">
+          <div class="input-group">
+            <input type="text"
+                   class="form-control"
+                   id="inserir-y"
+                   value="0">
+          </div>
+          <label for="inserir-y">Y</label>
+        </span>
+      </div>
+
+      <div class="col-12 mb-3 display-inherit">
+        <span class="has-float-label mr-2">
+          <div class="input-group">
+            <input type="text"
+                   class="form-control"
+                   id="inserir-velocidade"
+                   value="0">
+            <div class="input-group-append">
+              <span class="input-group-text">km/h</span>
+            </div>
+          </div>
+          <label for="inserir-velocidade">Velocidade</label>
+        </span>
+        <span class="has-float-label">
+          <div class="input-group">
+            <input type="text"
+                   class="form-control mr-1"
+                   id="inserir-direcao"
+                   value="0">
+          </div>
+          <label for="inserir-direcao">Direção</label>
+        </span>
+      </div>
+
+
+      <div class="col-12">
+        <button class="btn btn-primary"
+                type="button"
+                onclick="window.inserirCart()">Inserir</button>
+      </div>
+    </form>
+  </div>
+  <hr>
+  <div class="p-3 mb-5">
+    <form onsubmit="return false"
+          class="form-inline mb-3 row">
+      <div class="col-12 mb-3 display-inherit">
+        <span class="has-float-label mr-2">
+          <div class="input-group">
+            <input type="text"
+                   class="form-control"
+                   id="inserir-raio"
+                   value="0">
+            <div class="input-group-append">
+              <span class="input-group-text">km</span>
+            </div>
+          </div>
+          <label for="inserir-raio">Raio</label>
+        </span>
+        <span class="has-float-label">
+          <div class="input-group">
+            <input type="text"
+                   class="form-control"
+                   id="inserir-angulo"
+                   value="0">
+          </div>
+          <label for="inserir-angulo">Ângulo</label>
+        </span>
+      </div>
+
+
+      <div class="col-12 mb-3 display-inherit">
+        <span class="has-float-label mr-2">
+          <div class="input-group">
+            <input type="text"
+                   class="form-control"
+                   id="inserir-polar-velocidade"
+                   value="0">
+            <div class="input-group-append">
+              <span class="input-group-text">km/h</span>
+            </div>
+          </div>
+          <label for="inserir-polar-velocidade">Velocidade</label>
+        </span>
+        <span class="has-float-label">
+          <div class="input-group">
+            <input type="text"
+                   class="form-control mr-1"
+                   id="inserir-polar-direcao"
+                   value="0">
+          </div>
+          <label for="inserir-polar-direcao">Direção</label>
+        </span>
+      </div>
+
+
+      <div class="col-12">
+        <button class="btn btn-primary"
+                type="button"
+                onclick="window.inserirPolar()">Inserir</button>
+      </div>
+    </form>
+
+  </div>
+</div>
+        <div role="tabpanel"
+                   class="tab-pane"
+                   id="modificar-aviao">
+                <div class="p-3">
+                  <form onsubmit="return false"
+                        class="form-inline row">
+                    <div class="col-12 mb-3 display-inherit">
+                      <span class="has-float-label mr-2">
+                        <div class="input-group">
+                          <input type="text"
+                                 class="form-control"
+                                 id="modificar-x"
+                                 value="0">
+                        </div>
+                        <label for="modificar-x">X</label>
+                      </span>
+                      <span class="has-float-label">
+                        <div class="input-group">
+                          <input type="text"
+                                 class="form-control"
+                                 id="modificar-y"
+                                 value="0">
+                        </div>
+                        <label for="modificar-y">Y</label>
+                      </span>
+                    </div>
+
+                    <div class="col-12 mb-3 display-inherit">
+                      <span class="has-float-label mr-2">
+                        <div class="input-group">
+                          <input type="text"
+                                 class="form-control"
+                                 id="modificar-velocidade"
+                                 value="0">
+                          <div class="input-group-append">
+                            <span class="input-group-text">km/h</span>
+                          </div>
+                        </div>
+                        <label for="modificar-velocidade">Velocidade</label>
+                      </span>
+                      <span class="has-float-label">
+                        <div class="input-group">
+                          <input type="text"
+                                 class="form-control mr-1"
+                                 id="modificar-direcao"
+                                 value="0">
+                        </div>
+                        <label for="modificar-direcao">Direção</label>
+                      </span>
+                    </div>
+
+
+                    <div class="col-12">
+                      <button class="btn btn-primary auto-disabled"
+                              type="button"
+                              onclick="window.modificarCart()" disabled>Modificar</button>
+                    </div>
+                  </form>
+                </div>
+                <hr>
+                <div class="p-3 mb-5">
+                  <form onsubmit="return false"
+                        class="form-inline mb-3 row">
+                    <div class="col-12 mb-3 display-inherit">
+                      <span class="has-float-label mr-2">
+                        <div class="input-group">
+                          <input type="text"
+                                 class="form-control"
+                                 id="modificar-raio"
+                                 value="0">
+                          <div class="input-group-append">
+                            <span class="input-group-text">km</span>
+                          </div>
+                        </div>
+                        <label for="modificar-raio">Raio</label>
+                      </span>
+                      <span class="has-float-label">
+                        <div class="input-group">
+                          <input type="text"
+                                 class="form-control"
+                                 id="modificar-angulo"
+                                 value="0">
+                        </div>
+                        <label for="modificar-angulo">Ângulo</label>
+                      </span>
+                    </div>
+
+
+                    <div class="col-12 mb-3 display-inherit">
+                        <span class="has-float-label mr-2">
+                          <div class="input-group">
+                            <input type="text"
+                                   class="form-control"
+                                   id="modificar-polar-velocidade"
+                                   value="0">
+                            <div class="input-group-append">
+                              <span class="input-group-text">km/h</span>
+                            </div>
+                          </div>
+                          <label for="modificar-polar-velocidade">Velocidade</label>
+                        </span>
+                        <span class="has-float-label">
+                          <div class="input-group">
+                            <input type="text"
+                                   class="form-control mr-1"
+                                   id="modificar-polar-direcao"
+                                   value="0">
+                          </div>
+                          <label for="modificar-polar-direcao">Direção</label>
+                        </span>
+                      </div>
+  
+  
+                      <div class="col-12">
+                        <button class="btn btn-primary auto-disabled"
+                                type="button"
+                                onclick="window.modificarPolar()" disabled>Modificar</button>
+                      </div>
+                  </form>
+
+                </div>
+              </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="col-5">
+  <canvas id="myCanvas"
+          width="600"
+          height="600"></canvas>
+  <div class="col">
+    <div class="shadow bg-light rounded">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link active"
+             href="#visualizações"
+             role="tab"
+             data-toggle="tab">Visualizações</a>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div role="tabpanel"
+     class="tab-pane active"
+     id="visualizações">
+  <div class="pb-2 mb-5">
+    <form>
+      <div class="col-12 mb-3 col">
+        <div class="col-12 form-check">
+          <input id="draw-grid"
+                 type="checkbox"
+                 class="form-check-input"
+                 checked>
+          <label class="form-check-label"
+                 for="draw-grid">Plano cartesiano</label>
+        </div>
+        <div class="col-12 form-check">
+          <input id="draw-polar"
+                 type="checkbox"
+                 class="form-check-input"
+                 checked>
+          <label class="form-check-label"
+                 for="draw-polar">Plano polar</label>
+        </div>
+        <div class="col-12 form-check">
+          <input id="draw-radar"
+                 type="checkbox"
+                 class="form-check-input">
+          <label class="form-check-label"
+                 for="draw-radar">Radar</label>
+        </div>
+        <div class="col-12 form-check">
+          <input id="draw-airships"
+                 type="checkbox"
+                 class="form-check-input"
+                 checked>
+          <label class="form-check-label"
+                 for="draw-airships">Aviões</label>
+        </div>
+        <div class="col-12 form-check">
+          <input id="animate-airships"
+                 type="checkbox"
+                 class="form-check-input"
+                 checked>
+          <label class="form-check-label"
+                 for="animate-airships">Animações dos aviões</label>
+        </div>
+        <div class="col-12 form-check">
+          <input id="draw-scale-mark"
+                 type="checkbox"
+                 class="form-check-input"
+                 checked>
+          <label class="form-check-label"
+                 for="draw-scale-mark">Escala no canto inferior direito</label>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="col-4">
+  <div class="col"
+             id="right-col">
+          <div class="shadow p-3 mb-5 rounded bg-light">
+            <table class="table table-sm table-hover"
+                   style="font-size: 12px">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Posição</th>
+                  <th>Direção</th>
+                  <th>Velocidade (Km/h)</th>
+                  <th>Altitude</th>
+                </tr>
+              </thead>
+              <tbody id="table-body">
+              </tbody>
+            </table>
+          </div>
+        </div>
+</div>
+    </div>
+    <script src="https://rawgithub.com/soulwire/sketch.js/master/js/sketch.min.js"></script>
+    <script src="dist/main.js"></script>
+<script type="text/javascript" src="./main.js"></script></body>
+
+</html>

@@ -1,5 +1,5 @@
 import 'bootstrap'
-import $ from 'jquery'
+import * as $ from 'jquery'
 import 'jquery-ui'
 (window as any).$ = $
 
@@ -21,8 +21,8 @@ function main() {
   flightRadarCanvas.drawAirships(airships, grid)
 }
 
-setTimeout(() => {
-  table.drawTable()
-  tracker.trackThem()
-  setInterval(main, 1000 / FPS)
-}, 0)
+// setTimeout(() => {
+//   table.drawTable()
+//   tracker.trackThem()
+//   setInterval(main, 1000 / FPS)
+// }, 0)

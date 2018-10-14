@@ -5,7 +5,7 @@ const path = require('path')
 
 app.use(express.static(__dirname + '/public'))
 
-app.get('/app.js', browserify('./client/main.js'))
+app.get('/app.js', browserify('./client/main.ts'))
 
 app.get('/', function(req, res){
   res.render('index.ejs')
