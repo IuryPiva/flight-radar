@@ -3,6 +3,7 @@ import { Cartesian } from "../utils/coordinate";
 import { KilometresPerHour } from "../utils/speed";
 import { Degrees } from "../utils/math";
 import { checkIntersection } from "../controls/collision-avoidance/line-intersect";
+import { Table } from "../controls/table";
 
 export class Airships {
   airships: Airship[]
@@ -46,6 +47,15 @@ export class Airships {
         this.pairs.push(new AirshipPair(this.airships[i],this.airships[j]))
       }
     }
+  }
+
+  animate(table: Table) {
+    this.airships.forEach((airship: Airship) => {
+      airship.accelerate()
+      airship.turn()
+      airship.move()
+      table.updateRow(airship)
+    })
   }
 }
 

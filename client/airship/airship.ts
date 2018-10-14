@@ -7,22 +7,29 @@ import { Grid } from "../radar/grid";
 import { Degrees, Radians } from "../utils/math";
 import { getMinTimeToDanger } from "../controls/collision-avoidance/variables";
 
+interface SpeedLimit {
+  min: KilometresPerHour
+  max: KilometresPerHour
+  
+}
+
 class Limits {
-  speed: {
-    min: KilometresPerHour
-    max: KilometresPerHour
-  }
+  speed: SpeedLimit
   acceleration: MetresPerSecond
   rateOfTurn: Degrees = new Degrees(5.25)
   
   constructor (speed: KilometresPerHour) {
     if (speed.value > 250) {
-      this.speed.max = new KilometresPerHour(1111.32)
-      this.speed.min = new KilometresPerHour(251)
+      this.speed = {
+        max: new KilometresPerHour(1111.32),
+        min: new KilometresPerHour(251),
+      }
       this.acceleration = new MetresPerSecond(14.7)
     } else {
-      this.speed.max = new KilometresPerHour(250)
-      this.speed.min = new KilometresPerHour(0)
+      this.speed = {
+        max: new KilometresPerHour(250),
+        min: new KilometresPerHour(0),
+      }
       this.acceleration = new MetresPerSecond(11.11)
     }
   }
@@ -53,6 +60,9 @@ export class Airship {
     this.speed = speed.toKilometresPerSecond()
     this.sprite = new Sprite(speed)
     this.limits = new Limits(speed)
+    this.moveTo = null
+    this.turnTo = null
+    this.directionTo = null
   }
 
   private shouldBlink() {
@@ -126,7 +136,6 @@ export class Airship {
 
   directionToPoint(point: Cartesian): Degrees {
     const pointClone: Cartesian = Object.assign({}, point)
-
     pointClone.reduce(this.position)
 
     return new Radians(Math.atan2(pointClone.y, pointClone.x)).toDegrees()

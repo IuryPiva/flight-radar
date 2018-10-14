@@ -1,27 +1,34 @@
 import { Pixel, PixelCoordinate } from "../canvas";
 
+interface GridCell {
+  width: Pixel
+  height: Pixel
+}
+
+interface GridLimit {
+  top: number
+  right: number
+  bottom: number
+  left: number
+}
+
 export class Grid {
-  cell: {
-    width: Pixel,
-    height: Pixel,
-  }
+  cell: GridCell
   center: PixelCoordinate
-  limit: {
-    top: number,
-    right: number,
-    bottom: number,
-    left: number
-  }
+  limit: GridLimit
 
   constructor (canvas: HTMLCanvasElement, cellsPerAxis: number) {
-    this.cell.width = new Pixel(canvas.width / cellsPerAxis)
-    this.cell.height = new Pixel(canvas.height / cellsPerAxis)
-    
+    this.cell = {
+      width: new Pixel(canvas.width / cellsPerAxis),
+      height: new Pixel(canvas.height / cellsPerAxis)
+    }
     this.center = new PixelCoordinate(new Pixel(canvas.width / 2), new Pixel(canvas.height / 2))
 
-    this.limit.top = cellsPerAxis / 2
-    this.limit.right = cellsPerAxis / 2
-    this.limit.bottom = cellsPerAxis / 2 * (-1)
-    this.limit.left = cellsPerAxis / 2 * (-1)
+    this.limit = {
+      top: cellsPerAxis / 2,
+      right: cellsPerAxis / 2,
+      bottom: cellsPerAxis / 2 * (-1),
+      left: cellsPerAxis / 2 * (-1),
+    }
   }
 }

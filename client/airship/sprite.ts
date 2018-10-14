@@ -10,13 +10,13 @@ export class Sprite {
     this.shadow = (<HTMLImageElement>document.createElement('IMG'))
       
     if( speed.value > 250 ) {
-      this.black.src = 'airplane.png'
-      this.red.src = 'airplane-red.png'
-      this.shadow.src = 'airplane-shadow.png'
+      this.black.src = 'client/assets/airplane.png'
+      this.red.src = 'client/assets/airplane-red.png'
+      this.shadow.src = 'client/assets/airplane-shadow.png'
     } else {
-      this.black.src = 'helicopter.png'
-      this.red.src = 'helicopter-red.png'
-      this.shadow.src = 'helicopter-shadow.png'
+      this.black.src = 'client/assets/helicopter.png'
+      this.red.src = 'client/assets/helicopter-red.png'
+      this.shadow.src = 'client/assets/helicopter-shadow.png'
     }
   }
 }

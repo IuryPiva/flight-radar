@@ -1,11 +1,11 @@
 import { getNumberFromInput } from "../../utils/document";
 
 export function getMinTimeToDanger () {
-  return getNumberFromInput('minTimeToDanger')
+  return getNumberFromInput('min-time-to-danger')
 }
 export function getMinDistanceAirport() {
-  return getNumberFromInput('minDistanceAirport')
+  return getNumberFromInput('min-distance-airport')
 }
 export function getMinDistanceAirships() {
-  return getNumberFromInput('minDistanceAirships')
+  return getNumberFromInput('min-distance-airships')
 }

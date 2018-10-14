@@ -27,7 +27,7 @@ export class Cartesian {
   }
 
   display() {
-    return `(${this.x.toFixed(1)},${this.y.toFixed(1)})`
+    return `(${Number(this.x.toFixed(1))},${Number(this.y.toFixed(1))})`
   }
   
   reduce(point: Cartesian) {

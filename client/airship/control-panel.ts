@@ -4,37 +4,45 @@ import { Degrees } from "../utils/math";
 import { KilometresPerHour } from "../utils/speed";
 import { Airship } from "./airship";
 import { getNumberFromInput } from "../utils/document";
+import { Table } from "../controls/table";
 
-export function addControlPanelEventListeners (airships: Airships) {
-  document.getElementById('inserirCart').addEventListener('submit', () => {
+export function addControlPanelEventListeners (airships: Airships, table: Table) {
+  document.getElementById('inserir-cart').addEventListener('submit', (event) => {
+    event.preventDefault()
     const x = getNumberFromInput('inserir-x')
     const y = getNumberFromInput('inserir-y')
   
     const direction = getNumberFromInput('inserir-direcao')
     const speed = getNumberFromInput('inserir-velocidade')
-  
-    airships.add(new Airship(
+    
+    const airship = new Airship(
       new Cartesian(x, y),
       new Degrees(direction),
       new KilometresPerHour(speed)
-    ))
+    )
+    table.newRow(airship)
+    airships.add(airship)
   })
 
-  document.getElementById('inserirPolar').addEventListener('submit', () => {
+  document.getElementById('inserir-polar').addEventListener('submit', (event) => {
+    event.preventDefault()
     const radius = getNumberFromInput('inserir-raio')
     const angle = getNumberFromInput('inserir-angulo')
   
     const direction = getNumberFromInput('inserir-polar-direcao')
     const speed = getNumberFromInput('inserir-polar-velocidade')
     
-    airships.add(new Airship(
+    const airship = new Airship(
       new Polar(radius, new Degrees(angle)).toCartesian(),
       new Degrees(direction),
       new KilometresPerHour(speed)
-    ))
+    )
+    table.newRow(airship)
+    airships.add(airship)
   })
 
-  document.getElementById('modificarCart').addEventListener('submit', () => {
+  document.getElementById('modificar-cart').addEventListener('submit', (event) => {
+    event.preventDefault()
     const x = getNumberFromInput('modificar-x')
     const y = getNumberFromInput('modificar-y')
     
@@ -48,7 +56,8 @@ export function addControlPanelEventListeners (airships: Airships) {
     )
   })
 
-  document.getElementById('modificarPolar').addEventListener('submit', () => {
+  document.getElementById('modificar-polar').addEventListener('submit', (event) => {
+    event.preventDefault()
     const radius = getNumberFromInput('modificar-raio')
     const angle = getNumberFromInput('modificar-angulo')
   

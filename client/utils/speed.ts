@@ -3,7 +3,7 @@ class Speed {
   abbreviation: string
 
   display() {
-    return `${this.value.toFixed(1)} ${this.abbreviation}`
+    return `${Number(this.value.toFixed(1))}`
   }
 }
 export class KilometresPerSecond extends Speed {

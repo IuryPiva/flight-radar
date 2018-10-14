@@ -5,7 +5,8 @@ import { Degrees } from "../utils/math";
 import { getNumberFromInput } from "../utils/document";
 
 export function addTransformationEventListeners(airships: Airships) {
-  document.getElementById('transladar').addEventListener('submit', () => {
+  document.getElementById('transladar').addEventListener('submit', (event) => {
+    event.preventDefault()
     const point = new Cartesian(getNumberFromInput('transladar-x'),getNumberFromInput('transladar-y'))
 
     airships.getSelected().getAll().forEach(
@@ -17,7 +18,8 @@ export function addTransformationEventListeners(airships: Airships) {
     )
   })
 
-  document.getElementById('escalonar').addEventListener('submit', () => {
+  document.getElementById('escalonar').addEventListener('submit', (event) => {
+    event.preventDefault()
     const point = new Cartesian(getNumberFromInput('escalonar-x'),getNumberFromInput('escalonar-y'))
     
     airships.getSelected().getAll().forEach(
@@ -29,7 +31,8 @@ export function addTransformationEventListeners(airships: Airships) {
     )
   })
 
-  document.getElementById('rotacionar').addEventListener('submit', () => {
+  document.getElementById('rotacionar').addEventListener('submit', (event) => {
+    event.preventDefault()
     const point = new Cartesian(getNumberFromInput('rotacionar-x'),getNumberFromInput('rotacionar-y'))
     const angle = new Degrees(getNumberFromInput('rotacionar-angulo'))
     
