@@ -1,6 +1,7 @@
 import { PixelCoordinate, Pixel } from "../canvas";
 import { Grid } from "../radar/grid";
 import { Degrees, Radians } from "./math";
+import { copyInstance } from "./clone";
 
 export class Cartesian {
   private _Cartesian: Cartesian
@@ -46,7 +47,7 @@ export class Cartesian {
   }
 
   rotate(angle: Degrees) {
-    const original = Object.assign({}, this)
+    const original = copyInstance(this)
     this.x = this.x * Math.cos(angle.toRadians().value) - (this.y * Math.sin(angle.toRadians().value))
     this.y = original.x * Math.sin(angle.toRadians().value) + (this.y * Math.cos(angle.toRadians().value))
   }

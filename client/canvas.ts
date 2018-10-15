@@ -18,6 +18,10 @@ export class Pixel {
   inScale(cellSize: Pixel) {
     return this.value / cellSize.value
   }
+  
+  half() {
+    return new Pixel(this.value / 2)
+  }
 }
 
 export class PixelCoordinate {
@@ -106,12 +110,12 @@ export class FlightRadarCanvas {
 
   castAirshipShadow (airship: Airship, grid: Grid) {
     const pixel = airship.position.toPixelCoordinate(grid).toNumber()
-    const rad: Radians = airship.direction.toRadians()
+    const rad = airship.direction.toRadians().value * (-1)
     this.ctx.save()
     this.ctx.beginPath()
     this.ctx.translate(pixel.x, pixel.y)
     this.ctx.translate(0, 0)
-    this.ctx.rotate(rad.value)
+    this.ctx.rotate(rad)
     this.ctx.drawImage(airship.sprite.shadow, - airship.width.value / 2, - airship.height.value / 2)
     this.ctx.restore()
   }
@@ -134,7 +138,7 @@ export class FlightRadarCanvas {
   
   drawAirship (airship: Airship, grid: Grid) {
     const pixel = airship.position.toPixelCoordinate(grid).toNumber()
-    const rad: Radians = airship.direction.toRadians()
+    const rad = airship.direction.toRadians().value * (-1)
     this.ctx.save()
     this.ctx.beginPath()
     this.ctx.font = '12px Georgia'
@@ -142,7 +146,7 @@ export class FlightRadarCanvas {
     this.ctx.fillText(airship.id, pixel.x + airship.width.value / 2, pixel.y - airship.height.value / 2)
     this.ctx.translate(pixel.x, pixel.y - airship.height.value * 1.5)
     this.ctx.translate(0, 0)
-    this.ctx.rotate(rad.value)
+    this.ctx.rotate(rad)
     this.ctx.drawImage(airship.getSprite(), -airship.width.value / 2, -airship.height.value / 2)
     this.ctx.restore()
   }

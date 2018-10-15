@@ -5,8 +5,7 @@
   "main": "server.js",
   "scripts": {
     "build": "webpack --mode production",
-    "start": "webpack --mode development --watch",
-    "dev": "webpack-dev-server --hot --inline --mode development"
+    "start": "webpack-dev-server --hot --inline --mode development"
   },
   "keywords": [],
   "author": "",

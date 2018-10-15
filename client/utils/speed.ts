@@ -47,6 +47,6 @@ export class MetresPerSecond extends Speed {
   }
   
   public toKilometresPerSecond?(): KilometresPerSecond {
-    return new KilometresPerSecond(this.value * 1000)
+    return new KilometresPerSecond(this.value / 1000)
   }
 }

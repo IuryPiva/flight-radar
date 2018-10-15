@@ -1,24 +1,64 @@
 import { Cartesian } from "../utils/coordinate";
 import { getMinDistanceAirport, getMinDistanceAirships, getMinTimeToDanger } from "./collision-avoidance/variables";
 import { Airship } from "../airship/airship";
-import { colinearPointWithinSegment, checkIntersection } from "./collision-avoidance/line-intersect";
 import { Airships, AirshipPair } from "../airship/airships";
+import { Feedback } from "./feedback";
+import { equalsWithErrorMargin } from "../utils/math";
 
 export class Tracker {
   airport = new Cartesian(0,0)
-  inWarning: string[]
-  inDanger: string[]
+  inWarning: string[] = []
+  inDanger: string[] = []
+  inAirportDistance: string[] = []
+  inAirportDirection: string[] = []
+  feedback = new Feedback()
 
-  isCloseToAirport(airship: Airship) {
-    return airship.position.distance(this.airport) < getMinDistanceAirport()
+  trackThem(airships: Airships) {
+    this.isCloseToAirport(airships)
+    this.isCloseToEachOther(airships)
+    this.isGoingToCollide(airships)
+    this.isGoingToCollideWithAirport(airships)
   }
 
-  isGoingToCollideWithAirport(airship: Airship) {
-    const intersection = colinearPointWithinSegment(this.airport, airship.position, airship.calcFurthestPointAhead())
-  
-    if (intersection) {
-      // TODO - alert('morreu')
-    }
+  isCloseToAirport(airships: Airships) {
+    airships.getAll().forEach((airship: Airship) => {
+      if (
+        airship.position.distance(this.airport) < getMinDistanceAirport()
+        && !this.inAirportDistance.includes(airship.id)
+      ) {
+        this.inAirportDistance.push(airship.id)
+        this.feedback.showAirshipCloseToAirportInfo(airship)
+      } else if (
+        airship.position.distance(this.airport) > getMinDistanceAirport()
+        && this.inAirportDistance.includes(airship.id)
+      ) {
+        this.inAirportDistance.splice(this.inAirportDistance.indexOf(airship.id), 1)
+        this.feedback.hideAirshipCloseToAirportInfo(airship)
+      }
+    })
+  }
+
+  isGoingToCollideWithAirport(airships: Airships) {
+    airships.getAll().forEach((airship: Airship) => {
+      const airportIntersection = equalsWithErrorMargin(
+        airship.position.distance(this.airport) + airship.calcFurthestPointAhead().distance(this.airport),
+        airship.position.distance(airship.calcFurthestPointAhead()),
+        1/100
+      )
+      if (
+        airportIntersection
+        && !this.inAirportDirection.includes(airship.id)
+      ) {
+        this.inAirportDirection.push(airship.id)
+        this.feedback.showAirshipGoingToCollideWithAirport(airship)
+      } else if (
+        !airportIntersection
+        && this.inAirportDirection.includes(airship.id)
+      ) {
+        this.inAirportDirection.splice(this.inAirportDirection.indexOf(airship.id), 1)
+        this.feedback.hideAirshipGoingToCollideWithAirport(airship)
+      }
+    })
   }
 
   isCloseToEachOther(airships: Airships) {
@@ -28,13 +68,13 @@ export class Tracker {
         !this.inWarning.includes(airshipPair.id)
       ) {
         this.inWarning.push(airshipPair.id)
-        // TODO - showAirshipCloseToAirshipWarning(airshipPair)
+        this.feedback.showAirshipCloseToAirshipWarning(airshipPair)
       } else if (
         airshipPair.distance() > getMinDistanceAirships() &&
         this.inWarning.includes(airshipPair.id)
       ) {
         this.inWarning.splice(this.inWarning.indexOf(airshipPair.id), 1)
-        // TODO - hideAirshipCloseToAirshipWarning(airshipPair)
+        this.feedback.hideAirshipCloseToAirshipWarning(airshipPair)
       }
     })
   }
@@ -46,13 +86,13 @@ export class Tracker {
         !this.inDanger.includes(airshipPair.id)
       ) {
         this.inDanger.push(airshipPair.id)
-        // TODO - showAirshipsGoingToCollide(airshipPair)
+        this.feedback.showAirshipsGoingToCollide(airshipPair)
       } else if (
         !this.collisionInminent(airshipPair) &&
         this.inDanger.includes(airshipPair.id)
       ) {
         this.inDanger.splice(this.inDanger.indexOf(airshipPair.id), 1)
-        // TODO - hideAirshipsGoingToCollide(airshipPair)
+        this.feedback.hideAirshipsGoingToCollide(airshipPair)
       }
     })
   }

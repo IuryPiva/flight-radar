@@ -19,3 +19,11 @@ export function randomHexColor(): string {
 export function randomFlightId (): string {
   return `${randomLetter()}${randomLetter()}${randomLetter()}${randomNumber()}${randomNumber()}${randomNumber()}`
 }
+
+/**
+ * 
+ * @param percentage input 20% should be 20
+**/
+export function randomByChance(percentage: number) {
+  return Math.floor(Math.random() * 100) < percentage
+}

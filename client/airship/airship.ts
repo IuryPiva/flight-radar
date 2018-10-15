@@ -6,6 +6,7 @@ import { Pixel, FPS } from "../canvas";
 import { Grid } from "../radar/grid";
 import { Degrees, Radians } from "../utils/math";
 import { getMinTimeToDanger } from "../controls/collision-avoidance/variables";
+import { copyInstance } from "../utils/clone";
 
 interface SpeedLimit {
   min: KilometresPerHour
@@ -18,8 +19,8 @@ class Limits {
   acceleration: MetresPerSecond
   rateOfTurn: Degrees = new Degrees(5.25)
   
-  constructor (speed: KilometresPerHour) {
-    if (speed.value > 250) {
+  constructor (type: string) {
+    if (type == 'avião') {
       this.speed = {
         max: new KilometresPerHour(1111.32),
         min: new KilometresPerHour(251),
@@ -27,7 +28,7 @@ class Limits {
       this.acceleration = new MetresPerSecond(14.7)
     } else {
       this.speed = {
-        max: new KilometresPerHour(250),
+        max: new KilometresPerHour(287),
         min: new KilometresPerHour(0),
       }
       this.acceleration = new MetresPerSecond(11.11)
@@ -37,6 +38,7 @@ class Limits {
 
 export class Airship {
   id: string
+  type: string
   position: Cartesian
   direction: Degrees
   speed: KilometresPerSecond
@@ -58,11 +60,13 @@ export class Airship {
     this.direction = direction
     this.position = position
     this.speed = speed.toKilometresPerSecond()
-    this.sprite = new Sprite(speed)
-    this.limits = new Limits(speed)
+    this.type = speed.value > 250 ? 'avião' : 'helicóptero'
+    this.sprite = new Sprite(this.type)
+    this.limits = new Limits(this.type)
     this.moveTo = null
     this.turnTo = null
     this.directionTo = null
+    this.accelerateTo = null
   }
 
   private shouldBlink() {
@@ -91,8 +95,8 @@ export class Airship {
 
   calcNosePosition( grid: Grid ) {
     return new Cartesian(
-      this.position.x + (this.width.inScale(grid.cell.width)) * (Math.cos(this.direction.value)),
-      this.position.y + (this.height.inScale(grid.cell.height)) * -(Math.sin(this.direction.value))
+      this.position.x + (this.width.half().inScale(grid.cell.width) * (Math.cos(this.direction.toRadians().value))),
+      this.position.y + (this.height.half().inScale(grid.cell.height) * (Math.sin(this.direction.toRadians().value)))
     )
   }
 
@@ -103,7 +107,7 @@ export class Airship {
 
     return new Cartesian(
       this.position.x + effectiveSpeed * Math.cos(this.direction.toRadians().value),
-      this.position.y + effectiveSpeed * -Math.sin(this.direction.toRadians().value)
+      this.position.y + effectiveSpeed * Math.sin(this.direction.toRadians().value)
     )
   }
 
@@ -111,31 +115,31 @@ export class Airship {
     const effectiveSpeed = this.speed.value / FPS
 
     this.position.x = this.position.x + effectiveSpeed * Math.cos(this.direction.toRadians().value)
-    this.position.y = this.position.y + effectiveSpeed * -Math.sin(this.direction.toRadians().value)
+    this.position.y = this.position.y + effectiveSpeed * Math.sin(this.direction.toRadians().value)
   }
 
   accelerate() {
     if (this.accelerateTo === null) {
       return false
-    } else if (this.accelerateTo > this.speed) {
-      if (this.speed.value + (this.limits.acceleration.value / FPS) > this.accelerateTo.value) {
+    } else if (this.accelerateTo.value > this.speed.value) {
+      if (this.speed.value + (this.limits.acceleration.toKilometresPerSecond().value / FPS) > this.accelerateTo.value) {
         this.speed = this.accelerateTo
         this.accelerateTo = null
       } else {
-        this.speed.value += (this.limits.acceleration.value / FPS)
+        this.speed.value += (this.limits.acceleration.toKilometresPerSecond().value / FPS)
       }
-    } else if (this.accelerateTo < this.speed) {
-      if (this.speed.value - (this.limits.acceleration.value / FPS) < this.accelerateTo.value) {
+    } else if (this.accelerateTo.value < this.speed.value) {
+      if (this.speed.value - (this.limits.acceleration.toKilometresPerSecond().value / FPS) < this.accelerateTo.value) {
         this.speed = this.accelerateTo
         this.accelerateTo = null
       } else {
-        this.speed .value -= (this.limits.acceleration.value / FPS)
+        this.speed .value -= (this.limits.acceleration.toKilometresPerSecond().value / FPS)
       }
     }
   }
 
   directionToPoint(point: Cartesian): Degrees {
-    const pointClone: Cartesian = Object.assign({}, point)
+    const pointClone: Cartesian = copyInstance(point)
     pointClone.reduce(this.position)
 
     return new Radians(Math.atan2(pointClone.y, pointClone.x)).toDegrees()
@@ -145,7 +149,7 @@ export class Airship {
     if (this.turnTo === null) return;
     
     let difference: Degrees = new Degrees(this.directionToPoint(this.turnTo).value - this.direction.value)
-    const airshipClone = Object.assign({}, this)
+    const airshipClone = copyInstance(this)
 
     if (difference.isCounterClockWise()) {
       airshipClone.direction.set(airshipClone.direction.value + this.limits.rateOfTurn.value / FPS)
@@ -170,6 +174,9 @@ export class Airship {
   }
 
   set(position: Cartesian, direction: Degrees, speed: KilometresPerHour) {
+    if (speed.value < this.limits.speed.min.value) return window.alert(`Esta velocidade é menor que a mínima (${this.limits.speed.min.display()}) para um ${this.type} se manter no ar.`)
+    if (speed.value > this.limits.speed.max.value) return window.alert(`Esta velocidade é maior que a máxima (${this.limits.speed.max.display()}) para um ${this.type} comercial.`)
+
     this.goTo(position)
     this.accelerateTo = speed.toKilometresPerSecond()
     this.directionTo = direction

@@ -3,9 +3,11 @@ import { Cartesian } from "../utils/coordinate";
 import { Airship } from "../airship/airship";
 import { Degrees } from "../utils/math";
 import { getNumberFromInput } from "../utils/document";
+import { copyInstance } from "../utils/clone";
 
 export function addTransformationEventListeners(airships: Airships) {
   document.getElementById('transladar').addEventListener('submit', (event) => {
+    debugger
     event.preventDefault()
     const point = new Cartesian(getNumberFromInput('transladar-x'),getNumberFromInput('transladar-y'))
 
@@ -38,7 +40,7 @@ export function addTransformationEventListeners(airships: Airships) {
     
     airships.getSelected().getAll().forEach(
       (airship: Airship) => {
-        const resultantPosition = Object.assign({}, airship.position)
+        const resultantPosition = copyInstance(airship.position)
         resultantPosition.reduce(point)
         resultantPosition.rotate(angle)
         resultantPosition.translate(point)

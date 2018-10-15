@@ -1,13 +1,13 @@
 import { Airship } from "./airship";
 import { Cartesian } from "../utils/coordinate";
 import { KilometresPerHour } from "../utils/speed";
-import { Degrees } from "../utils/math";
+import { Degrees, equalsWithErrorMargin } from "../utils/math";
 import { checkIntersection } from "../controls/collision-avoidance/line-intersect";
 import { Table } from "../controls/table";
 
 export class Airships {
-  airships: Airship[]
-  pairs: AirshipPair[]
+  airships: Airship[] = []
+  pairs: AirshipPair[] = []
 
   constructor (airships: Airship[]) {
     this.airships = airships
@@ -98,16 +98,23 @@ export class AirshipPair {
   }
 
   secondOnReachOfFirst() {
-    return this.first.position.distance(this.second.position)
-    + this.first.calcFurthestPointAhead().distance(this.second.position)
-    == this.first.position.distance(this.first.calcFurthestPointAhead())
+    return equalsWithErrorMargin(
+      this.first.position.distance(this.second.position)
+      + this.first.calcFurthestPointAhead().distance(this.second.position),
+      this.first.position.distance(this.first.calcFurthestPointAhead()),
+      1/100
+    )
   }
 
   firstOnReachOfSecond() {
-    return this.second.position.distance(this.first.position)
-    + this.second.calcFurthestPointAhead().distance(this.first.position)
-    == this.second.position.distance(this.second.calcFurthestPointAhead())
+    return equalsWithErrorMargin(
+      this.second.position.distance(this.first.position)
+      + this.second.calcFurthestPointAhead().distance(this.first.position),
+      this.second.position.distance(this.second.calcFurthestPointAhead()),
+      1/100
+    )
   }
+
   differentSpeed() {
     return this.first.speed.value - this.second.speed.value !== 0
   }

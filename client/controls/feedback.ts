@@ -3,11 +3,8 @@ import { AirshipPair } from "../airship/airships";
 import { getMinDistanceAirships, getMinDistanceAirport, getMinTimeToDanger } from "./collision-avoidance/variables";
 
 export class Feedback {
-  rightCol: JQuery<HTMLElement>
-
-  construct () {
-    this.rightCol = $('#right-col')
-  }
+  rightCol: JQuery<HTMLElement> =  $('#right-col')
+  
   showAirshipCloseToAirportInfo(airship: Airship) {
     this.rightCol.append(
       `<div id="${airship.id}info" class="alert alert-info" role="alert">
@@ -19,6 +16,17 @@ export class Feedback {
     $(`#${airship.id}info`).remove()
   }
 
+  showAirshipGoingToCollideWithAirport(airship: Airship) {
+    this.rightCol.append(
+      `<div id="${airship.id}secondary" class="alert alert-secondary" role="alert">
+        <strong>Em direção ao aeroporto!</strong> O avião ${airship.id} está indo em direção ao aeroporto.
+      </div>`
+    )
+  }
+  hideAirshipGoingToCollideWithAirport(airship: Airship) {
+    $(`#${airship.id}secondary`).remove()
+  }
+
   showAirshipCloseToAirshipWarning(airshipPair: AirshipPair) {
     this.rightCol.append(
       `<div id="${airshipPair.id}warning" class="alert alert-warning" role="alert">
@@ -26,7 +34,6 @@ export class Feedback {
       </div>`
     )
   }
-
   hideAirshipCloseToAirshipWarning(airshipPair: AirshipPair) {
     $(`#${airshipPair.id}warning`).remove()
   }
@@ -38,7 +45,6 @@ export class Feedback {
       </div>`
     )
   }
-
   hideAirshipsGoingToCollide(airshipPair: AirshipPair) {
     $(`#${airshipPair.id}danger`).remove()
   }

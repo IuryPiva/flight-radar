@@ -20,7 +20,7 @@ export class Degrees {
   }
 
   display() {
-    return `${this.value}˚`
+    return `${Number(this.value.toFixed(1))}˚`
   }
 
   isClockWise() {
@@ -47,4 +47,13 @@ export class Radians {
   toDegrees() {
     return new Degrees(this.value * 180 / Math.PI)
   }
+}
+/**
+ * 
+ * @param value 
+ * @param test
+ * @param margin per cent number eg: for 1% the input should be 1/100
+ */
+export function equalsWithErrorMargin(value: number, test: number, margin: number) {
+  return value >= test - (test * margin) && value <= test + (test * margin)
 }

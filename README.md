@@ -18,11 +18,11 @@
 - [x] Demonstrar altitude - Sombra
 - [x] Input para adicionar aviões manualmente
 - [x] Input para modificar aviões manualmente
-- [ ] Rota de colisão com aeroporto
+- [x] Rota de colisão com aeroporto
 - [x] Aceleração máxima 
 - [x] Angulo de curva máximo 
-- [ ] Aceleração angular das asas em relação ao eixo x
-- [ ] Velocidade minima dos aviões - parcial, vira um helicoptero hehe
-- [ ] Explicação das funcionalidades
+- [x] Rate of turn
+- [x] Funções de transformação direcionam o avião para o ponto resultante dentro das limitações do avião
+- [ ] Velocidade minima dos aviões
+- [ ] Avião chegar no ponto destino na direção informada
 - [ ] Tomada de decisão em caso de colisão iminente
-- [ ] Funções de transformação direcionam o avião para o ponto resultante dentro das limitações do avião
