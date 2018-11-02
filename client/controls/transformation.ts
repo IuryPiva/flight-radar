@@ -7,7 +7,6 @@ import { copyInstance } from "../utils/clone";
 
 export function addTransformationEventListeners(airships: Airships) {
   document.getElementById('transladar').addEventListener('submit', (event) => {
-    debugger
     event.preventDefault()
     const point = new Cartesian(getNumberFromInput('transladar-x'),getNumberFromInput('transladar-y'))
 

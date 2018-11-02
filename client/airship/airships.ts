@@ -2,18 +2,24 @@ import { Airship } from "./airship";
 import { Cartesian } from "../utils/coordinate";
 import { KilometresPerHour } from "../utils/speed";
 import { Degrees, equalsWithErrorMargin } from "../utils/math";
-import { checkIntersection } from "../controls/collision-avoidance/line-intersect";
+import { checkLinesIntersection } from "../controls/collision-avoidance/line-intersect";
 import { Table } from "../controls/table";
+import { randomCartesian, randomKilometresPerHour, randomDegrees } from "../random";
 
 export class Airships {
   airships: Airship[] = []
   pairs: AirshipPair[] = []
+  table: Table
 
-  constructor (airships: Airship[]) {
-    this.airships = airships
+  constructor (table?: Table, airships?: Airship[]) {
+    this.table = table
+    airships.forEach(airship => {
+      this.add(airship)
+    })
   }
   
   add(airship: Airship) {
+    this.table ? this.table.newRow(airship) : ''
     this.airships.push(airship)
     this.makePairs()
   }
@@ -27,13 +33,13 @@ export class Airships {
   }
 
   setAll(position: Cartesian, direction: Degrees, speed: KilometresPerHour) {
-    this.getAll().forEach( (airship: Airship) => {
+    this.getAll().forEach((airship: Airship) => {
       airship.set(position, direction, speed)
     })
   }
 
   getSelected(): Airships {
-    return new Airships(this.airships.filter(airship => airship.isSelected))
+    return new Airships(null, this.airships.filter(airship => airship.isSelected))
   }
 
   getPairs(): AirshipPair[] {
@@ -59,11 +65,16 @@ export class Airships {
   }
 }
 
+interface AvoidCollisionMode {
+  on: boolean
+}
+
 export class AirshipPair {
   first: Airship
   second: Airship
   id: string
   timeToCollide: number
+  avoidCollisionMode: AvoidCollisionMode = { on: false }
 
   constructor (first: Airship, second: Airship) {
     this.first = first
@@ -71,12 +82,23 @@ export class AirshipPair {
     this.id = `${first.id}${second.id}`
   }
 
+  setCollisionMode(input: boolean) {
+    if(input) {
+      this.avoidCollisionMode.on = true
+      this.first.saveHistory()
+      this.second.saveHistory()
+    } else {
+      this.first.restoreFromHistory()
+      this.second.restoreFromHistory()
+    }
+  }
+
   distance() {
     return this.first.position.distance(this.second.position)
   }
 
   checkIntersection() {
-    return checkIntersection(
+    return checkLinesIntersection(
       this.first.position, this.first.calcFurthestPointAhead(),
       this.second.position, this.second.calcFurthestPointAhead()
     )
@@ -117,5 +139,27 @@ export class AirshipPair {
 
   differentSpeed() {
     return this.first.speed.value - this.second.speed.value !== 0
+  }
+
+  angleBetween() {
+    return Math.abs(this.first.direction.value - this.second.direction.value)
+  }
+
+  fastest() : Airship {
+    if(this.first.speed.value == this.second.speed.value) return this.first
+    if(this.first.speed.value > this.second.speed.value) {
+      return this.first
+    } else {
+      return this.second
+    }
+  }
+
+  slowest() : Airship {
+    if(this.first.speed.value == this.second.speed.value) return this.second
+    if(this.first.speed.value > this.second.speed.value) {
+      return this.second
+    } else {
+      return this.first
+    }
   }
 }

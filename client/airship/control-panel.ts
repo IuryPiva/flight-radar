@@ -4,9 +4,9 @@ import { Degrees } from "../utils/math";
 import { KilometresPerHour } from "../utils/speed";
 import { Airship } from "./airship";
 import { getNumberFromInput } from "../utils/document";
-import { Table } from "../controls/table";
+import { randomAirship } from "../random";
 
-export function addControlPanelEventListeners (airships: Airships, table: Table) {
+export function addControlPanelEventListeners (airships: Airships) {
   document.getElementById('inserir-cart').addEventListener('submit', (event) => {
     event.preventDefault()
     const x = getNumberFromInput('inserir-x')
@@ -20,7 +20,6 @@ export function addControlPanelEventListeners (airships: Airships, table: Table)
       new Degrees(direction),
       new KilometresPerHour(speed)
     )
-    table.newRow(airship)
     airships.add(airship)
   })
 
@@ -37,7 +36,6 @@ export function addControlPanelEventListeners (airships: Airships, table: Table)
       new Degrees(direction),
       new KilometresPerHour(speed)
     )
-    table.newRow(airship)
     airships.add(airship)
   })
 
@@ -70,4 +68,12 @@ export function addControlPanelEventListeners (airships: Airships, table: Table)
       new KilometresPerHour(speed)
     )
   })
+
+  
+  document.getElementById('add-random-airship').addEventListener('click', (event) => {
+    event.preventDefault()
+    airships.add(randomAirship())
+  })
+
+  
 }

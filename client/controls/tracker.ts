@@ -4,6 +4,7 @@ import { Airship } from "../airship/airship";
 import { Airships, AirshipPair } from "../airship/airships";
 import { Feedback } from "./feedback";
 import { equalsWithErrorMargin } from "../utils/math";
+import { avoidCollision } from "./collision-avoidance/avoid-collision";
 
 export class Tracker {
   airport = new Cartesian(0,0)
@@ -87,10 +88,12 @@ export class Tracker {
       ) {
         this.inDanger.push(airshipPair.id)
         this.feedback.showAirshipsGoingToCollide(airshipPair)
+        avoidCollision(airshipPair)
       } else if (
         !this.collisionInminent(airshipPair) &&
         this.inDanger.includes(airshipPair.id)
       ) {
+        airshipPair.setCollisionMode(false)
         this.inDanger.splice(this.inDanger.indexOf(airshipPair.id), 1)
         this.feedback.hideAirshipsGoingToCollide(airshipPair)
       }
@@ -127,13 +130,3 @@ export class Tracker {
     return airshipPair.timeToCollide <= getMinTimeToDanger()
   }
 }
-
-// function getInDanger() {
-//   const inDanger = []
-//   dangerShow.forEach(twoPlanesId => {
-//     inDanger.push(_.join(_.slice(twoPlanesId, 0, 6), ''))
-//     inDanger.push(_.join(_.slice(twoPlanesId, 6, 12), ''))
-//   })
-//   return _.uniq(inDanger)
-// }
-// const dangerShow = []

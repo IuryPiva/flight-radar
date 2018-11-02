@@ -16,3 +16,9 @@ export function bounce() {
 export function mayTrack() {
   return (<HTMLInputElement>document.getElementById('may-track')).checked
 }
+export function webWorkers() {
+  return (<HTMLInputElement>document.getElementById('web-workers')).checked
+}
+export function shouldTeleportTo() {
+  return (<HTMLInputElement>document.getElementById('should-teleport-to')).checked
+}

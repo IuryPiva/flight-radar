@@ -20,11 +20,37 @@ export class Cartesian {
     )
   }
   
+  isFirstQuadrant() {
+    return this.x > 0 && this.y > 0
+  }
+  
+  isSecondQuadrant() {
+    return this.x < 0 && this.y > 0
+  }
+
+  isThirdQuadrant() {
+    return this.x < 0 && this.y < 0
+  }
+
+  isFourthQuadrant() {
+    return this.x > 0 && this.y > 0
+  }
+
   toPolar(): Polar {
-    return new Polar(
-      Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2)),
-      new Radians(Math.atan2(this.y, this.x)).toDegrees()
-    )
+    let angle = new Degrees(0)
+    if(this.x == 0) {
+      if(this.y > 0) {
+        angle.value = 90
+      } else if (this.y < 0) {
+        angle.value = 270
+      }
+    } else {
+      angle = new Radians(Math.atan2(this.y, this.x)).toDegrees()
+      if (this.isSecondQuadrant() || this.isThirdQuadrant()) angle.value += 180
+      if (this.isFourthQuadrant()) angle.value += 360
+    }
+    const radius = Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2))
+    return new Polar(radius, angle)
   }
 
   display() {
@@ -55,6 +81,13 @@ export class Cartesian {
   distance(point: Cartesian) {
     return Math.sqrt(Math.pow((point.x - this.x), 2) + Math.pow((point.y - this.y), 2))
   }
+
+  pointInDirection(distance, direction: Degrees) {
+    return new Cartesian(
+      this.x + distance * Math.cos(direction.toRadians().value),
+      this.y + distance * Math.sin(direction.toRadians().value)
+    )
+  }
 }
 
 export class Polar {
@@ -76,6 +109,6 @@ export class Polar {
   }
 
   display() {
-    return `(${this.radius.toFixed(1)},${this.angle.display})`
+    return `(${this.radius.toFixed(1)},${this.angle.display()})`
   }
 }

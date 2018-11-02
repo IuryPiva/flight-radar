@@ -21,7 +21,7 @@ export function colinearPointWithinSegment(point:Cartesian, start: Cartesian, en
   return false
 }
 
-export function checkIntersection(point1: Cartesian, point2: Cartesian, point3: Cartesian, point4: Cartesian) {
+export function checkLinesIntersection(point1: Cartesian, point2: Cartesian, point3: Cartesian, point4: Cartesian) {
   let denom = (point4.y - point3.y) * (point2.x - point1.x) - (point4.x - point3.x) * (point2.y - point1.y)
   let numeA = (point4.x - point3.x) * (point1.y - point3.y) - (point4.y - point3.y) * (point1.x - point3.x)
   let numeB = (point2.x - point1.x) * (point1.y - point3.y) - (point2.y - point1.y) * (point1.x - point3.x)

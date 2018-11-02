@@ -10,6 +10,7 @@ export class Table {
       <tr id="${airship.id}">
         <th scope="row">${airship.id}</th>
         <td id="${airship.id}position">${airship.position.display()}</td>
+        <td id="${airship.id}polar">${airship.position.toPolar().display()}</td>
         <td id="${airship.id}direction">${airship.direction.display()}</td>
         <td id="${airship.id}speed">${airship.speed.toKilometresPerHour().display()}</td>
       </tr>`)
@@ -42,6 +43,7 @@ export class Table {
 
   updateRow(airship: Airship) {
     $(`#${airship.id}position`)[0].innerHTML = airship.position.display()
+    $(`#${airship.id}polar`)[0].innerHTML = airship.position.toPolar().display()
     $(`#${airship.id}direction`)[0].innerHTML = airship.direction.display()
     $(`#${airship.id}speed`)[0].innerHTML = airship.speed.toKilometresPerHour().display()
   }

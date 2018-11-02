@@ -32,7 +32,11 @@ export class Degrees {
   }
   
   isStraight() {
-    return this.value == 0 || this.value > 359 || this.value < 1
+    return this.value == 0 || this.value > 359.9 || this.value < 0.1
+  }
+
+  opposite(): Degrees {
+    return new Degrees(Math.abs(this.value - 360))
   }
 }
 

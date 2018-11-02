@@ -1,3 +1,8 @@
+import { Cartesian } from "./utils/coordinate";
+import { Degrees } from "./utils/math";
+import { KilometresPerHour } from "./utils/speed";
+import { Airship } from "./airship/airship";
+
 const hex = '0123456789abcdef'.split('')
 
 function rand () {
@@ -8,8 +13,11 @@ function randomLetter () {
   return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[Math.floor(Math.random() * 26)]
 }
 
-function randomNumber () {
-  return Math.floor(Math.random() * 9)
+function randomFLoorNumber (input = 9) {
+  return Math.floor(Math.random() * input)
+}
+function randomNumber (input = 9) {
+  return Math.random() * input
 }
 
 export function randomHexColor(): string {
@@ -17,9 +25,27 @@ export function randomHexColor(): string {
 }
 
 export function randomFlightId (): string {
-  return `${randomLetter()}${randomLetter()}${randomLetter()}${randomNumber()}${randomNumber()}${randomNumber()}`
+  return `${randomLetter()}${randomLetter()}${randomLetter()}${randomFLoorNumber()}${randomFLoorNumber()}${randomFLoorNumber()}`
 }
 
+export function randomCartesian(): Cartesian {
+  return new Cartesian(randomNumber(5), randomNumber(5))
+}
+
+export function randomDegrees() {
+  return new Degrees(randomNumber(360))
+}
+
+export function randomKilometresPerHour() {
+  return new KilometresPerHour(randomNumber(1111.26))
+}
+export function randomAirship() {
+  return new Airship(
+    randomCartesian(),
+    randomDegrees(),
+    randomKilometresPerHour()
+  )
+}
 /**
  * 
  * @param percentage input 20% should be 20

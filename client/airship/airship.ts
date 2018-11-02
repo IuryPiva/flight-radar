@@ -7,11 +7,12 @@ import { Grid } from "../radar/grid";
 import { Degrees, Radians } from "../utils/math";
 import { getMinTimeToDanger } from "../controls/collision-avoidance/variables";
 import { copyInstance } from "../utils/clone";
+import { shouldTeleportTo } from "../controls/features";
+import cloneDeep from 'lodash/fp/cloneDeep'
 
 interface SpeedLimit {
   min: KilometresPerHour
   max: KilometresPerHour
-  
 }
 
 class Limits {
@@ -36,6 +37,14 @@ class Limits {
   }
 }
 
+interface AirshipHistory {
+  position?: Cartesian
+  direction?: Degrees
+  speed?: KilometresPerSecond
+  turnTo?: Cartesian
+  accelerateTo?: KilometresPerSecond
+}
+
 export class Airship {
   id: string
   type: string
@@ -45,15 +54,17 @@ export class Airship {
   width: Pixel = new Pixel(32)
   height: Pixel = new Pixel(32)
   blinks = 0
-  accelerateTo: KilometresPerSecond
   limits: Limits
-  moveTo: Cartesian
-  turnTo: Cartesian
-  directionTo: Degrees
+  moveTo: Cartesian = null // TODO - RESET INFO WHEN REACH THERE
+  turnTo: Cartesian = null
+  directionTo: Degrees = null
+  accelerateTo: KilometresPerSecond = null
   isHover = false
   inDanger = false
   isSelected = false
   sprite: Sprite
+  history: AirshipHistory = null
+
 
   constructor( position: Cartesian, direction: Degrees, speed: KilometresPerHour ) {
     this.id = randomFlightId()
@@ -63,10 +74,6 @@ export class Airship {
     this.type = speed.value > 250 ? 'avião' : 'helicóptero'
     this.sprite = new Sprite(this.type)
     this.limits = new Limits(this.type)
-    this.moveTo = null
-    this.turnTo = null
-    this.directionTo = null
-    this.accelerateTo = null
   }
 
   private shouldBlink() {
@@ -83,6 +90,18 @@ export class Airship {
       return true
     }
   }
+
+  restoreSpeed() {
+    if (this.history && this.history.speed) this.accelerateTo = this.history.speed
+  }
+
+  restoreDirection() {
+    if (this.history && this.history.position) this.moveTo = this.history.position
+  }
+  
+  restorePosition() {
+    if (this.history && this.history.direction) this.direction = this.history.direction
+  }  
 
   getSprite() {
     if(this.inDanger || this.isHover) {
@@ -105,10 +124,7 @@ export class Airship {
       ? this.speed.value * getMinTimeToDanger() * times
       : times * this.limits.speed.max.toKilometresPerSecond().value / FPS
 
-    return new Cartesian(
-      this.position.x + effectiveSpeed * Math.cos(this.direction.toRadians().value),
-      this.position.y + effectiveSpeed * Math.sin(this.direction.toRadians().value)
-    )
+    return this.position.pointInDirection(effectiveSpeed, this.direction)
   }
 
   move() {
@@ -135,6 +151,14 @@ export class Airship {
       } else {
         this.speed .value -= (this.limits.acceleration.toKilometresPerSecond().value / FPS)
       }
+    }
+  }
+
+  setAccelerateTo(input: KilometresPerHour) {
+    if(input.value >= this.limits.speed.max.value) this.accelerateTo = this.limits.speed.max.toKilometresPerSecond()
+    else if(input.value <= this.limits.speed.min.value) this.accelerateTo = this.limits.speed.min.toKilometresPerSecond()
+    else {
+      this.accelerateTo = input.toKilometresPerSecond()
     }
   }
 
@@ -169,7 +193,13 @@ export class Airship {
   }
 
   goTo(position: Cartesian) {
-    this.moveTo = position
+    if(shouldTeleportTo()) {
+      this.position = position
+    } else {
+      this.turnTo = position
+    }
+  }
+  goToNeverTeleport(position: Cartesian) {
     this.turnTo = position
   }
 
@@ -179,10 +209,30 @@ export class Airship {
 
     this.goTo(position)
     this.accelerateTo = speed.toKilometresPerSecond()
-    this.directionTo = direction
+    this.directionTo = direction // TODO - REACH POINT WITH THIS DIRECTION
   }
 
   timeToPoint(point: Cartesian) {
     return this.position.distance(point) / this.speed.value
+  }
+
+  saveHistory() {
+    const airshipClone = cloneDeep(this)
+    this.history = {
+      position: airshipClone.position,
+      speed: airshipClone.speed,
+      direction: airshipClone.direction,
+      accelerateTo: airshipClone.accelerateTo,
+      turnTo: airshipClone.turnTo,
+    }
+  }
+
+  restoreFromHistory() {
+    if(!this.history || !this.history.speed) return
+    if(this.history.accelerateTo) this.accelerateTo = this.history.accelerateTo
+    else this.accelerateTo = this.history.speed
+
+    if(this.history.turnTo) this.turnTo = this.history.turnTo
+    else this.turnTo = this.history.position.pointInDirection(100, this.history.direction)
   }
 }

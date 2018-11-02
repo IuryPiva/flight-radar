@@ -5,7 +5,7 @@ import { Airship } from "./airship/airship";
 import { Radians } from "./utils/math";
 import { Airships } from "./airship/airships";
 
-export const FPS = 60;
+export const FPS = 120;
 
 export class Pixel {
   private _Pixel: Pixel
