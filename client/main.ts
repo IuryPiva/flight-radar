@@ -24,6 +24,8 @@ import { Tracker } from './controls/tracker';
 import { renderRings, drawGrid, drawAirships, animateAirships, bounce, mayTrack } from './controls/features'
 import { bounceOnBorders } from './airship/animation';
 import { testCollisionAirships90Degrees } from './controls/collision-avoidance/tests/airships-90-degrees';
+import { testCollisionAirships45Degrees } from './controls/collision-avoidance/tests/airships-45-degrees';
+import { testCollisionAirships135Degrees } from './controls/collision-avoidance/tests/airships-135-degrees';
 
 const flightRadarCanvas = new FlightRadarCanvas()
 const grid = new Grid(flightRadarCanvas.canvas, 10)
@@ -33,7 +35,6 @@ const airships = new Airships(table, testCollisionAirships90Degrees)
 const tracker = new Tracker()
 
 function main() {
-
 	fpsMeter.begin();
 	msMeter.begin();
 	mbMeter.begin();

@@ -40,7 +40,7 @@ module.exports = {
       },
       {
         test: /\.ejs$/,
-        use: 'ejs-compiled-loader'
+        use: 'compile-ejs-loader'
       },
       {
         test: /\.(scss)$/,

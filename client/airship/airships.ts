@@ -87,7 +87,10 @@ export class AirshipPair {
       this.avoidCollisionMode.on = true
       this.first.saveHistory()
       this.second.saveHistory()
+      console.log({input});
+      
     } else {
+      console.log({input});
       this.first.restoreFromHistory()
       this.second.restoreFromHistory()
     }

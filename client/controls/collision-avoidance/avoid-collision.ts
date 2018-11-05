@@ -9,6 +9,8 @@ const minSpeed = new KilometresPerHour(0)
 
 export function avoidCollision(airshipPair: AirshipPair) {
   if(airshipPair.avoidCollisionMode.on) return
+  console.log(airshipPair.angleBetween());
+  
   if(equalsWithErrorMargin(airshipPair.angleBetween(), 90, 1/100)) {
     airshipPair.setCollisionMode(true)
     airshipPair.fastest().setAccelerateTo(maxSpeed)

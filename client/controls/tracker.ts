@@ -127,6 +127,8 @@ export class Tracker {
     else if(airshipPair.secondOnFirstDirection() && airshipPair.second.speed.value == 0) {
       airshipPair.timeToCollide = airshipPair.distance() / airshipPair.first.speed.value
     }
+    const result = airshipPair.timeToCollide <= getMinTimeToDanger()
+
     return airshipPair.timeToCollide <= getMinTimeToDanger()
   }
 }
