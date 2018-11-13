@@ -13,7 +13,7 @@ function randomLetter () {
   return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[Math.floor(Math.random() * 26)]
 }
 
-function randomFLoorNumber (input = 9) {
+function randomFloorNumber (input = 9) {
   return Math.floor(Math.random() * input)
 }
 function randomNumber (input = 9) {
@@ -25,7 +25,7 @@ export function randomHexColor(): string {
 }
 
 export function randomFlightId (): string {
-  return `${randomLetter()}${randomLetter()}${randomLetter()}${randomFLoorNumber()}${randomFLoorNumber()}${randomFLoorNumber()}`
+  return `${randomLetter()}${randomLetter()}${randomLetter()}${randomFloorNumber()}${randomFloorNumber()}${randomFloorNumber()}`
 }
 
 export function randomCartesian(): Cartesian {

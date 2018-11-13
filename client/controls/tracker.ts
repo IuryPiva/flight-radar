@@ -4,7 +4,16 @@ import { Airship } from "../airship/airship";
 import { Airships, AirshipPair } from "../airship/airships";
 import { Feedback } from "./feedback";
 import { equalsWithErrorMargin } from "../utils/math";
-import { avoidCollision } from "./collision-avoidance/avoid-collision";
+import { avoidCollision } from "./collision-avoidance/avoid-collision-ai";
+
+export const COLLISION_TYPES = {
+  NOSE_TO_NOSE: 'NOSE_TO_NOSE',
+  INTERSECTING_EQ_90_DEGREES: 'INTERSECTING_EQ_90_DEGREES',
+  INTERSECTING_LT_90_DEGREES: 'INTERSECTING_LT_90_DEGREES',
+  INTERSECTING_GT_90_DEGREES: 'INTERSECTING_GT_90_DEGREES',
+  RUN_OVER: 'RUN_OVER',
+  RUN_OVER_STALLED: 'RUN_OVER_STALLED',
+}
 
 export class Tracker {
   airport = new Cartesian(0,0)
@@ -87,14 +96,15 @@ export class Tracker {
         !this.inDanger.includes(airshipPair.id)
       ) {
         this.inDanger.push(airshipPair.id)
+        airshipPair.setDanger(true)
         this.feedback.showAirshipsGoingToCollide(airshipPair)
-        avoidCollision(airshipPair)
       } else if (
         !this.collisionInminent(airshipPair) &&
         this.inDanger.includes(airshipPair.id)
       ) {
         airshipPair.setCollisionMode(false)
         this.inDanger.splice(this.inDanger.indexOf(airshipPair.id), 1)
+        airshipPair.setDanger(false)
         this.feedback.hideAirshipsGoingToCollide(airshipPair)
       }
     })
@@ -109,26 +119,36 @@ export class Tracker {
       const timeToIntersectionSecond = airshipPair.second.timeToPoint(intersection.point)
 
       airshipPair.timeToCollide = timeToIntersectionFirst > timeToIntersectionSecond ? timeToIntersectionFirst : timeToIntersectionSecond
+      if(equalsWithErrorMargin(airshipPair.angleBetween(), 90, 1/100)) airshipPair.collisionType = COLLISION_TYPES.INTERSECTING_EQ_90_DEGREES
+      else if(airshipPair.angleBetween() > 90) airshipPair.collisionType = COLLISION_TYPES.INTERSECTING_GT_90_DEGREES
+      else if(airshipPair.angleBetween() < 90) airshipPair.collisionType = COLLISION_TYPES.INTERSECTING_LT_90_DEGREES
     }
-    else if (airshipPair.onOppositeDirection() && (airshipPair.secondOnReachOfFirst() || airshipPair.firstOnReachOfSecond())) {
+    else if (airshipPair.facingEachOther()) {
       airshipPair.timeToCollide = airshipPair.distance() / (airshipPair.first.speed.value + airshipPair.second.speed.value)
+      airshipPair.collisionPoint = airshipPair.first.calcPointAheadInTime(airshipPair.timeToCollide)
+      airshipPair.collisionType = COLLISION_TYPES.NOSE_TO_NOSE
     }
     else if(airshipPair.onTheSameDirection() && airshipPair.differentSpeed()) {
       if (airshipPair.secondOnReachOfFirst()) {
         airshipPair.timeToCollide = airshipPair.distance() / (airshipPair.first.speed.value - airshipPair.second.speed.value)
+        airshipPair.collisionPoint = airshipPair.first.calcPointAheadInTime(airshipPair.timeToCollide)
       }
       if (airshipPair.firstOnReachOfSecond()) {
         airshipPair.timeToCollide = airshipPair.distance() / (airshipPair.second.speed.value - airshipPair.first.speed.value)
+        airshipPair.collisionPoint = airshipPair.second.calcPointAheadInTime(airshipPair.timeToCollide)
       }
+      airshipPair.collisionType = COLLISION_TYPES.RUN_OVER
     }
     else if(airshipPair.firstOnSecondDirection() && airshipPair.first.speed.value == 0) {
       airshipPair.timeToCollide = airshipPair.distance() / airshipPair.second.speed.value
+      airshipPair.collisionPoint = airshipPair.second.calcPointAheadInTime(airshipPair.timeToCollide)
+      airshipPair.collisionType = COLLISION_TYPES.RUN_OVER_STALLED
     }
     else if(airshipPair.secondOnFirstDirection() && airshipPair.second.speed.value == 0) {
       airshipPair.timeToCollide = airshipPair.distance() / airshipPair.first.speed.value
+      airshipPair.collisionPoint = airshipPair.first.calcPointAheadInTime(airshipPair.timeToCollide)
+      airshipPair.collisionType = COLLISION_TYPES.RUN_OVER_STALLED
     }
-    const result = airshipPair.timeToCollide <= getMinTimeToDanger()
-
     return airshipPair.timeToCollide <= getMinTimeToDanger()
   }
 }

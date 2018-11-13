@@ -49,7 +49,11 @@ export class Radians {
   }
 
   toDegrees() {
-    return new Degrees(this.value * 180 / Math.PI)
+    return new Degrees(this.inDegrees())
+  }
+
+  inDegrees() {
+    return this.value * 180 / Math.PI
   }
 }
 /**

@@ -2,13 +2,15 @@ import { Cartesian } from "../utils/coordinate";
 import { KilometresPerSecond, KilometresPerHour, MetresPerSecond } from "../utils/speed";
 import { randomFlightId } from "../random";
 import { Sprite } from './sprite'
-import { Pixel, FPS } from "../canvas";
+import { Pixel } from "../canvas";
 import { Grid } from "../radar/grid";
 import { Degrees, Radians } from "../utils/math";
 import { getMinTimeToDanger } from "../controls/collision-avoidance/variables";
 import { copyInstance } from "../utils/clone";
 import { shouldTeleportTo } from "../controls/features";
 import cloneDeep from 'lodash/fp/cloneDeep'
+import { Polygon } from "../utils/polygon";
+import { Config } from "../config";
 
 interface SpeedLimit {
   min: KilometresPerHour
@@ -43,6 +45,7 @@ interface AirshipHistory {
   speed?: KilometresPerSecond
   turnTo?: Cartesian
   accelerateTo?: KilometresPerSecond
+  exists: boolean
 }
 
 export class Airship {
@@ -51,11 +54,10 @@ export class Airship {
   position: Cartesian
   direction: Degrees
   speed: KilometresPerSecond
-  width: Pixel = new Pixel(32)
-  height: Pixel = new Pixel(32)
+  width: Pixel
+  height: Pixel
   blinks = 0
   limits: Limits
-  moveTo: Cartesian = null // TODO - RESET INFO WHEN REACH THERE
   turnTo: Cartesian = null
   directionTo: Degrees = null
   accelerateTo: KilometresPerSecond = null
@@ -64,7 +66,10 @@ export class Airship {
   isSelected = false
   sprite: Sprite
   history: AirshipHistory = null
-
+  rightForever = false
+  leftForever = false
+  moveTo: Cartesian = null
+  whenArrive = []
 
   constructor( position: Cartesian, direction: Degrees, speed: KilometresPerHour ) {
     this.id = randomFlightId()
@@ -74,18 +79,21 @@ export class Airship {
     this.type = speed.value > 250 ? 'avião' : 'helicóptero'
     this.sprite = new Sprite(this.type)
     this.limits = new Limits(this.type)
+
+    this.width = new Pixel(85 * (600/Config.cellsPerAxis) / 1000)
+    this.height = new Pixel(85 * (600/Config.cellsPerAxis) / 1000)
   }
 
   private shouldBlink() {
-    if(this.blinks < FPS / 3) {
+    if(this.blinks < Config.FPS / 3) {
       this.blinks++
       return true
     }
-    if(this.blinks >= FPS / 3 && this.blinks <= FPS / 3 * 2) {
+    if(this.blinks >= Config.FPS / 3 && this.blinks <= Config.FPS / 3 * 2) {
       this.blinks++
       return false
     }
-    if(this.blinks >= FPS / 3 * 2) {
+    if(this.blinks >= Config.FPS / 3 * 2) {
       this.blinks = 0
       return true
     }
@@ -119,37 +127,47 @@ export class Airship {
     )
   }
 
-  calcFurthestPointAhead(times: number = 1): Cartesian {
+  calcPointAheadInTime(seconds: number) {
+    const effectiveSpeed = this.speed.value * seconds
+    return this.position.pointInDirection(effectiveSpeed, this.direction)
+  }
+
+  calcFurthestPointAhead(times: number = 1) {
     const effectiveSpeed = this.speed.value
       ? this.speed.value * getMinTimeToDanger() * times
-      : times * this.limits.speed.max.toKilometresPerSecond().value / FPS
+      : times * this.limits.speed.max.toKilometresPerSecond().value / Config.FPS
 
     return this.position.pointInDirection(effectiveSpeed, this.direction)
   }
 
   move() {
-    const effectiveSpeed = this.speed.value / FPS
+    const effectiveSpeed = this.speed.value / Config.FPS
 
-    this.position.x = this.position.x + effectiveSpeed * Math.cos(this.direction.toRadians().value)
-    this.position.y = this.position.y + effectiveSpeed * Math.sin(this.direction.toRadians().value)
+    const x = this.position.x + effectiveSpeed * Math.cos(this.direction.toRadians().value)
+    const y = this.position.y + effectiveSpeed * Math.sin(this.direction.toRadians().value)
+
+    this.position.set(x,y)
+    // if(this.moveTo) {
+
+    // }
   }
 
   accelerate() {
     if (this.accelerateTo === null) {
       return false
     } else if (this.accelerateTo.value > this.speed.value) {
-      if (this.speed.value + (this.limits.acceleration.toKilometresPerSecond().value / FPS) > this.accelerateTo.value) {
+      if (this.speed.value + (this.limits.acceleration.toKilometresPerSecond().value / Config.FPS) > this.accelerateTo.value) {
         this.speed = this.accelerateTo
         this.accelerateTo = null
       } else {
-        this.speed.value += (this.limits.acceleration.toKilometresPerSecond().value / FPS)
+        this.speed.value += (this.limits.acceleration.toKilometresPerSecond().value / Config.FPS)
       }
     } else if (this.accelerateTo.value < this.speed.value) {
-      if (this.speed.value - (this.limits.acceleration.toKilometresPerSecond().value / FPS) < this.accelerateTo.value) {
+      if (this.speed.value - (this.limits.acceleration.toKilometresPerSecond().value / Config.FPS) < this.accelerateTo.value) {
         this.speed = this.accelerateTo
         this.accelerateTo = null
       } else {
-        this.speed .value -= (this.limits.acceleration.toKilometresPerSecond().value / FPS)
+        this.speed .value -= (this.limits.acceleration.toKilometresPerSecond().value / Config.FPS)
       }
     }
   }
@@ -170,17 +188,19 @@ export class Airship {
   }
 
   turn() {
+    if(this.rightForever) this.direction.set(this.direction.value - this.limits.rateOfTurn.value / Config.FPS)
+    if(this.leftForever) this.direction.set(this.direction.value + this.limits.rateOfTurn.value / Config.FPS)
     if (this.turnTo === null) return;
     
     let difference: Degrees = new Degrees(this.directionToPoint(this.turnTo).value - this.direction.value)
     const airshipClone = copyInstance(this)
 
     if (difference.isCounterClockWise()) {
-      airshipClone.direction.set(airshipClone.direction.value + this.limits.rateOfTurn.value / FPS)
+      airshipClone.direction.set(airshipClone.direction.value + this.limits.rateOfTurn.value / Config.FPS)
       difference.set(this.directionToPoint(this.turnTo).value - airshipClone.direction.value)
     } 
     else if (difference.isClockWise()) {
-      airshipClone.direction.set(airshipClone.direction.value - this.limits.rateOfTurn.value / FPS)
+      airshipClone.direction.set(airshipClone.direction.value - this.limits.rateOfTurn.value / Config.FPS)
       difference.set(this.directionToPoint(this.turnTo).value - airshipClone.direction.value)
     }
 
@@ -224,8 +244,11 @@ export class Airship {
       direction: airshipClone.direction,
       accelerateTo: airshipClone.accelerateTo,
       turnTo: airshipClone.turnTo,
+      exists: true
     }
   }
+  
+
 
   restoreFromHistory() {
     if(!this.history || !this.history.speed) return
@@ -234,5 +257,54 @@ export class Airship {
 
     if(this.history.turnTo) this.turnTo = this.history.turnTo
     else this.turnTo = this.history.position.pointInDirection(100, this.history.direction)
+  }
+
+  makeTriangleAhead(degrees: number) {
+    const polygon = new Polygon([this.position])
+    const furthestPointAhead = this.calcFurthestPointAhead()
+    polygon.add(cloneDeep(furthestPointAhead))
+    const furthestPointAhead2 = this.calcFurthestPointAhead()
+
+    furthestPointAhead2.reduce(this.position)
+    furthestPointAhead2.rotate(new Degrees(degrees))
+    furthestPointAhead2.translate(this.position)
+
+    polygon.add(cloneDeep(furthestPointAhead2))    
+
+    // for(let i = 0; i <= degrees; i++) {
+    //   furthestPointAhead.reduce(this.position)
+    //   furthestPointAhead.rotate(new Degrees(1))
+    //   furthestPointAhead.translate(this.position)
+    //   polygon.add(cloneDeep(furthestPointAhead))
+    // }
+
+    // for(let i = 0; i >= degrees; i--) {
+    //   furthestPointAhead.reduce(this.position)
+    //   furthestPointAhead.rotate(new Degrees(-1))
+    //   furthestPointAhead.translate(this.position)
+    //   polygon.add(cloneDeep(furthestPointAhead))
+    // }
+    
+    return polygon
+  }
+
+  getLeftTrianglePolygon() {
+    return this.makeTriangleAhead(45)
+  }
+
+  getRightTrianglePolygon() {
+    return this.makeTriangleAhead(-45)
+  }
+
+  setRightForever(input) {
+    console.log({right: input});
+    
+    this.rightForever = input
+  }
+
+  setLeftForever(input) {
+    console.log({left: input});
+    
+    this.leftForever = input
   }
 }

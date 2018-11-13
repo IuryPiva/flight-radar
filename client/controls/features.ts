@@ -22,3 +22,7 @@ export function webWorkers() {
 export function shouldTeleportTo() {
   return (<HTMLInputElement>document.getElementById('should-teleport-to')).checked
 }
+export function shouldAvoidCollision() {
+  return (<HTMLInputElement>document.getElementById('should-avoid-collision')).checked
+}
+

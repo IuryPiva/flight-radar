@@ -39,7 +39,7 @@ export function addTransformationEventListeners(airships: Airships) {
     
     airships.getSelected().getAll().forEach(
       (airship: Airship) => {
-        const resultantPosition = copyInstance(airship.position)
+        const resultantPosition: Cartesian = copyInstance(airship.position)
         resultantPosition.reduce(point)
         resultantPosition.rotate(angle)
         resultantPosition.translate(point)

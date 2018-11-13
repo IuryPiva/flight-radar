@@ -11,7 +11,7 @@ export class Airships {
   pairs: AirshipPair[] = []
   table: Table
 
-  constructor (table?: Table, airships?: Airship[]) {
+  constructor (table?: Table, airships: Airship[] = []) {
     this.table = table
     airships.forEach(airship => {
       this.add(airship)
@@ -75,6 +75,13 @@ export class AirshipPair {
   id: string
   timeToCollide: number
   avoidCollisionMode: AvoidCollisionMode = { on: false }
+  inDanger: boolean
+  collisionPoint: Cartesian
+  collisionType: String
+  avoiding: {
+    collisionPoint: Cartesian
+    collisionType: String
+  }
 
   constructor (first: Airship, second: Airship) {
     this.first = first
@@ -87,10 +94,7 @@ export class AirshipPair {
       this.avoidCollisionMode.on = true
       this.first.saveHistory()
       this.second.saveHistory()
-      console.log({input});
-      
     } else {
-      console.log({input});
       this.first.restoreFromHistory()
       this.second.restoreFromHistory()
     }
@@ -164,5 +168,28 @@ export class AirshipPair {
     } else {
       return this.first
     }
+  }
+
+  setDanger(state) {
+    this.inDanger = state
+    this.first.inDanger = state
+    this.second.inDanger = state
+  }
+
+  facingEachOther() {
+    return this.onOppositeDirection() && (this.secondOnReachOfFirst() || this.firstOnReachOfSecond())
+  }
+
+  firstOnSecondRightTriangle() {
+    return this.second.getRightTrianglePolygon().checkCollision(this.first.calcFurthestPointAhead())
+  }
+  firstOnSecondLeftTriangle() {
+    return this.second.getLeftTrianglePolygon().checkCollision(this.first.calcFurthestPointAhead())
+  }
+  secondOnFirstRightTriangle() {
+    return this.first.getRightTrianglePolygon().checkCollision(this.second.calcFurthestPointAhead())
+  }
+  secondOnFirstLeftTriangle() {
+    return this.first.getLeftTrianglePolygon().checkCollision(this.second.calcFurthestPointAhead())
   }
 }

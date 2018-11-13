@@ -1,18 +1,21 @@
 import { Grid } from "./radar/grid"
-import { Cartesian } from "./utils/coordinate";
-import { Rings } from "./radar/rings";
-import { Airship } from "./airship/airship";
-import { Radians } from "./utils/math";
-import { Airships } from "./airship/airships";
-
-export const FPS = 120;
+import { Cartesian } from "./utils/coordinate"
+import { Rings } from "./radar/rings"
+import { Airship } from "./airship/airship"
+import { Radians } from "./utils/math"
+import { Airships, AirshipPair } from "./airship/airships"
+import { Polygon, PolygonPixels } from "./utils/polygon"
 
 export class Pixel {
   private _Pixel: Pixel
   value: number
 
   constructor(value: number) {
-    this.value = value
+    this.set(value)
+  }
+  
+  set(value) {
+    this.value = Number(value.toFixed(4))
   }
 
   inScale(cellSize: Pixel) {
@@ -116,24 +119,24 @@ export class FlightRadarCanvas {
     this.ctx.translate(pixel.x, pixel.y)
     this.ctx.translate(0, 0)
     this.ctx.rotate(rad)
-    this.ctx.drawImage(airship.sprite.shadow, - airship.width.value / 2, - airship.height.value / 2)
+    this.ctx.drawImage(airship.sprite.shadow, - airship.width.value / 2, - airship.height.value / 2, airship.width.value, airship.height.value)
     this.ctx.restore()
   }
 
   drawAirshipGuideLine (airship: Airship, grid: Grid) {
-    if(airship.speed.value == 0) return;
+    if(airship.speed.value == 0) return
     
     const pixel = airship.calcNosePosition(grid).toPixelCoordinate(grid)
     const distantPointPx = airship.calcFurthestPointAhead().toPixelCoordinate(grid)
     
     this.ctx.beginPath()
-    this.ctx.setLineDash([3, 9]);
+    this.ctx.setLineDash([3, 9])
     this.ctx.strokeStyle = 'red'
     this.ctx.lineWidth = 1
     this.ctx.moveTo(pixel.x.value, pixel.y.value)
     this.ctx.lineTo(distantPointPx.x.value, distantPointPx.y.value)
     this.ctx.stroke()
-    this.ctx.setLineDash([]);
+    this.ctx.setLineDash([])
   }
   
   drawAirship (airship: Airship, grid: Grid) {
@@ -147,11 +150,14 @@ export class FlightRadarCanvas {
     this.ctx.translate(pixel.x, pixel.y - airship.height.value * 1.5)
     this.ctx.translate(0, 0)
     this.ctx.rotate(rad)
-    this.ctx.drawImage(airship.getSprite(), -airship.width.value / 2, -airship.height.value / 2)
+    this.ctx.drawImage(airship.getSprite(), -airship.width.value / 2, -airship.height.value / 2, airship.width.value, airship.height.value)
     this.ctx.restore()
   }
 
-  drawAirships (airships: Airships, grid: Grid) {
+  drawAirships (airships: Airships, grid: Grid) {    
+    airships.getAll().forEach(airship => {
+      this.drawTriangles(airship, grid)
+    })
     airships.getAll().forEach(airship => {
       this.castAirshipShadow(airship, grid)
     })
@@ -161,6 +167,29 @@ export class FlightRadarCanvas {
     airships.getAll().forEach(airship => {
       this.drawAirship(airship, grid)
     })
+  }
+
+  drawTriangles(airship: Airship, grid: Grid) {
+    const leftTriangle = airship.getLeftTrianglePolygon()
+    const rightTriangle = airship.getRightTrianglePolygon()
+
+    this.drawPolygon(leftTriangle.toPixels(grid), 'rgba(255,0,0,0.5)')
+    this.drawPolygon(rightTriangle.toPixels(grid), 'rgba(0,0,255,0.5)')
+  }
+
+  //'rgba(255,0,0,0.5)'
+  drawPolygon(polygon: PolygonPixels, color) {
+    this.ctx.fillStyle = color
+    
+    this.ctx.beginPath()
+
+    this.ctx.moveTo(polygon.points[0].x.value, polygon.points[0].y.value)
+    for(let i = 1; i < polygon.points.length; i++) {
+      // this.ctx.fillRect(polygon.points[i].x.value, polygon.points[i].y.value,4,4);
+      this.ctx.lineTo(polygon.points[i].x.value, polygon.points[i].y.value)
+    }
+    this.ctx.closePath()
+    this.ctx.fill()
   }
 }
 

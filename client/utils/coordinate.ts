@@ -9,8 +9,12 @@ export class Cartesian {
   y: number
   
   constructor (x: number, y: number) {
-    this.x = x
-    this.y = y
+    this.set(x,y)
+  }
+  
+  set(x,y) {
+    this.x = Number(x.toFixed(4))
+    this.y = Number(y.toFixed(4))
   }
 
   toPixelCoordinate(grid: Grid) {
@@ -33,7 +37,7 @@ export class Cartesian {
   }
 
   isFourthQuadrant() {
-    return this.x > 0 && this.y > 0
+    return this.x > 0 && this.y < 0
   }
 
   toPolar(): Polar {
@@ -45,7 +49,7 @@ export class Cartesian {
         angle.value = 270
       }
     } else {
-      angle = new Radians(Math.atan2(this.y, this.x)).toDegrees()
+      angle.value = new Radians(Math.atan2(this.y, this.x)).inDegrees()
       if (this.isSecondQuadrant() || this.isThirdQuadrant()) angle.value += 180
       if (this.isFourthQuadrant()) angle.value += 360
     }
@@ -73,9 +77,9 @@ export class Cartesian {
   }
 
   rotate(angle: Degrees) {
-    const original = copyInstance(this)
-    this.x = this.x * Math.cos(angle.toRadians().value) - (this.y * Math.sin(angle.toRadians().value))
-    this.y = original.x * Math.sin(angle.toRadians().value) + (this.y * Math.cos(angle.toRadians().value))
+    const x = this.x * Math.cos(angle.toRadians().value) - (this.y * Math.sin(angle.toRadians().value))
+    const y = this.x * Math.sin(angle.toRadians().value) + (this.y * Math.cos(angle.toRadians().value))
+    this.set(x,y)
   }
 
   distance(point: Cartesian) {
@@ -103,8 +107,8 @@ export class Polar {
   toCartesian(): Cartesian {
     const rad = this.angle.toRadians().value
     return new Cartesian(
-      this.radius * Math.sin(rad),
-      this.radius * Math.cos(rad)
+      this.radius * Math.cos(rad),
+      this.radius * Math.sin(rad)
     )
   }
 
