@@ -26,7 +26,7 @@ const flightRadarCanvas = new FlightRadarCanvas()
 const grid = new Grid(flightRadarCanvas.canvas)
 const rings = new Rings(grid, 6)
 const table = new Table()
-const airships = new Airships(table, testAirshipsSameDirection)
+const airships = new Airships(table)
 const tracker = new Tracker();
 
 async function main() {
