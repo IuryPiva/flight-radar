@@ -4,6 +4,12 @@ export function renderRings() {
 export function drawAirships() {
   return (<HTMLInputElement>document.getElementById('draw-airships')).checked
 }
+export function drawAirshipsGuidelines() {
+  return (<HTMLInputElement>document.getElementById('draw-airships-guidelines')).checked
+}
+export function drawAirshipsVision() {
+  return (<HTMLInputElement>document.getElementById('draw-airships-vision')).checked
+}
 export function animateAirships() {
   return (<HTMLInputElement>document.getElementById('animate-airships')).checked
 }

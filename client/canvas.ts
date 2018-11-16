@@ -5,6 +5,7 @@ import { Airship } from "./airship/airship"
 import { Radians } from "./utils/math"
 import { Airships, AirshipPair } from "./airship/airships"
 import { Polygon, PolygonPixels } from "./utils/polygon"
+import { drawAirshipsVision, drawAirshipsGuidelines } from "./controls/features";
 
 export class Pixel {
   private _Pixel: Pixel
@@ -154,16 +155,20 @@ export class FlightRadarCanvas {
     this.ctx.restore()
   }
 
-  drawAirships (airships: Airships, grid: Grid) {    
-    airships.getAll().forEach(airship => {
-      this.drawTriangles(airship, grid)
-    })
+  drawAirships (airships: Airships, grid: Grid) {
+    if(drawAirshipsVision()) {
+      airships.getAll().forEach(airship => {
+        this.drawTriangles(airship, grid)
+      })
+    }
     airships.getAll().forEach(airship => {
       this.castAirshipShadow(airship, grid)
     })
-    airships.getAll().forEach(airship => {
-      this.drawAirshipGuideLine(airship, grid)
-    })
+    if(drawAirshipsGuidelines()) {
+      airships.getAll().forEach(airship => {
+        this.drawAirshipGuideLine(airship, grid)
+      })
+    }
     airships.getAll().forEach(airship => {
       this.drawAirship(airship, grid)
     })

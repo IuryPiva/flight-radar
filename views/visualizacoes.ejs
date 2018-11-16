@@ -1,5 +1,5 @@
 <div role="tabpanel"
-     class="tab-pane"
+     class="tab-pane active"
      id="visualizacoes">
   <div class="pb-2 mb-5">
     <form>
@@ -29,18 +29,30 @@
                  for="draw-airships">Aviões</label>
         </div>
         <div class="col-12 form-check">
+          <input id="draw-airships-guidelines"
+                 type="checkbox"
+                 class="form-check-input">
+          <label class="form-check-label"
+                 for="draw-airships-guidelines">Linha de segurança dos aviões</label>
+        </div>
+        <div class="col-12 form-check">
+          <input id="draw-airships-vision"
+                 type="checkbox"
+                 class="form-check-input">
+          <label class="form-check-label"
+                 for="draw-airships-vision">Campo de visão dos aviões</label>
+        </div>
+        <div class="col-12 form-check">
           <input id="animate-airships"
                  type="checkbox"
-                 class="form-check-input"
-                 checked>
+                 class="form-check-input">
           <label class="form-check-label"
                  for="animate-airships">Animações dos aviões</label>
-        </div>        
+        </div>
         <div class="col-12 form-check">
           <input id="bounce"
                  type="checkbox"
-                 class="form-check-input"
-                 checked>
+                 class="form-check-input">
           <label class="form-check-label"
                  for="bounce">Aviões rebaterem nas paredes</label>
         </div>
@@ -55,7 +67,8 @@
         <div class="col-12 form-check">
           <input id="should-teleport-to"
                  type="checkbox"
-                 class="form-check-input">
+                 class="form-check-input"
+                 checked>
           <label class="form-check-label"
                  for="should-teleport-to">Teleportar o avião para o ponto</label>
         </div>
@@ -64,7 +77,7 @@
                  type="checkbox"
                  class="form-check-input">
           <label class="form-check-label"
-                 for="should-avoid-collision">Inteligência Meio Artificial</label>
+                 for="should-avoid-collision">Meia Inteligência Meio Artificial</label>
         </div>
       </div>
     </form>

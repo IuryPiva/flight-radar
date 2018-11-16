@@ -1,5 +1,7 @@
 ### flight-radar
 
+
+## TODO LIST
 - [x] Construir um plano cartesiano
 - [x] Mostrar o avião na tela
 - [x] Multiplos aviões na tela
@@ -23,6 +25,6 @@
 - [x] Angulo de curva máximo 
 - [x] Rate of turn
 - [x] Funções de transformação direcionam o avião para o ponto resultante dentro das limitações do avião
-- [ ] Velocidade minima dos aviões
-- [ ] Avião chegar no ponto destino na direção informada
-- [ ] Tomada de decisão em caso de colisão iminente
+- [x] Velocidade minima/máxima dos aviões
+- [x] Tomada de decisão em caso de colisão iminente
+- [x] Aviões podem ser controlados manualmente quando selecionados (com as setas do teclado)

@@ -11,6 +11,7 @@ import { shouldTeleportTo } from "../controls/features";
 import cloneDeep from 'lodash/fp/cloneDeep'
 import { Polygon } from "../utils/polygon";
 import { Config } from "../config";
+import { PlayerControl } from "../player/play";
 
 interface SpeedLimit {
   min: KilometresPerHour
@@ -153,6 +154,9 @@ export class Airship {
   }
 
   accelerate() {
+    if(this.isSelected && PlayerControl.upPressed) return this.speed.value += (this.limits.acceleration.toKilometresPerSecond().value / Config.FPS)
+    if(this.isSelected && PlayerControl.downPressed) return this.speed .value -= (this.limits.acceleration.toKilometresPerSecond().value / Config.FPS)
+
     if (this.accelerateTo === null) {
       return false
     } else if (this.accelerateTo.value > this.speed.value) {
@@ -188,8 +192,10 @@ export class Airship {
   }
 
   turn() {
-    if(this.rightForever) this.direction.set(this.direction.value - this.limits.rateOfTurn.value / Config.FPS)
-    if(this.leftForever) this.direction.set(this.direction.value + this.limits.rateOfTurn.value / Config.FPS)
+    if(this.isSelected && PlayerControl.rightPressed) return this.direction.set(this.direction.value - (this.limits.rateOfTurn.value * 2) / Config.FPS)
+    if(this.isSelected && PlayerControl.leftPressed) return this.direction.set(this.direction.value + (this.limits.rateOfTurn.value * 2) / Config.FPS)
+    if(this.rightForever) return this.direction.set(this.direction.value - this.limits.rateOfTurn.value / Config.FPS)
+    if(this.leftForever) return this.direction.set(this.direction.value + this.limits.rateOfTurn.value / Config.FPS)
     if (this.turnTo === null) return;
     
     let difference: Degrees = new Degrees(this.directionToPoint(this.turnTo).value - this.direction.value)
@@ -219,6 +225,7 @@ export class Airship {
       this.turnTo = position
     }
   }
+
   goToNeverTeleport(position: Cartesian) {
     this.turnTo = position
   }
@@ -247,8 +254,6 @@ export class Airship {
       exists: true
     }
   }
-  
-
 
   restoreFromHistory() {
     if(!this.history || !this.history.speed) return
@@ -297,14 +302,10 @@ export class Airship {
   }
 
   setRightForever(input) {
-    console.log({right: input});
-    
     this.rightForever = input
   }
 
   setLeftForever(input) {
-    console.log({left: input});
-    
     this.leftForever = input
   }
 }

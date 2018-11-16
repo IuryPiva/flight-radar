@@ -72,7 +72,6 @@ export class Stats {
       this.frames = 0;
     }
     if (time >= this.panelTime + 1000) {
-      console.log(this.fps)
       this.fpsPanel.update((this.panelFrames * 1000) / (time - this.panelTime), 100);
 
       this.panelTime = time;
