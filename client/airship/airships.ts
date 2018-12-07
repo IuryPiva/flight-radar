@@ -60,7 +60,6 @@ export class Airships {
       airship.accelerate()
       airship.turn()
       airship.move()
-      table.updateRow(airship)
     })
   }
 }

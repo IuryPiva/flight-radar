@@ -1,4 +1,5 @@
 import { Airship } from "../airship/airship";
+import { Airships } from "../airship/airships";
 
 export class Table {
   drawn = false
@@ -41,10 +42,13 @@ export class Table {
       : $('.auto-disabled').prop('disabled', true)
   }
 
-  updateRow(airship: Airship) {
-    $(`#${airship.id}position`)[0].innerHTML = airship.position.display()
-    $(`#${airship.id}polar`)[0].innerHTML = airship.position.toPolar().display()
-    $(`#${airship.id}direction`)[0].innerHTML = airship.direction.display()
-    $(`#${airship.id}speed`)[0].innerHTML = airship.speed.toKilometresPerHour().display()
+  updateRow(airships: Airships) {
+
+    airships.getAll().forEach(airship => {
+      $(`#${airship.id}position`)[0].innerHTML = airship.position.display()
+      $(`#${airship.id}polar`)[0].innerHTML = airship.position.toPolar().display()
+      $(`#${airship.id}direction`)[0].innerHTML = airship.direction.display()
+      $(`#${airship.id}speed`)[0].innerHTML = airship.speed.toKilometresPerHour().display()  
+    })
   }
 }

@@ -7,6 +7,11 @@ import { Airships, AirshipPair } from "./airship/airships"
 import { Polygon, PolygonPixels } from "./utils/polygon"
 import { drawAirshipsVision, drawAirshipsGuidelines } from "./controls/features";
 
+const airshipScaleRange:HTMLInputElement = document.querySelector('#airship-scale');
+let airshipScale = Number(airshipScaleRange.value)
+
+airshipScaleRange.addEventListener("input", () => airshipScale = Number(airshipScaleRange.value));
+
 export class Pixel {
   private _Pixel: Pixel
   value: number
@@ -120,7 +125,7 @@ export class FlightRadarCanvas {
     this.ctx.translate(pixel.x, pixel.y)
     this.ctx.translate(0, 0)
     this.ctx.rotate(rad)
-    this.ctx.drawImage(airship.sprite.shadow, - airship.width.value / 2, - airship.height.value / 2, airship.width.value, airship.height.value)
+    this.ctx.drawImage(airship.sprite.shadow, - airship.width.value * airshipScale / 2, - airship.height.value * airshipScale / 2, airship.width.value * airshipScale, airship.height.value * airshipScale)
     this.ctx.restore()
   }
 
@@ -147,11 +152,11 @@ export class FlightRadarCanvas {
     this.ctx.beginPath()
     this.ctx.font = '12px Georgia'
     this.ctx.fillStyle = 'black'
-    this.ctx.fillText(airship.id, pixel.x + airship.width.value / 2, pixel.y - airship.height.value / 2)
-    this.ctx.translate(pixel.x, pixel.y - airship.height.value * 1.5)
+    this.ctx.fillText(airship.id, pixel.x + airship.width.value * airshipScale / 2, pixel.y - airship.height.value * airshipScale / 2)
+    this.ctx.translate(pixel.x, pixel.y - airship.height.value * airshipScale * 1.5)
     this.ctx.translate(0, 0)
     this.ctx.rotate(rad)
-    this.ctx.drawImage(airship.getSprite(), -airship.width.value / 2, -airship.height.value / 2, airship.width.value, airship.height.value)
+    this.ctx.drawImage(airship.getSprite(), -airship.width.value * airshipScale / 2, -airship.height.value * airshipScale / 2, airship.width.value * airshipScale, airship.height.value * airshipScale)
     this.ctx.restore()
   }
 

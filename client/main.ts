@@ -41,6 +41,9 @@ async function main() {
   if(mayTrack()) tracker.trackThem(airships)
   if(bounce()) bounceOnBorders(airships, grid)
   if(shouldAvoidCollision()) avoidCollisionPairs(airships)
+
+  table.updateRow(airships)
+
   fpsMeter.end();
   Config.FPS = fpsMeter.fps
 }

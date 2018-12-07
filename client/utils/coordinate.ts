@@ -49,7 +49,7 @@ export class Cartesian {
         angle.value = 270
       }
     } else {
-      angle.value = new Radians(Math.atan2(this.y, this.x)).inDegrees()
+      angle.value = new Radians(Math.atan(this.y / this.x)).inDegrees()
       if (this.isSecondQuadrant() || this.isThirdQuadrant()) angle.value += 180
       if (this.isFourthQuadrant()) angle.value += 360
     }
